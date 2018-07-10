@@ -104,7 +104,7 @@
             success: function (data) {
                
                 if (data.IsSuccessful) {
-
+                    alert(1)''
                     var s = "<span onclick=del_rwcs(\"" + data.Data + "\",\""+b+"\",this)>" + $("#csid_" + b).val() + "</span>"
                     $("#yxcslb_" + b).append(s);
                 }
