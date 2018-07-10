@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewBag.Title = "CKJH";
+}
+
+<div id="rwxq" style="width: 100%; "></div>
+<DIV tabindex="-1" class="modal fade" id="custom-width-modal" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+
+@section scripts{
+    <script>
+    function Table_bs($box) {
+
+        var _init_bit = false;
+        var _box = $box;
+
+        this.init = function () {
+
+            _box.addClass('table-responsive');
+
+            var html = '';
+            html += '<table class="table table-bordered " style="text-align: center; ">';
+            html += '<thead style="font-weight: bold;">';
+            // html += '<tr>';
+            // html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
+            // html += '<tr>';
+            // html += '</tr>';
+            html += '</tbody>';
+            html += '</table>';
+
+            _box.append($(html));
+
+            _init_bit = true;
+        }
+        this.load = function (option) {
+
+            if (!_init_bit) {
+                this.init();
+            }
+
+            // 表头
+            var thead = option.colNames;
+
+            var html_thead = '';
+            html_thead += '<tr>';
+            for (var i = 0; i < thead.length; i++) {
+                html_thead += '<td>' + thead[i] + '</td>';
+            }
+            html_thead += '</tr>';
+
+            _box.find('thead').append($(html_thead));
+
+            // 表身
+            var tbody = option.data;
+            var html_tbody = '';
+
+            for (var j1 = 0; j1 < tbody.length; j1++) {
+                var buff = tbody[j1];
+
+                html_tbody += '<tr>';
+                for (var j2 = 0; j2 < buff.length; j2++) {
+                    html_tbody += '<td>' + buff[j2] + '</td>';
+                }
+                html_tbody += '</tr>';
+            }
+            _box.find('tbody').append($(html_tbody));
+        }
+    }
+
+    function cleardata()
+    {
+        $("#custom-width-modal").on("hidden.bs.modal", function () {
+            $(this).removeData("bs.modal");
+        });
+    }
+    var option = {
+        colNames: ['选择', "任务年份", "任务周次","周次名称", "成交记录", "新增预售", "土地交易", "认购数据","上传数据"],
+        data: []
+    }
+
+    $(function () {
+        var t = new Table_bs($('#rwxq'));
+
+        $.ajax({
+            url: "/data/get_rwxq",
+            data: { "nf":2018 },
+            type:"post",
+            success: function (data) {
+                var d =[];
+                for (var i = 0; i < data.length; i++) {
+                    d.push(['<input type="checkbox">',
+                        data[i].nf, data[i].zc, data[i].zcmc,
+                        Get_Data_CJJL(data[i].cjjl),
+                        Get_Data_XZYS(data[i].xzys),
+                        Get_Data_TDCJ(data[i].tdcj),
+                        Get_Data_RGSJ(data[i].rgsj),
+                        "<a class='btn btn-primary waves-effect waves-light btn-sm' href='/data/TJSJ?nf=" + data[i].nf + "&zc=" + data[i].zc + "' data-toggle='modal' data-target='#custom-width-modal' onclick='cleardata()'>上传数据 </a> "]);
+                }
+                option.data = d;
+                t.load(option);
+            }
+        })
+
+    });
+    function Get_Data_CJJL(a)
+    {
+        if (a != 0) {
+            return a;
+        }
+        else {
+           return "<a href='#' class='btn btn-link red'>无数据</a>"
+        }
+    }
+    function Get_Data_XZYS(a) {
+        if (a != 0) {
+            return a;
+        }
+        else {
+            return "<a href='#' class='btn btn-link red'>无数据</a>"
+        }
+    }
+    function Get_Data_TDCJ(a) {
+        if (a != 0) {
+            return a;
+        }
+        else {
+            return "<a href='#' class='btn btn-link red'>无数据</a>"
+        }
+    }
+    function Get_Data_RGSJ(a) {
+        if (a != 0) {
+            return a;
+        }
+        else {
+            return "<a href='#' class='btn btn-link red'>无数据</a>"
+        }
+    }
+    </script>
+}

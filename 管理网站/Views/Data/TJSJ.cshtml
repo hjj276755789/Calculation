@@ -1,0 +1,236 @@
+﻿@using Calculation.Models.Models;
+@{
+    ViewBag.Title = "TJSJ";
+    Data_JHSQXQ data = this.ViewBag.data as Data_JHSQXQ;
+    string cjzt = data.cjjl == 0 ? "ion-close-round" : "ion-checkmark-round";
+    string xzys = data.xzys == 0 ? "ion-close-round " : "ion-checkmark-round";
+    string tdcj = data.tdcj == 0 ? "ion-close-round " : "ion-checkmark-round";
+    string rgsj = data.rgsj == 0 ? "ion-close-round " : "ion-checkmark-round";
+}
+
+
+
+
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="mini-stat clearfix bx-shadow bg-info">
+            <span class="mini-stat-icon"><i class="@cjzt"></i></span>
+            <div class="mini-stat-info text-right">
+                <span class="counter">成交备案</span>
+            </div>
+            <div class="tiles-progress">
+                <div class="m-t-20 fileupload btn btn-purple waves-effect waves-light btn-lg">
+                    <span><i class="ion-upload m-r-5"></i>上传数据</span>
+                    <form id="cjjlform">
+                        <input type="hidden" name="nf" value="@this.ViewBag.nf">
+                        <input type="hidden" name="zc" value="@this.ViewBag.zc">
+                        <input class="upload" type="file" id="cjjl" name="cjjl">
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="mini-stat clearfix bg-purple bx-shadow">
+            <span class="mini-stat-icon"><i class="@xzys"></i></span>
+            <div class="mini-stat-info text-right">
+                <span class="counter">新增预售</span>
+            </div>
+            <div class="tiles-progress">
+                <div class="m-t-20 fileupload btn btn-purple waves-effect waves-light btn-lg">
+                    <span><i class="ion-upload m-r-5"></i>上传数据</span>
+                    <form id="xzysform">
+                        <input type="hidden" name="nf" value="@this.ViewBag.nf">
+                        <input type="hidden" name="zc" value="@this.ViewBag.zc">
+                        <input class="upload" type="file" id="xzys" name="xzys">
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+    <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="mini-stat clearfix bg-purple bx-shadow">
+            <span class="mini-stat-icon"><i class="@tdcj"></i></span>
+            <div class="mini-stat-info text-right">
+                <span class="counter">土地供应</span>
+            </div>
+            <div class="tiles-progress">
+                <div class="m-t-20 fileupload btn btn-purple waves-effect waves-light btn-lg">
+                    <span><i class="ion-upload m-r-5"></i>上传数据</span>
+                    <form id="tdcjform">
+                        <input type="hidden" name="nf" value="@this.ViewBag.nf">
+                        <input type="hidden" name="zc" value="@this.ViewBag.zc">
+                        <input class="upload" type="file" id="tdcj" name="tdcj">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="mini-stat clearfix bg-purple bx-shadow">
+            <span class="mini-stat-icon"><i class="@rgsj"></i></span>
+            <div class="mini-stat-info text-right">
+                <span class="counter">认购数据</span>
+            </div>
+            <div class="tiles-progress">
+                <div class="m-t-20 fileupload btn btn-purple waves-effect waves-light btn-lg">
+                    <span><i class="ion-upload m-r-5"></i>上传数据</span>
+                    <form id="rgsjform">
+                        <input type="hidden" name="nf" value="@this.ViewBag.nf">
+                        <input type="hidden" name="zc" value="@this.ViewBag.zc">
+                        <input class="upload" type="file" id="rgsj" name="rgsj">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    var uploading = false;
+
+    $("#cjjl").on("change", function () {
+        if (uploading) {
+            alert("文件正在上传中，请稍候");
+            return false;
+        }
+        var formData = new FormData($("#cjjlform")[0]);
+        $.ajax({
+            url: "/data/ADD_CJJL",
+            type: 'POST',
+            data: formData,
+            /**
+            *必须false才会自动加上正确的Content-Type
+            */
+            contentType: false,
+            /**
+            * 必须false才会避开jQuery对 formdata 的默认处理
+            * XMLHttpRequest会对 formdata 进行正确的处理
+            */
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                uploading = true;
+            },
+            success: function (data) {
+                uploading=false;
+                alert(data);
+            },
+            error: function (data) {
+
+                uploading=false;
+                alert("上传失败"+data);
+            }
+        });
+    });
+
+
+    $("#xzys").on("change", function () {
+        if (uploading) {
+            alert("文件正在上传中，请稍候");
+            return false;
+        }
+        var formData = new FormData($("#xzysform")[0]);
+        $.ajax({
+            url: "/data/ADD_xzys",
+            type: 'POST',
+            data: formData,
+            /**
+            *必须false才会自动加上正确的Content-Type
+            */
+            contentType: false,
+            /**
+            * 必须false才会避开jQuery对 formdata 的默认处理
+            * XMLHttpRequest会对 formdata 进行正确的处理
+            */
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                uploading = true;
+            },
+            success: function (data) {
+                uploading = false;
+                alert(data);
+            },
+            error: function (data) {
+
+                uploading = false;
+                alert("上传失败" + data);
+            }
+        });
+    });
+
+
+    $("#tdcj").on("change", function () {
+        if (uploading) {
+            alert("文件正在上传中，请稍候");
+            return false;
+        }
+        var formData = new FormData($("#tdcjform")[0]);
+        $.ajax({
+            url: "/data/ADD_tdcj",
+            type: 'POST',
+            data: formData,
+            /**
+            *必须false才会自动加上正确的Content-Type
+            */
+            contentType: false,
+            /**
+            * 必须false才会避开jQuery对 formdata 的默认处理
+            * XMLHttpRequest会对 formdata 进行正确的处理
+            */
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                uploading = true;
+            },
+            success: function (data) {
+                uploading = false;
+                alert(data);
+            },
+            error: function (data) {
+
+                uploading = false;
+                alert("上传失败" + data);
+            }
+        });
+    });
+
+
+    $("#rgsj").on("change", function () {
+        if (uploading) {
+            alert("文件正在上传中，请稍候");
+            return false;
+        }
+        var formData = new FormData($("#rgsjform")[0]);
+        $.ajax({
+            url: "/data/ADD_rgsj",
+            type: 'POST',
+            data: formData,
+            /**
+            *必须false才会自动加上正确的Content-Type
+            */
+            contentType: false,
+            /**
+            * 必须false才会避开jQuery对 formdata 的默认处理
+            * XMLHttpRequest会对 formdata 进行正确的处理
+            */
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                uploading = true;
+            },
+            success: function (data) {
+                uploading = false;
+                alert(data);
+            },
+            error: function (data) {
+
+                uploading = false;
+                alert("上传失败" + data);
+            }
+        });
+    });
+</script>

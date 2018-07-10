@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<section class="container" id="login">
+    <form action="/home/login" method="post" role="form">
+        <div class="box-body">
+            <div class="row container-fluid col-xl-5 offset-6 bg-dark ">
+                <h2 class="bg-dark text-white box-header-txt">欢迎登录</h2>
+            </div>
+            <div class="row container-fluid col-xl-5 offset-6 bg-white">
+                <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户ID" />
+            </div>
+            <div class="row container-fluid col-xl-5 offset-6 bg-white">
+                <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" />
+            </div>
+            <div class="row container-fluid col-xl-5 offset-6 bg-white">
+                <button type="submit" class="btn btn-success btn-block">登录</button>
+            </div>
+        </div>
+    </form>
+</section>

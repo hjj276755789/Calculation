@@ -1,0 +1,110 @@
+﻿@using Calculation.Models.Models;
+@using Calculation.Models;
+@{
+    ViewBag.Title = "zb_data";
+    Data_JHSQXQ data = this.ViewBag.data as Data_JHSQXQ;
+    Rw_Cofirm_data rcd = this.ViewBag.rcd as Rw_Cofirm_data;
+
+
+    string cjzt = data.cjjl == 0 ? "ion-close-round" : "ion-checkmark-round";
+    string xzys = data.xzys == 0 ? "ion-close-round " : "ion-checkmark-round";
+    string tdcj = data.tdcj == 0 ? "ion-close-round " : "ion-checkmark-round";
+    string rgsj = data.rgsj == 0 ? "ion-close-round " : "ion-checkmark-round";
+}
+
+<div class="row">
+    <input type="button" value="确认数据筹备完毕" onclick="ZTQR('@rcd.rwid')" class="btn btn-danger"/>
+</div>
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="mini-stat clearfix bx-shadow bg-info">
+            <span class="mini-stat-icon"><i class="@cjzt"></i></span>
+            <div class="mini-stat-info text-right">
+                <span class="counter">成交备案记录</span>
+            </div>
+            <div class="tiles-progress">
+                <div class="m-t-20">
+                    <h5 class="text-uppercase text-white m-0">@rcd.cjjl_zt </h5>
+
+                    <button type="button" class="btn btn-danger" value="忽略数据" onclick="HLSJ(@rcd.rwid,1)" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="mini-stat clearfix bg-purple bx-shadow">
+            <span class="mini-stat-icon"><i class="@xzys"></i></span>
+            <div class="mini-stat-info text-right">
+                <span class="counter">新增预售记录</span>
+            </div>
+            <div class="tiles-progress">
+                <div class="m-t-20">
+                    <h5 class="text-uppercase text-white m-0">@rcd.xzys_zt.ToString()<span class="pull-right">59</span></h5>
+                    <button class="btn btn-danger" type="button" value="忽略数据" onclick="HLSJ(@rcd.rwid,2)"  />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="mini-stat clearfix bg-purple bx-shadow">
+            <span class="mini-stat-icon"><i class="@tdcj"></i></span>
+            <div class="mini-stat-info text-right">
+                <span class="counter">土地供应数据</span>
+            </div>
+            <div class="tiles-progress">
+                <div class="m-t-20">
+                    <h5 class="text-uppercase text-white m-0">@rcd.tdcj_zt.ToString() <span class="pull-right">59</span></h5>
+                    <button class="btn btn-danger" type="button" value="忽略数据" onclick="HLSJ(@rcd.rwid,3)" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="mini-stat clearfix bg-purple bx-shadow">
+            <span class="mini-stat-icon"><i class="@rgsj"></i></span>
+            <div class="mini-stat-info text-right">
+                <span class="counter">周认购数据</span>
+            </div>
+            <div class="tiles-progress">
+                <div class="m-t-20">
+                    <h5 class="text-uppercase text-white m-0">@rcd.rgsj_zt.ToString() <span class="pull-right">59</span></h5>
+                    <button class="btn btn-danger" type="button" value="忽略数据" onclick="HLSJ(@rcd.rwid,4)" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <script>
+        //忽略数据
+        function HLSJ(a, b)
+        {
+            $.ajax({
+                url: "/data/HLSJ",
+                data: { "rwid": a, "ztlx": b },
+                type: "post",
+                
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        }
+        function ZTQR(a) {
+            alert(a);
+            $.ajax({
+                url: "/data/SJQR",
+                data: { "rwid": a, },
+                type: "post",
+                
+                success: function (data) {
+                    if(data.IsSuccessful)
+                        alert("数据确认成功");
+                    else alert("数据确认失败")
+                }
+            })
+            
+        }
+
+    </script>

@@ -1,0 +1,190 @@
+﻿
+@{
+    ViewBag.Title = "zb_rwlb";
+}
+<label>当前模板：@this.ViewBag.mbmc</label>
+
+<a class="btn btn-primary waves-effect waves-light" href="/zb/add_zbrw?mbbh=@this.ViewBag.mbbh" data-toggle="modal" data-target="#fbrw">添加任务 </a> 
+
+<div id="rwlb" style="width: 80%; margin: 20px;"></div>
+
+
+
+
+
+<DIV tabindex="-1" class="modal fade" id="fbrw" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+
+
+<DIV tabindex="-1" class="modal fade" id="qrsj" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+<DIV tabindex="-1" class="modal fade col-md-12" id="tbcs" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;position:absolute;">
+    <DIV class="modal-dialog" style="width: 55%;" >
+        <DIV class="modal-content col-md-12">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+
+@section scripts{
+    <script>
+
+    var table = new Table_bs($('#rwlb'));
+    function cleardata(a) {
+            $(a).on("hidden.bs.modal", function () {
+                $(this).removeData("bs.modal");
+            });
+      
+        }
+    function Table_bs($box) {
+
+        var _init_bit = false;
+        var _box = $box;
+
+        this.init = function () {
+
+            _box.addClass('table-responsive');
+
+            var html = '';
+            html += '<table class="table table-bordered " style="text-align: center; ">';
+            html += '<thead style="font-weight: bold;">';
+            // html += '<tr>';
+            // html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
+            // html += '<tr>';
+            // html += '</tr>';
+            html += '</tbody>';
+            html += '</table>';
+
+            _box.append($(html));
+
+            _init_bit = true;
+        }
+        this.load = function (option) {
+
+            if (!_init_bit) {
+                this.init();
+            }
+
+            // 表头
+            var thead = option.colNames;
+
+            var html_thead = '';
+            html_thead += '<tr>';
+            for (var i = 0; i < thead.length; i++) {
+                html_thead += '<td>' + thead[i] + '</td>';
+            }
+            html_thead += '</tr>';
+
+            _box.find('thead').append($(html_thead));
+
+            // 表身
+            var tbody = option.data;
+            var html_tbody = '';
+
+            for (var j1 = 0; j1 < tbody.length; j1++) {
+                var buff = tbody[j1];
+
+                html_tbody += '<tr>';
+                for (var j2 = 0; j2 < buff.length; j2++) {
+                    html_tbody += '<td>' + buff[j2] + '</td>';
+                }
+                html_tbody += '</tr>';
+            }
+            _box.find('tbody').append($(html_tbody));
+        }
+        this.reflush =function(option)
+        {
+            _box.empty();
+            this.init();
+            //option.data = [];   
+            //this.load(option);
+        }
+    }
+
+
+    // ['<input type="checkbox">', '168', '强化数学1下', '纯视频（16:9）', '50', '在线2016-07-05', '收费', '<div class="btn-group btn-group-xs"><button type="button" class="btn btn-info" data-event="edit"><span class="glyphicon glyphicon-edit"></span></button></div>', '<a href="#" data-event="add_child">学员听课</a>/<a href="#" data-event="add_child">管理员听课</a>'],
+
+    var option = {
+        colNames: ['选择',"任务名称", "年份", "周次", "状态", "操作"],
+        data: [
+
+        ]
+    }
+   
+    $(function () {
+        init1();
+    });
+    function init1()
+    {
+        $.ajax({
+            url: "/zb/get_zbrwlb",
+            data: { 'mbbh': '@this.ViewBag.mbbh', "pagesize": 8, "pagenow": 1 },
+            type: "post",
+            success: function (data) {
+                var d = [];
+                for (var i = 0; i < data.length; i++) {
+                    switch (data[i].zt) {
+                        case 0:;
+                        case 1: {
+                                d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "数据筹备中",
+                                    '<a class="btn btn-primary waves-effect waves-light" href="/data/zb_data?nf=' + data[i].nf + '&zc=' + data[i].zc + '" data-toggle="modal" data-target="#qrsj" onclick="cleardata(\'#qrsj\')">确认数据</a>']);
+                            }; break;
+                        case 2: {
+                            d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "参数填报中",
+                                '<a class="btn btn-primary waves-effect waves-light" href="/zb/add_cs?mbbh=@this.ViewBag.mbbh&rwid=' + data[i].rwid + '" data-toggle="modal" data-target="#tbcs" >填写参数</a>']);
+                        }; break;
+    
+                        case 3: {
+                                d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "可生成PTT",
+                                    '<a class="btn btn-primary waves-effect waves-light" href="/zb/sc?mbid=' + data[i].mbid + '&nf=' + data[i].nf + '&zc=' + data[i].zc + '">开始任务</a>']);
+                            }; break;
+                        case 4: { d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "可下载", '<a class="btn btn-link" href="/zb/sc?mbid=' + data[i].mbid + '&nf=' + data[i].nf + '&zc=' + data[i].zc + '">重新生成</a><a class="btn btn-link " href="/zb/export?rwid=' + data[i].rwid + '">下载文件</a>']); }; break;
+                    }
+                }
+                option.data = d;
+                table.load(option);
+            }
+        })
+    
+    }
+    $('#tbcs').on('hide.bs.modal', function () {
+        table.reflush(option);
+        init1();
+    });
+    $('#fbrw').on('hide.bs.modal', function () {
+        table.reflush(option);
+        init1();
+    });
+    $('#qrsj').on('hide.bs.modal', function () {
+        table.reflush(option);
+        init1();
+    });
+    </script>
+}

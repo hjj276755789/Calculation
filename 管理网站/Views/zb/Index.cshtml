@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+
+}
+<div id="zblb" style="width: 90%; margin: 20px;"></div>
+
+@section scripts{
+<script>
+    function Table_bs($box) {
+
+        var _init_bit = false;
+        var _box = $box;
+
+        this.init = function () {
+
+            _box.addClass('table-responsive');
+
+            var html = '';
+            html += '<table class="table table-bordered " style="text-align: center; ">';
+            html += '<thead style="font-weight: bold;">';
+            // html += '<tr>';
+            // html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
+            // html += '<tr>';
+            // html += '</tr>';
+            html += '</tbody>';
+            html += '</table>';
+
+            _box.append($(html));
+
+            _init_bit = true;
+        }
+        this.load = function (option) {
+
+            if (!_init_bit) {
+                this.init();
+            }
+
+            // 表头
+            var thead = option.colNames;
+
+            var html_thead = '';
+            html_thead += '<tr>';
+            for (var i = 0; i < thead.length; i++) {
+                html_thead += '<td>' + thead[i] + '</td>';
+            }
+            html_thead += '</tr>';
+
+            _box.find('thead').append($(html_thead));
+
+            // 表身
+            var tbody = option.data;
+            var html_tbody = '';
+
+            for (var j1 = 0; j1 < tbody.length; j1++) {
+                var buff = tbody[j1];
+
+                html_tbody += '<tr>';
+                for (var j2 = 0; j2 < buff.length; j2++) {
+                    html_tbody += '<td>' + buff[j2] + '</td>';
+                }
+                html_tbody += '</tr>';
+            }
+            _box.find('tbody').append($(html_tbody));
+        }
+    }
+
+
+    // ['<input type="checkbox">', '168', '强化数学1下', '纯视频（16:9）', '50', '在线2016-07-05', '收费', '<div class="btn-group btn-group-xs"><button type="button" class="btn btn-info" data-event="edit"><span class="glyphicon glyphicon-edit"></span></button></div>', '<a href="#" data-event="add_child">学员听课</a>/<a href="#" data-event="add_child">管理员听课</a>'],
+
+    var option = {
+        colNames: ['选择',"模板编号","模板名称","操作"],
+        data: [
+           
+        ]
+    }
+
+    $(function () {
+        var t = new Table_bs($('#zblb'));
+
+        $.ajax({
+            url: "/zb/get_zbmblx",
+            data: { "pagesize": 8, "pagenow": 1 },
+            type:"post",
+            success: function (data) {
+                var d =[];
+                for (var i = 0; i < data.length; i++) {
+                    d.push(['<input type="checkbox">', data[i].mbbh, data[i].mbmc, '<a class="btn btn-primary waves-effect waves-light" href="/zb/zb_rwlb?mbbh=' + data[i].mbbh + '&mbmc=' + data[i].mbmc + '">发起任务</a>']);
+                }
+                option.data = d;
+                t.load(option);
+            }
+        })
+       
+    });
+</script>
+    }

@@ -1,0 +1,186 @@
+﻿@using Calculation.Models.Models;
+@{
+    ViewBag.Title = "add_cs";
+    List<ParamModels> p = this.ViewBag.data as List<ParamModels>;
+    var cslb = p.OrderBy(m => m.cslx);
+    var wjlx = p.Where(m => m.cslx == Calculation.Models.Enums.CS_LX.文件型).ToList();
+    var sxlx = p.Where(m => m.cslx == Calculation.Models.Enums.CS_LX.筛选型).ToList();
+    var wzlx = p.Where(m => m.cslx == Calculation.Models.Enums.CS_LX.文字型).ToList();
+}
+@{
+    if (wzlx != null && wzlx.Count > 0)
+    {
+
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">文字替换型参数</h3></div>
+                <div class="panel-body">
+                    @foreach (var item in wzlx)
+                    {
+                        <label class="col-md-3 control-label">@item.cjmc ： @item.csms</label>
+                        <div class="col-md-6">
+                            <input name="@item.csid" class="form-control" type="text" placeholder="...">
+                            <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    if (sxlx != null && sxlx.Count > 0)
+    {
+
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">筛选条件型参数</h3></div>
+                <div class="panel-body">
+                    @foreach (var item in sxlx)
+                    {
+                        <label class="col-md-3 control-label">@item.cjmc ： @item.csms</label>
+                        <div class="col-sm-7">
+                            <div class="col-12"><input type="text" class="form-control" id="csid_@item.csid" /> </div>
+                            <div id="yxcslb_@item.csid">
+                                
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="button" class="btn btn-sm" value="确定" onclick="add_sxtj('@this.ViewBag.rwid','@item.csid','@item.sfbl')" />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    if (wjlx != null && wjlx.Count > 0)
+    {
+
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">文件类型参数</h3></div>
+                <div class="panel-body">
+                    @foreach (var item in wjlx)
+                    {
+                        <label class="col-md-3 control-label" for="state-success">@item.csms</label>
+                        <div class="col-md-6">
+                            <div class="tiles-progress">
+                                <div class="fileupload btn btn-purple waves-effect waves-light">
+                                    <span><i class="ion-upload m-r-5"></i>上传文件</span>
+                                    <form id="rgsjform">
+                                        <input type="hidden" name="rwid" value="@this.ViewBag.rwid">
+                                        <input type="hidden" name="cjmc" value="@item.cjmc">
+                                        <input type="hidden" name="csid" value="@item.csid">
+                                        <input type="hidden" name="nf" value="2018">
+                                        <input type="hidden" name="zc" value="18">
+                                        <input class="upload" type="file" id="rgsj" name="rgsj">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">确认参数填写完毕</h3></div>
+            <div class="panel-body">
+                <input class="btn btn-primary" onclick="tgcssz('@this.ViewBag.rwid')" value="确认提交">
+            </div>
+        </div>
+    </div>
+}
+ 
+
+<script>
+
+    //添加筛选条件参数
+    function add_sxtj(a,b,c)
+    {
+        $.ajax({
+            url: "/zb/add_wzcs",
+            type: "post",
+            data: { 'rwid': a, 'csid': b, 'csnr': $("#csid_" + b).val(),sfbl:c },
+            success: function (data) {
+               
+                if (data.IsSuccessful) {
+
+                    var s = "<span onclick=del_rwcs(\"" + data.Data + "\",\""+b+"\",this)>" + $("#csid_" + b).val() + "</span>"
+                    $("#yxcslb_" + b).append(s);
+                }
+                else alert(data.ErrMsg);
+             },
+
+        })
+    }
+    function del_rwcs(a,b,obj)
+    {
+        $.ajax({
+            url: "/zb/del_csnr",
+            type: "post",
+            data: { 'id': a},
+            success: function (data) {
+                if (data.IsSuccessful) {
+                   var o= document.getElementById("yxcslb_" + b);
+                   o.removeChild(obj);
+                   alert("删除成功");
+                }
+                else alert(data.ErrMsg);
+            },
+
+        })
+        
+    }
+    function tgcssz(a)
+    {
+        $.ajax({
+            url: "/zb/tgcssz",
+            type: "post",
+            data: { 'rwid': a },
+            success: function (data) {
+                if (data.IsSuccessful) {
+                    alert("确认成功");
+                }
+                else alert(data.ErrMsg);
+            },
+
+        })
+
+    }
+    var uploading = false;
+    $("#rgsj").on("change", function () {
+        if (uploading) {
+            alert("文件正在上传中，请稍候");
+            return false;
+        }
+        var formData = new FormData($("#rgsjform")[0]);
+        $.ajax({
+            url: "/zb/add_wjcs",
+            type: 'POST',
+            data: formData,
+            /**
+            *必须false才会自动加上正确的Content-Type
+            */
+            contentType: false,
+            /**
+            * 必须false才会避开jQuery对 formdata 的默认处理
+            * XMLHttpRequest会对 formdata 进行正确的处理
+            */
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                uploading = true;
+            },
+            success: function (data) {
+                uploading = false;
+                alert(data);
+            },
+            error: function (data) {
+
+                uploading = false;
+                alert("上传失败" + data);
+            }
+        });
+    });
+</script>
+

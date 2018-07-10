@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html class="js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="fixed-left widescreen">
+
+
+    <!-- Begin page -->
+    <div id="wrapper">
+        <!-- Top Bar Start -->
+        <div class="topbar">
+            <!-- LOGO -->
+            <div class="topbar-left">
+                <div class="text-center">
+                    <a href="http://www.baidu.com" class="logo"><i class="md md-terrain"></i> <span>LOGO </span></a>
+                </div>
+            </div>
+            <!-- Button mobile view to collapse sidebar menu -->
+            <div class="navbar navbar-default" role="navigation">
+                <div class="container">
+                    <div class="">
+                        <div class="pull-left">
+                            <button class="button-menu-mobile open-left">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <span class="clearfix"></span>
+                        </div>
+
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <!-- Top Bar End -->
+        <div class="left side-menu">
+            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 854px;">
+                <div class="sidebar-inner slimscrollleft" style="overflow: hidden; width: auto; height: 854px;">
+                    @*<div class="user-details">
+                        <div class="pull-left">
+                            <img src="./Moltran - Responsive Admin Dashboard Template_files/avatar-1.jpg" alt="" class="thumb-md img-circle">
+                        </div>
+                        <div class="user-info">
+                            <div class="dropdown">
+                                <a href="http://www.17sucai.com/preview/869565/2017-11-15/ad/dark/index.html#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">John Doe <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile<div class="ripple-wrapper"></div></a></li>
+                                    <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
+                                    <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li>
+                                    <li><a href="javascript:void(0)"><i class="md md-settings-power"></i> Logout</a></li>
+                                </ul>
+                            </div>
+
+                            <p class="text-muted m-0">Administrator</p>
+                        </div>
+                    </div>*@
+                    <!--- Divider -->
+                    <div id="sidebar-menu">
+                        <ul>
+                            <li>
+                                <a href="/home/index" class="waves-effect waves-light active"><i class="md md-poll"></i><span> 首页 </span></a>
+                            </li>
+                            <li>
+                                <a href="/data/index" class="waves-effect waves-light"><i class="md md-poll"></i><span> 数据任务 </span></a>
+                            </li>
+                            <li>
+                                <a href="/zb/index" class="waves-effect waves-light active"><i class="md md-poll"></i><span> 周报任务 </span></a>
+                            </li>
+                            <li>
+                                <a href="#" class="waves-effect waves-light"><i class="md md-poll"></i><span> 月报任务 </span></a>
+                            </li>
+                            @*<li class="has_sub">
+                                <a href="http://www.17sucai.com/preview/869565/2017-11-15/ad/dark/index.html#" class="waves-effect waves-light"><i class="md md-mail"></i><span> Mail </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="http://www.17sucai.com/preview/869565/2017-11-15/ad/dark/inbox.html">Inbox</a></li>
+                                    <li><a href="http://www.17sucai.com/preview/869565/2017-11-15/ad/dark/email-compose.html">Compose Mail</a></li>
+                                    <li><a href="http://www.17sucai.com/preview/869565/2017-11-15/ad/dark/email-read.html">View Mail</a></li>
+                                </ul>
+                            </li>*@
+
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div><div class="slimScrollBar" style="background: rgb(122, 134, 143); width: 5px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 854px; visibility: visible;"></div><div class="slimScrollRail" style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+            </div>
+        </div>
+
+
+        <div class="content-page">
+            <!-- Start content -->
+            <div class="content">
+                
+                <div class="container">
+                    @RenderBody()
+                </div>
+            </div> 
+            <footer class="footer text-right">
+                2018 © 铭腾科技.
+            </footer>
+        </div>
+        
+
+
+        <script src="~/Scripts/Moltran/jquery.min.js"></script>
+        <script src="~/Scripts/Moltran/bootstrap.min.js"></script>
+        <script src="~/Scripts/Moltran/detect.js"></script>
+        <script src="~/Scripts/Moltran/fastclick.js"></script>
+        <script src="~/Scripts/Moltran/jquery.slimscroll.js"></script>
+        <script src="~/Scripts/Moltran/jquery.blockUI.js"></script>
+        <script src="~/Scripts/Moltran/waves.js"></script>
+        <script src="~/Scripts/Moltran/wow.min.js"></script>
+        <script src="~/Scripts/Moltran/jquery.nicescroll.js"></script>
+        <script src="~/Scripts/Moltran/jquery.scrollTo.min.js"></script>
+        <script src="~/Scripts/Moltran/jquery.app.js"></script><div id="ascrail2000" class="nicescroll-rails" style="width: 7px; z-index: auto; cursor: default; position: absolute; top: 875px; left: 761px; height: 380px; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 296px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2000-hr" class="nicescroll-rails" style="height: 7px; z-index: auto; top: 1248px; left: 280px; position: absolute; cursor: default; display: none; width: 481px; opacity: 0;"><div style="position: relative; top: 0px; height: 5px; width: 488px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2001" class="nicescroll-rails" style="width: 7px; z-index: auto; cursor: default; position: absolute; top: 883px; left: 1308.66px; height: 330px; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 324px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2001-hr" class="nicescroll-rails" style="height: 7px; z-index: auto; top: 1206px; left: 827.656px; position: absolute; cursor: default; display: none; width: 481px; opacity: 0;"><div style="position: relative; top: 0px; height: 5px; width: 488px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2002" class="nicescroll-rails" style="width: 7px; z-index: auto; cursor: default; position: absolute; top: 915px; left: 1846.31px; height: 288px; display: block; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 216px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2002-hr" class="nicescroll-rails" style="height: 7px; z-index: auto; top: 1196px; left: 1385.31px; position: absolute; cursor: default; display: none; width: 461px; opacity: 0;"><div style="position: relative; top: 0px; height: 5px; width: 468px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2003" class="nicescroll-rails" style="width: 7px; z-index: 99; cursor: default; position: fixed; top: 70px; left: 2162px; height: 924px; display: none;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 0px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2003-hr" class="nicescroll-rails" style="height: 7px; z-index: 99; top: 987px; left: 1929px; position: fixed; cursor: default; display: none;"><div style="position: relative; top: 0px; height: 5px; width: 0px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div>
+        <script>
+        var resizefunc = [];
+        </script>
+
+
+        @RenderSection("scripts", required: false)
+
+
+
+        </div>
+</body>
+</html>
