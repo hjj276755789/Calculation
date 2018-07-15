@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace 管理网站.Controllers
 {
-    public class TaskController : Controller
+    public class TaskController : BaseController
     {
         // GET: Task
         public PartialViewResult Index()

@@ -7,32 +7,22 @@ using System.Web.Mvc;
 
 namespace 管理网站.Controllers
 {
-    public class HomeController : BaseController
+    public class AccountController : Controller
     {
-
         FW_QXGL_DataProvider gl;
-
-        public HomeController()
+        public AccountController()
         {
             gl = new FW_QXGL_DataProvider();
         }
-        /// <summary>
-        /// 首页
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Index()
-        {
-            return View();
-        }
-        /// <summary>
-        /// 登陆页
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet]
+        // GET: Account
         public ActionResult Login()
         {
             return View();
         }
+
+
         /// <summary>
         /// 登陆提交地址
         /// </summary>
@@ -40,12 +30,12 @@ namespace 管理网站.Controllers
         /// <param name="password">密码</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Login(string username,string password)
+        public ActionResult Login(string username, string password)
         {
             if (gl.CHECK_LOGIN(username, password))
             {
                 CurrentUser.SignIn(username);
-                return RedirectToAction("index");
+                return RedirectToAction("index","home");
             }
             else
             {
@@ -53,6 +43,5 @@ namespace 管理网站.Controllers
                 return View();
             }
         }
-
-     }
+    }
 }

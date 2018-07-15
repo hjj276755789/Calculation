@@ -46,6 +46,16 @@ where c.rwid = @rwid ";
             return Models.Modelhelper.类列表赋值<ParamValueModel>(new ParamValueModel(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
 
+        public static List<ParamValueModel> GET_RWCSNR(int rwid, int csid)
+        {
+            string sql = @"select  b.id rwcsid,a.csid,b.rwid,a.cjid,b.csnr,a.csms from  
+calculation.xtgl_cj_cjcs a
+left join calculation.xtgl_cj_rwcs b on a.csid = b.csid
+left join calculation.xtgl_bbrw c on b.rwid = c.rwid
+where c.rwid = @rwid and a.csid =@csid";
+            MySqlParameter[] p = { new MySqlParameter("rwid", rwid), new MySqlParameter("csid", csid) };
+            return Models.Modelhelper.类列表赋值<ParamValueModel>(new ParamValueModel(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
+        }
 
         public static int SET_RWCJCS(int rwid,int csid,string csnr)
         {
@@ -72,5 +82,7 @@ where c.rwid = @rwid ";
             MySqlParameter[] p = { new MySqlParameter("id", rwcsid) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
-    }
+
+        
+    } 
 }

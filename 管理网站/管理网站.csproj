@@ -154,6 +154,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SysController.cs" />
@@ -164,6 +166,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\CurrentUser.cs" />
     <Compile Include="Security\IdentityCheck.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -175,7 +178,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\components.css" />
     <Content Include="Content\core.css" />
+    <Content Include="Content\css.css" />
     <Content Include="Content\icons.css" />
+    <Content Include="Content\image\gs.png" />
     <Content Include="Content\menu.css" />
     <Content Include="Content\pages.css" />
     <Content Include="Content\responsive.css" />
@@ -277,7 +282,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -298,11 +302,16 @@
     <Content Include="Views\Data\CKJH.cshtml" />
     <Content Include="Views\Data\TJSJ.cshtml" />
     <Content Include="Views\zb\add_cs.cshtml" />
+    <Content Include="Views\Sys\yhgl.cshtml" />
+    <Content Include="Views\Sys\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Sys\yhjs.cshtml" />
+    <Content Include="Views\Sys\add_yhxx.cshtml" />
+    <Content Include="Views\Sys\jsgl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
-    <Folder Include="Views\Sys\" />
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\yb\" />
   </ItemGroup>
   <ItemGroup>

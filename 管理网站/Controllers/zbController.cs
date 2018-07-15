@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace 管理网站.Controllers
 {
-    public class zbController : Controller
+    public class zbController : BaseController
     {
         private RWGL_DataProvider rwgl;
         private CJGL_DataProvider cjgl;
@@ -28,25 +28,25 @@ namespace 管理网站.Controllers
         // GET: zb
         #region 页面块
 
-       
+        [IdentityCheck]
         public ActionResult index()
         {
             return View();
         }
-        
+        [IdentityCheck]
         public ActionResult zb_rwlb(int mbbh,string mbmc)
         {
             this.ViewBag.mbbh = mbbh;
             this.ViewBag.mbmc = mbmc;
             return View();
         }
-
+        [IdentityCheck]
         public PartialViewResult add_zbrw(int mbbh)
         {
             this.ViewBag.mbbh = mbbh;
             return PartialView();
         }
-
+        [IdentityCheck]
         public PartialViewResult add_cs(int mbbh,int rwid)
         {
 
@@ -106,6 +106,10 @@ namespace 管理网站.Controllers
             return Json(SResult.Error("添加失败"));
 
         }
+        public JsonResult get_wzcs(int rwid,int csid)
+        {
+            return Json(Param_DataProvider.GET_RWCSNR(rwid, csid));
+        }
         public JsonResult del_csnr(int id)
         {
             return Json(Param_DataProvider.DEL_RWCJCS(id) ? SResult.Success : SResult.Error("删除失败"));
@@ -124,15 +128,14 @@ namespace 管理网站.Controllers
             int rwid= Request.Form["rwid"].ints();
             int csid = Request.Form["csid"].ints();
             HttpPostedFileBase f = Request.Files["rgsj"];
-            string path = ConfigurationManager.AppSettings["ParamPath"]+nf+"/"+zc+"/"+ cjmc;
+            string path = ConfigurationManager.AppSettings["ParamPath"]+nf+"\\"+zc+"\\"+ cjmc;
             if(!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            f.SaveAs(Path.Combine( path ,f.FileName));
-            
-
-            int id = Param_DataProvider.RESET_RWCJCS(rwid, csid, Path.Combine(path, f.FileName));
+            string abpath = Path.Combine(path, Base_IdHelper.GetID() + ".pptx");
+            f.SaveAs(abpath);
+            int id = Param_DataProvider.RESET_RWCJCS(rwid, csid, abpath);
             if (id != -1)
             {
                 SResult s = SResult.Success;
@@ -141,6 +144,14 @@ namespace 管理网站.Controllers
             }
             return Json(SResult.Error("添加失败"));
         }
+
+        public JsonResult del_rw(int rwid)
+        {
+            if (rwgl.Del_ZB(rwid))
+                return Json( SResult.Success);
+            else return Json(SResult.Error("删除失败"));
+        }
+
         #endregion
 
         #region 导出模块

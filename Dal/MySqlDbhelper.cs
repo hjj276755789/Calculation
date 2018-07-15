@@ -48,7 +48,15 @@ namespace Calculation.Dal
         }
         public static int ExecuteNonQuery(string sql)
         {
-            return ExecuteNonQuery(sql, null);
+            try
+            {
+                return ExecuteNonQuery(sql, null);
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+            
         }
 
         /// <summary>

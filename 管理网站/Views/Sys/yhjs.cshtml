@@ -1,0 +1,27 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div id="jslb" class="row"></div>
+
+<script>
+    $.ajax({
+        url: '/sys/GET_JSLB_BY_ID',
+        data: { 'yhid': '@this.ViewBag.yhid' },
+        method: 'post',
+        success: function (data) {
+            if(data!=null&data.length>0)
+            {
+                $("#jslb").empty();
+                for (var i = 0; i < data.length; i++) {
+                    var a = "<a class='btn btn-link' onclick='chouse(" + data[i].id + ")'>" + data[i].jsmc + "</a>";
+                    $("#jslb").append(a);
+                }
+                
+            }
+        }
+    })
+
+</script>
+

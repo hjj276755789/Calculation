@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace 管理网站.Controllers
 {
-    public class ybController : Controller
+    public class ybController : BaseController
     {
         // GET: yb
         public ActionResult Index()

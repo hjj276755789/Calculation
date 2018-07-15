@@ -43,4 +43,10 @@ namespace Calculation.Models.Enums
         筛选型=2,
         文件型=3
     }
+
+    public enum YH_LX
+    {
+        默认账号=1,
+        普通账号=2
+    }
 }

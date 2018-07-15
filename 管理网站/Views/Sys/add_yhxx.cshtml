@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "add_yhxx";
+}
+
+
+
+
+            <h2 class="fs-title">新增用户</h2>
+            <h3 class="fs-subtitle">填写用户名密码</h3>
+            <input type="text" id="yhm" name="yhm" placeholder="用户名" />
+            <input type="password" id="yhmm" name="yhmm" placeholder="密码" />
+            <input type="password" id="cfmm" name="cfmm" placeholder="重复密码" />
+            <input type="button" name="next" class="action-button" value="确认添加" onclick="tt()" />
+
+
+<style>
+    html {
+        background:none!important;
+    }
+</style>
+<script>
+    function tt(){
+
+        $.ajax({
+            url: "/sys/ADD_YHXX",
+            type: "post",
+            data: { yhm: $("#yhm").val(), yhmm: $("#yhmm").val(), cfmm: $("#cfmm").val() },
+            success: function (data) {
+                if (data.IsSuccessful) {
+                    $('#tjyh').modal('hide');
+                }
+                else
+                {
+                    alert(data.ErrMsg);
+                }
+            }
+        })
+    }
+</script>

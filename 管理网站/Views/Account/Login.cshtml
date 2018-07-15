@@ -1,0 +1,25 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link href="~/Content/css.css" rel="stylesheet" />
+</head>
+<body>
+    <form id="msform" action="/account/login" method="post">
+        <fieldset>
+            <h2 class="fs-title">用户登录</h2>
+            <h3 class="fs-subtitle">填写用户名密码</h3>
+            <input type="text" name="username" placeholder="用户名" />
+            <input type="password" name="password" placeholder="密码" />
+            <input type="submit" name="next" class="action-button" value="登录" />
+        </fieldset>
+    </form>
+</body>
+</html>

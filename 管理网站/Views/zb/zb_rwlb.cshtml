@@ -4,7 +4,7 @@
 }
 <label>当前模板：@this.ViewBag.mbmc</label>
 
-<a class="btn btn-primary waves-effect waves-light" href="/zb/add_zbrw?mbbh=@this.ViewBag.mbbh" data-toggle="modal" data-target="#fbrw">添加任务 </a> 
+<a class="btn btn-primary waves-effect waves-light" href="/zb/add_zbrw?mbbh=@this.ViewBag.mbbh" data-toggle="modal" data-target="#fbrw" onclick="cleardata('#fbrw')">添加任务 </a> 
 
 <div id="rwlb" style="width: 80%; margin: 20px;"></div>
 
@@ -59,7 +59,7 @@
             $(a).on("hidden.bs.modal", function () {
                 $(this).removeData("bs.modal");
             });
-      
+
         }
     function Table_bs($box) {
 
@@ -123,21 +123,41 @@
         {
             _box.empty();
             this.init();
-            //option.data = [];   
+            //option.data = [];
             //this.load(option);
         }
     }
+    function del_rw(a)
+    {
+        var r = confirm("确认删除任务");
+        if (r == true) {
+            $.ajax({
+                url: "/zb/del_rw",
+                data: { 'rwid':a},
+                type: "post",
+                success: function (data) {
+                    if (data.IsSuccessful) {
+                        alert("删除成功");
+                        table.reflush(option);
+                        init1();
+                    }
+                    else alert(data.ErrMsg);
+                }
+            });
+        }
 
+      
+    }
 
     // ['<input type="checkbox">', '168', '强化数学1下', '纯视频（16:9）', '50', '在线2016-07-05', '收费', '<div class="btn-group btn-group-xs"><button type="button" class="btn btn-info" data-event="edit"><span class="glyphicon glyphicon-edit"></span></button></div>', '<a href="#" data-event="add_child">学员听课</a>/<a href="#" data-event="add_child">管理员听课</a>'],
 
     var option = {
-        colNames: ['选择',"任务名称", "年份", "周次", "状态", "操作"],
+        colNames: ['选择',"任务名称", "年份", "周次", "状态", "操作",""],
         data: [
 
         ]
     }
-   
+
     $(function () {
         init1();
     });
@@ -154,25 +174,25 @@
                         case 0:;
                         case 1: {
                                 d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "数据筹备中",
-                                    '<a class="btn btn-primary waves-effect waves-light" href="/data/zb_data?nf=' + data[i].nf + '&zc=' + data[i].zc + '" data-toggle="modal" data-target="#qrsj" onclick="cleardata(\'#qrsj\')">确认数据</a>']);
+                                    '<a class="btn btn-primary waves-effect waves-light" href="/data/zb_data?nf=' + data[i].nf + '&zc=' + data[i].zc + '" data-toggle="modal" data-target="#qrsj" onclick="cleardata(\'#qrsj\')">确认数据</a>', '<a class="btn-link" onclick="del_rw(' + data[i].rwid + ')">删除</a>']);
                             }; break;
                         case 2: {
                             d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "参数填报中",
-                                '<a class="btn btn-primary waves-effect waves-light" href="/zb/add_cs?mbbh=@this.ViewBag.mbbh&rwid=' + data[i].rwid + '" data-toggle="modal" data-target="#tbcs" >填写参数</a>']);
+                                '<a class="btn btn-primary waves-effect waves-light" href="/zb/add_cs?mbbh=@this.ViewBag.mbbh&rwid=' + data[i].rwid + '" data-toggle="modal" data-target="#tbcs"  onclick="cleardata(\'#tbcs\')">填写参数</a>', '<a class="btn-link" onclick="del_rw('+data[i].rwid+')">删除</a>']);
                         }; break;
-    
+
                         case 3: {
                                 d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "可生成PTT",
-                                    '<a class="btn btn-primary waves-effect waves-light" href="/zb/sc?mbid=' + data[i].mbid + '&nf=' + data[i].nf + '&zc=' + data[i].zc + '">开始任务</a>']);
+                                    '<a class="btn btn-primary waves-effect waves-light" href="/zb/sc?mbid=' + data[i].mbid + '&nf=' + data[i].nf + '&zc=' + data[i].zc + '">开始任务</a>', '<a class="btn-link" onclick="del_rw(' + data[i].rwid + ')">删除</a>']);
                             }; break;
-                        case 4: { d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "可下载", '<a class="btn btn-link" href="/zb/sc?mbid=' + data[i].mbid + '&nf=' + data[i].nf + '&zc=' + data[i].zc + '">重新生成</a><a class="btn btn-link " href="/zb/export?rwid=' + data[i].rwid + '">下载文件</a>']); }; break;
+                        case 4: { d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "可下载", '<a class="btn btn-link" href="/zb/sc?mbid=' + data[i].mbid + '&nf=' + data[i].nf + '&zc=' + data[i].zc + '">重新生成</a><a class="btn btn-link " href="/zb/export?rwid=' + data[i].rwid + '">下载文件</a>', '<a class="btn-link" onclick="del_rw(' + data[i].rwid + ')">删除</a>']); }; break;
                     }
                 }
                 option.data = d;
                 table.load(option);
             }
         })
-    
+
     }
     $('#tbcs').on('hide.bs.modal', function () {
         table.reflush(option);

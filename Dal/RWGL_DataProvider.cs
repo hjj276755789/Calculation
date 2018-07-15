@@ -21,11 +21,14 @@ namespace Calculation.Dal
             MySqlParameter[] p = { new MySqlParameter("rwmc", rwmc), new MySqlParameter("mbid", mbid), new MySqlParameter("nf", nf), new MySqlParameter("zc", zc), new MySqlParameter("zt", 0) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p)>0;
         }
-        public bool Del_ZB(string rwmc, int mbid, int nf, int zc)
+        public bool Del_ZB(int rwid)
         {
-            string sql = @"insert into calculation.xtgl_bbrw(rwmc,mbid,nf,zc,zt) values (@rwmc, @mbid, @nf, @zc, @zt)";
-            MySqlParameter[] p = { new MySqlParameter("rwmc", rwmc), new MySqlParameter("mbid", mbid), new MySqlParameter("nf", nf), new MySqlParameter("zc", zc), new MySqlParameter("zt", 0) };
-            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
+            string sql1 = @"delete from calculation.xtgl_bbrw where rwid=@rwid";
+            string sql2 = "delete from calculation.xtgl_cj_rwcs where rwid =@rwid";
+            MySqlParameter[] p = { new MySqlParameter("rwid", rwid)};
+            int a = MySqlDbhelper.ExecuteNonQuery(sql1, p) ;
+            int b= MySqlDbhelper.ExecuteNonQuery(sql2, p);
+            return a+b>0;
         }
         public List<Rw_List> GET_ZB_RWLB(int mbbh,int pagesize,int pagenow)
         {

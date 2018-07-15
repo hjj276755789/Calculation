@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace 管理网站.Controllers
 {
-    public class DataController : Controller
+    public class DataController : BaseController
     {
         private RWGL_DataProvider rw;
         private Data_DataProvider data;

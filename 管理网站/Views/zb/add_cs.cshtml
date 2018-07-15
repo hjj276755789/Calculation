@@ -7,6 +7,128 @@
     var sxlx = p.Where(m => m.cslx == Calculation.Models.Enums.CS_LX.筛选型).ToList();
     var wzlx = p.Where(m => m.cslx == Calculation.Models.Enums.CS_LX.文字型).ToList();
 }
+<script>
+    var xscslist = [];
+
+    $(function () {
+
+        if(@sxlx.Count>0){
+              @{ int j = 0; }
+            for (var i = 0; i < @sxlx.Count; i++) {
+                init('@this.ViewBag.rwid','@sxlx[j].csid')
+                @{ j ++; }
+            }
+        }
+    })
+    function init(a, b) {
+        $.ajax({
+            url: '/zb/get_wzcs',
+            data: { rwid: a, csid: b },
+            type: 'post',
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var s = "<button onclick=del_rwcs(\"" + data[i].rwcsid + "\",\""+b+"\",this) class='btn btn-inverse waves-effect waves-light m-b-5'><i class='ion-close'>" + data[i].csnr + "</i></button>"
+                    $("#yxcslb_" + b).append(s);
+                }
+            }
+
+        })
+    }
+    //添加筛选条件参数
+    function add_sxtj(a,b,c)
+    {
+        $.ajax({
+            url: "/zb/add_wzcs",
+            type: "post",
+            data: { 'rwid': a, 'csid': b, 'csnr': $("#csid_" + b).val(),sfbl:c },
+            success: function (data) {
+
+                if (data.IsSuccessful) {
+                    var s = "<button onclick=del_rwcs(\"" + data.Data + "\",\""+b+"\",this) class='btn btn-inverse waves-effect waves-light m-b-5'><i class='ion-close'>" + $("#csid_" + b).val() + "</i></button>"
+                    $("#yxcslb_" + b).append(s);
+                }
+                else alert(data.ErrMsg);
+             },
+
+        })
+    }
+    function del_rwcs(a,b,obj)
+    {
+        $.ajax({
+            url: "/zb/del_csnr",
+            type: "post",
+            data: { 'id': a},
+            success: function (data) {
+                if (data.IsSuccessful) {
+                   var o= document.getElementById("yxcslb_" + b);
+                   o.removeChild(obj);
+                   alert("删除成功");
+                }
+                else alert(data.ErrMsg);
+            },
+
+        })
+
+    }
+    //通过参数设置
+    function tgcssz(a)
+    {
+        $.ajax({
+            url: "/zb/tgcssz",
+            type: "post",
+            data: { 'rwid': a },
+            success: function (data) {
+                if (data.IsSuccessful) {
+                    alert("确认成功");
+                }
+                else alert(data.ErrMsg);
+            },
+
+        })
+
+    }
+    var uploading = false;
+    $("#rgsj").on("change", function () {
+        if (uploading) {
+            alert("文件正在上传中，请稍候");
+            return false;
+        }
+        var formData = new FormData($("#rgsjform")[0]);
+        $.ajax({
+            url: "/zb/add_wjcs",
+            type: 'POST',
+            data: formData,
+            /**
+            *必须false才会自动加上正确的Content-Type
+            */
+            contentType: false,
+            /**
+            * 必须false才会避开jQuery对 formdata 的默认处理
+            * XMLHttpRequest会对 formdata 进行正确的处理
+            */
+            processData: false,
+            dataType: "json",
+            beforeSend: function () {
+                uploading = true;
+            },
+            success: function (data) {
+                if(data.IsSuccessful){
+                    uploading = false;
+                    alert('文件上传成');
+                }
+            },
+            error: function (data) {
+
+                uploading = false;
+                alert("上传失败" + data);
+            }
+        });
+    });
+
+
+</script>
+
+
 @{
     if (wzlx != null && wzlx.Count > 0)
     {
@@ -90,96 +212,7 @@
         </div>
     </div>
 }
- 
-
-<script>
-
-    //添加筛选条件参数
-    function add_sxtj(a,b,c)
-    {
-        $.ajax({
-            url: "/zb/add_wzcs",
-            type: "post",
-            data: { 'rwid': a, 'csid': b, 'csnr': $("#csid_" + b).val(),sfbl:c },
-            success: function (data) {
-               
-                if (data.IsSuccessful) {
-                    var s = "<span onclick=del_rwcs(\"" + data.Data + "\",\""+b+"\",this)>" + $("#csid_" + b).val() + "</span>"
-                    $("#yxcslb_" + b).append(s);
-                }
-                else alert(data.ErrMsg);
-             },
-
-        })
-    }
-    function del_rwcs(a,b,obj)
-    {
-        $.ajax({
-            url: "/zb/del_csnr",
-            type: "post",
-            data: { 'id': a},
-            success: function (data) {
-                if (data.IsSuccessful) {
-                   var o= document.getElementById("yxcslb_" + b);
-                   o.removeChild(obj);
-                   alert("删除成功");
-                }
-                else alert(data.ErrMsg);
-            },
-
-        })
-        
-    }
-    function tgcssz(a)
-    {
-        $.ajax({
-            url: "/zb/tgcssz",
-            type: "post",
-            data: { 'rwid': a },
-            success: function (data) {
-                if (data.IsSuccessful) {
-                    alert("确认成功");
-                }
-                else alert(data.ErrMsg);
-            },
-
-        })
-
-    }
-    var uploading = false;
-    $("#rgsj").on("change", function () {
-        if (uploading) {
-            alert("文件正在上传中，请稍候");
-            return false;
-        }
-        var formData = new FormData($("#rgsjform")[0]);
-        $.ajax({
-            url: "/zb/add_wjcs",
-            type: 'POST',
-            data: formData,
-            /**
-            *必须false才会自动加上正确的Content-Type
-            */
-            contentType: false,
-            /**
-            * 必须false才会避开jQuery对 formdata 的默认处理
-            * XMLHttpRequest会对 formdata 进行正确的处理
-            */
-            processData: false,
-            dataType: "json",
-            beforeSend: function () {
-                uploading = true;
-            },
-            success: function (data) {
-                uploading = false;
-                alert(data);
-            },
-            error: function (data) {
-
-                uploading = false;
-                alert("上传失败" + data);
-            }
-        });
-    });
-</script>
+ <style>
+     input[type='button'] {padding-left:12px;padding-right:12px;}
+ </style>
 

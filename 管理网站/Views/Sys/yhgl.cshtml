@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewBag.Title = "yhgl";
+}
+<div class="row">
+    <a class="btn btn-primary waves-effect waves-light" href="/Sys/add_yhxx" data-toggle="modal" data-target="#tjyh" onclick="cleardata('#tjyh')">添加用户</a>
+</div>
+
+<div id="yhlb" class="row" style="width: 100%;"></div>
+
+<DIV tabindex="-1" class="modal fade" id="tjyh" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+
+<DIV tabindex="-1" class="modal fade" id="yhsq" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+
+
+@section scripts{
+   <script>
+
+    var table = new Table_bs($('#yhlb'));
+    function cleardata(a) {
+            $(a).on("hidden.bs.modal", function () {
+                $(this).removeData("bs.modal");
+            });
+        }
+    function Table_bs($box) {
+
+        var _init_bit = false;
+        var _box = $box;
+
+        this.init = function () {
+
+            _box.addClass('table-responsive');
+
+            var html = '';
+            html += '<table class="table table-bordered " style="text-align: center; ">';
+            html += '<thead style="font-weight: bold;">';
+            // html += '<tr>';
+            // html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
+            // html += '<tr>';
+            // html += '</tr>';
+            html += '</tbody>';
+            html += '</table>';
+
+            _box.append($(html));
+
+            _init_bit = true;
+        }
+        this.load = function (option) {
+
+            if (!_init_bit) {
+                this.init();
+            }
+
+            // 表头
+            var thead = option.colNames;
+
+            var html_thead = '';
+            html_thead += '<tr>';
+            for (var i = 0; i < thead.length; i++) {
+                html_thead += '<td>' + thead[i] + '</td>';
+            }
+            html_thead += '</tr>';
+
+            _box.find('thead').append($(html_thead));
+
+            // 表身
+            var tbody = option.data;
+            var html_tbody = '';
+
+            for (var j1 = 0; j1 < tbody.length; j1++) {
+                var buff = tbody[j1];
+
+                html_tbody += '<tr>';
+                for (var j2 = 0; j2 < buff.length; j2++) {
+                    html_tbody += '<td>' + buff[j2] + '</td>';
+                }
+                html_tbody += '</tr>';
+            }
+            _box.find('tbody').append($(html_tbody));
+        }
+        this.reflush =function(option)
+        {
+            _box.empty();
+            this.init();
+            //option.data = [];
+            //this.load(option);
+        }
+    }
+
+    function del_yh(a) {
+        var r = confirm("确认删除用户");
+        if (r == true) {
+            $.ajax({
+                url: "/sys/DEL_YHXX",
+                data: { 'id': a },
+                type: "post",
+                success: function (data) {
+                    if (data.IsSuccessful) {
+                        alert("删除成功");
+                        table.reflush(option);
+                        init1();
+                    }
+                    else alert(data.ErrMsg);
+                }
+            });
+        }
+
+
+    }
+    var option = {
+        colNames: ['选择',"用户编号", "用户名", "用户类别", "操作",""],
+        data: [
+
+        ]
+    }
+
+    $(function () {
+        init1();
+    });
+    function init1() {
+        $.ajax({
+            url: "/sys/GET_YHLB",
+            type: "post",
+            success: function (data) {
+                var d = [];
+                for (var i = 0; i < data.length; i++) {
+                    d.push(['<input type="checkbox">', data[i].id, data[i].yhm, data[i].yhlx,
+                        '<a class="btn btn-primary waves-effect waves-light" href="/sys/yhjs?yhid=' + data[i].id + '" data-toggle="modal" data-target="#yhsq" onclick="cleardata(\'#yhsq\')">用户授权</a>', '<a class="btn-link" onclick="del_yh('+data[i].id+')">删除</a>']);
+                }
+                option.data = d;
+                table.load(option);
+            }
+
+        });
+    }
+    $('#yhsq').on('hide.bs.modal', function () {
+        table.reflush(option);
+        init1();
+    });
+    $('#tjyh').on('hide.bs.modal', function () {
+        table.reflush(option);
+        init1();
+    });
+</script>
+}
