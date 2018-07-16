@@ -14,7 +14,8 @@ namespace Calculation.Dal
 
 
         //public static string Conn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString.ToString();
-        public static string Conn = "Server=localhost;Database=calculation;Uid=root;Pwd=123456;";
+      
+        public static string Conn = ConfigurationManager.AppSettings["sqlconn"];
         /// <summary>
         /// 给定连接的数据库用假设参数执行一个sql命令（不返回数据集）
         /// </summary>

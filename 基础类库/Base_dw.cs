@@ -15,7 +15,7 @@ namespace Calculation.Base
         /// <returns></returns>
         public static double mj(this double target)
         {
-            return Math.Round(target, 2);
+            return Math.Round(target, 0);
         }
         
         /// <summary>
@@ -26,6 +26,25 @@ namespace Calculation.Base
         public static double mj_wf(this double target)
         {
             return Math.Round(target / 10000, 2);
+        }
+        /// <summary>
+        /// 面积_万方_描述
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static string mj_wf_ms(this double target)
+        {
+
+            try
+            {
+                string str = (target > 0 ? "增加" : "减少") + Math.Abs(Math.Round(target / 10000, 2)) +"万方";
+                return str;
+            }
+            catch (Exception)
+            {
+
+                return "0";
+            }
         }
         /// <summary>
         /// 面积_方转亩
@@ -66,6 +85,10 @@ namespace Calculation.Base
         {
             return Math.Round(target / 10000, 0);
         }
+        public static double je_wy(this long target)
+        {
+            return Math.Round(target.doubls() / 10000, 0);
+        }
         /// <summary>
         /// 金额_亿元
         /// </summary>
@@ -85,6 +108,11 @@ namespace Calculation.Base
         public static double je_w_to_yy(this double target)
         {
             return Math.Round(target / 10000, 2);
+        }
+
+        public static double je_w_to_yy(this long target)
+        {
+            return Math.Round(target.doubls() / 10000, 2);
         }
         /// <summary>
         /// 金额_元

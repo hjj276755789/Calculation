@@ -162,6 +162,8 @@ namespace Calculation
         private void button2_Click(object sender, EventArgs e)
         {
             islistening = false;
+            if (listerner == null)
+                return;
             if (listerner.IsListening) { 
                 listerner.Stop();
             }
@@ -187,9 +189,5 @@ namespace Calculation
    　    Dispose(false); 
 　    }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(ConfigurationManager.AppSettings["sqlconn"]);
-        }
     }
 }
