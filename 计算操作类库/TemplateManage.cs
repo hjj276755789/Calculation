@@ -23,22 +23,31 @@ namespace Calculation.JS
             Presentation p1 = SlideFactory.GetInstance().ppt;
             Base_date.init_zb(year, zc);
             Cache_param_zb.ini_zb(mbid, year, zc);
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                Type type= Type.GetType(row["cjclass"].ToString());      // 
-                var obj = System.Activator.CreateInstance(type);       // 创建实例
+                foreach (DataRow row in dt.Rows)
+                {
+                    Type type = Type.GetType(row["cjclass"].ToString());      // 
+                    var obj = System.Activator.CreateInstance(type);       // 创建实例
 
-                MethodInfo method = type.GetMethod(row["cjmethod"].ToString(), new Type[] {typeof(string), typeof(int) });      // 获取方法信息
-                object[] parameters = new object[] { row["cjdz"],Int32.Parse( row["cjbh"].ToString()) };
-                var slide = method.Invoke(obj, parameters);
-                if (slide != null&& ((SlideCollection)slide).Count>0) { 
-                    foreach (var item in (SlideCollection)method.Invoke(obj, parameters))
+                    MethodInfo method = type.GetMethod(row["cjmethod"].ToString(), new Type[] { typeof(string), typeof(int) });      // 获取方法信息
+                    object[] parameters = new object[] { row["cjdz"], Int32.Parse(row["cjbh"].ToString()) };
+                    var slide = method.Invoke(obj, parameters);
+                    if (slide != null && ((SlideCollection)slide).Count > 0)
                     {
-                        if(item!=null)
-                            p1.Slides.AddClone(item);
-                    }                        // 调用方法，参数为空
+                        foreach (var item in (SlideCollection)method.Invoke(obj, parameters))
+                        {
+                            if (item != null)
+                                p1.Slides.AddClone(item);
+                        }                        // 调用方法，参数为空
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                //new Base_Log().Log("插件生成报错:" + e.Message);
+            }
+            
             
             string path = "d:\\zb\\" + mbid + "\\" + year + "\\" + zc + "\\" ;
             if (!Directory.Exists(path))

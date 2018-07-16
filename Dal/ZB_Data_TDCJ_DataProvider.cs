@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -198,11 +199,22 @@ namespace Calculation.Dal
         public static int index = 0;
         public static int count = 0;
 
-        public static DataTable GET_BY(DateTime first, DateTime end)
+        public static DataTable GET_ZB(DateTime first, DateTime end)
         {
-            string sql = @"select syq,bk,xz,zyd_m,kjtl_wf,cjzj,cjfs from xtgl_data_zb_tdcj where  unix_timestamp(jyr)
+            string sql = @"select syq,bk,xz,zyd_m,kjtl_wf,cjzj,cjfs,nf,zc,zcmc from calculation.xtgl_data_zb_tdcj where  unix_timestamp(jyr)
 between unix_timestamp('" + first.ToString("yyyy/MM/dd") + "') and unix_timestamp('" + end.ToString("yyyy/MM/dd") + "')";
             return MySqlDbhelper.GetDataSet(sql).Tables[0];
+        }
+        public static DataTable GET_ZB(int  nf, int zc)
+        {
+            string sql = @"select syq,bk,xz,zyd_m,kjtl_wf,cjzj,cjfs,nf,zc,zcmc from calculation.xtgl_data_zb_tdcj where nf=@nf and zc=@zc";
+            return MySqlDbhelper.GetDataSet(sql).Tables[0];
+        }
+        public static DataTable GET_JBZ(int nf,int dqz)
+        {
+            string sql = @"select syq,bk,xz,zyd_m,kjtl_wf,cjzj,cjfs,nf,zc,zcmc from calculation.xtgl_data_zb_tdcj where nf=@nf and (zc between (@dqz - 7) and @dqz)";
+            MySqlParameter[] p = { new MySqlParameter("nf", nf),new MySqlParameter("dqz", dqz) };
+            return MySqlDbhelper.GetDataSet(sql, p).Tables[0];
         }
     }
 }

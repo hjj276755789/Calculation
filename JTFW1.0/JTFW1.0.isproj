@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<!-- Select a Product Configuration -->
+		<InstallShieldProductConfiguration>Express</InstallShieldProductConfiguration>
+		<!-- Select a Visual Studio Configuration / InstallShield Release -->
+		<Configuration>Debug</Configuration>
+		<InstallShieldRelease>$(Configuration)</InstallShieldRelease>
+	</PropertyGroup>
+	<ItemGroup>
+		<!-- The InstallShieldProject item selects the project to build -->
+		<InstallShieldProject Include="$(MSBuildProjectDirectory)\$(MSBuildProjectName).isl"/>
+		<!-- The InstallShieldReleaseFlags sets Release Flags -->
+		<!--<InstallShieldReleaseFlags Include=""/>-->
+		<!-- The InstallShieldMergeModulePath specifies what directories are
+		searched for Merge Modules -->
+		<!--<InstallShieldMergeModulePath Include=""/>-->
+	</ItemGroup>
+	<ItemGroup>
+		<!-- The ProjectReference items refer to any Visual Studio solutions you want to automatically probe for Project Output Groups.  -->
+	</ItemGroup>
+	<ItemGroup>
+		<!-- The TaggedOutputs items allow you to explicitly add extra files to output groups. Each item must include both Name and OutputGroup, as well as TargetPath metadata values. -->
+		<!--<TaggedOutputs Include="C:\My Test Exe.exe">
+			<Name>My Test Project</Name>
+			<OutputGroup>Primary output</OutputGroup>
+			<TargetPath>My Test Exe.exe</TargetPath>
+		</TaggedOutputs> -->
+	</ItemGroup>
+	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2015Limited\InstallShield.targets"/>
+	<ItemGroup>
+		<ProjectReference Include="..\Dal\Dal.csproj">
+			<Name>Dal</Name>
+			<Project>{6DD24447-B1C9-4AFA-9315-934E569E05C2}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\基础类库\基础类库.csproj">
+			<Name>基础类库</Name>
+			<Project>{3E2D9137-C437-43A2-81A4-9A7C3D9411AC}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\计算操作类库\计算操作类库.csproj">
+			<Name>计算操作类库</Name>
+			<Project>{E13F7840-556C-4043-BBC0-52C175F73C71}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\计算服务\计算服务.csproj">
+			<Name>计算服务</Name>
+			<Project>{69CDF0BA-6A58-42BB-BBF5-7F6D8B774A7E}</Project>
+		</ProjectReference>
+	</ItemGroup>
+</Project>

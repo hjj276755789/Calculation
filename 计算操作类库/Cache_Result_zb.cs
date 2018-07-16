@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Calculation.Base;
 
 namespace Calculation.JS
 {
@@ -35,7 +36,7 @@ namespace Calculation.JS
         #region 土地计算结果
         private static double _td_bz_zyd { get; set; }
         private static double _td_bz_kjtl { get; set; }
-        private static double _td_bz_cjje { get; set; }
+        private static long _td_bz_cjje { get; set; }
         private static int _td_bz_cjsl { get; set; }
         private static double _td_sz_zyd { get; set; }
         private static double _td_sz_kjtl { get; set; }
@@ -76,13 +77,13 @@ namespace Calculation.JS
         /// <summary>
         /// 土地综合出让金
         /// </summary>
-        public static double td_bz_cjje
+        public static long td_bz_cjje
         {
             get
             {
                 if (_td_bz_cjje == 0)
                 {
-                    _td_bz_cjje = Cache_data_tdjyjl.bz.AsEnumerable().Sum(m => double.Parse(m["cjzj"].ToString()));
+                    _td_bz_cjje = Cache_data_tdjyjl.bz.AsEnumerable().Sum(m => m["cjzj"].longs());
                 }
                 return _td_bz_cjje;
             }
@@ -151,7 +152,7 @@ namespace Calculation.JS
         private static double _bz_cj_jzmj_fzz_xzys { get; set; }
         private static double _bz_cj_jzmj { get; set; }
         private static double _bz_cj_tnmj { get; set; }
-        private static double _bz_cj_cjje { get; set; }
+        private static long _bz_cj_cjje { get; set; }
         private static EnumerableRowCollection<DataRow> _bz_cj_czz { get; set; }
         private static EnumerableRowCollection<DataRow> _bz_cj_czz_xzys { get; set; }
         //----------------------本周-------------------------//
@@ -159,7 +160,7 @@ namespace Calculation.JS
         private static double _sz_cj_jzmj_fzz_xzys { get; set; }
         private static double _sz_cj_jzmj { get; set; }
         private static double _sz_cj_tnmj { get; set; }
-        private static double _sz_cj_cjje { get; set; }
+        private static long _sz_cj_cjje { get; set; }
         private static EnumerableRowCollection<DataRow> _sz_cj_czz { get; set; }
 
         private static EnumerableRowCollection<DataRow> _sz_cj_czz_xzys { get; set; }
@@ -169,7 +170,7 @@ namespace Calculation.JS
         private static double _tz_cj_jzmj_fzz_xzys { get; set; }
         private static double _tz_cj_jzmj { get; set; }
         private static double _tz_cj_tnmj { get; set; }
-        private static double _tz_cj_cjje { get; set; }
+        private static long _tz_cj_cjje { get; set; }
         private static EnumerableRowCollection<DataRow> _tz_cj_czz { get; set; }
 
         private static EnumerableRowCollection<DataRow> _tz_cj_czz_xzys { get; set; }
@@ -185,7 +186,7 @@ namespace Calculation.JS
             {
                 if (_bz_cj_jzmj_xzys == 0)
                 {
-                    _bz_cj_jzmj_xzys = Cache_data_xzys.bz.AsEnumerable().Sum(m => double.Parse(m["jzmj"].ToString()));
+                    _bz_cj_jzmj_xzys = Cache_data_xzys.bz.AsEnumerable().Sum(m =>m["jzmj"].doubls() +m["fzzmj"].doubls());
                 }
                 return _bz_cj_jzmj_xzys;
             }
@@ -199,7 +200,7 @@ namespace Calculation.JS
             {
                 if (_bz_cj_jzmj_fzz_xzys == 0)
                 {
-                    _bz_cj_jzmj_fzz_xzys = Cache_data_xzys.bz.AsEnumerable().Sum(m => string.IsNullOrEmpty(m["fzzmj"].ToString()) ? 0 : double.Parse(m["fzzmj"].ToString()));
+                    _bz_cj_jzmj_fzz_xzys = Cache_data_xzys.bz.AsEnumerable().Sum(m => m["fzzmj"].doubls());
                 }
                 return _bz_cj_jzmj_fzz_xzys;
             }
@@ -213,7 +214,7 @@ namespace Calculation.JS
             {
                 if (_bz_cj_jzmj == 0)
                 {
-                    _bz_cj_jzmj = Cache_data_cjjl.bz.AsEnumerable().Sum(m => double.Parse(m["jzmj"].ToString()));
+                    _bz_cj_jzmj = Cache_data_cjjl.bz.AsEnumerable().Sum(m => m["jzmj"].doubls());
                 }
                 return _bz_cj_jzmj;
             }
@@ -227,7 +228,7 @@ namespace Calculation.JS
             {
                 if (_bz_cj_tnmj == 0)
                 {
-                    _bz_cj_tnmj = Cache_data_cjjl.bz.AsEnumerable().Sum(m => double.Parse(m["tnmj"].ToString()));
+                    _bz_cj_tnmj = Cache_data_cjjl.bz.AsEnumerable().Sum(m => m["tnmj"].doubls());
                 }
                 return _bz_cj_tnmj;
             }
@@ -235,13 +236,13 @@ namespace Calculation.JS
         /// <summary>
         /// 成交记录-成交金额
         /// </summary>
-        public static double bz_cj_cjje
+        public static long bz_cj_cjje
         {
             get
             {
                 if (_bz_cj_cjje == 0)
                 {
-                    _bz_cj_cjje = Cache_data_cjjl.bz.AsEnumerable().Sum(m => double.Parse(m["cjje"].ToString()));
+                    _bz_cj_cjje = Cache_data_cjjl.bz.AsEnumerable().Sum(m => m["cjje"].longs());
                 }
                 return _bz_cj_cjje;
             }
@@ -278,7 +279,7 @@ namespace Calculation.JS
             {
                 if (_sz_cj_jzmj_xzys == 0)
                 {
-                    _sz_cj_jzmj_xzys = Cache_data_xzys.sz.AsEnumerable().Sum(m => double.Parse(m["jzmj"].ToString()));
+                    _sz_cj_jzmj_xzys = Cache_data_xzys.sz.AsEnumerable().Sum(m => m["jzmj"].doubls());
                 }
                 return _sz_cj_jzmj_xzys;
             }
@@ -292,7 +293,7 @@ namespace Calculation.JS
             {
                 if (_sz_cj_jzmj_fzz_xzys == 0)
                 {
-                    _sz_cj_jzmj_fzz_xzys = Cache_data_xzys.sz.AsEnumerable().Sum(m => string.IsNullOrEmpty(m["fzzmj"].ToString()) ? 0 : double.Parse(m["fzzmj"].ToString()));
+                    _sz_cj_jzmj_fzz_xzys = Cache_data_xzys.sz.AsEnumerable().Sum(m => m["fzzmj"].doubls());
                 }
                 return _sz_cj_jzmj_fzz_xzys;
             }
@@ -306,7 +307,7 @@ namespace Calculation.JS
             {
                 if (_sz_cj_jzmj == 0)
                 {
-                    _sz_cj_jzmj = Cache_data_cjjl.sz.AsEnumerable().Sum(m => double.Parse(m["jzmj"].ToString()));
+                    _sz_cj_jzmj = Cache_data_cjjl.sz.AsEnumerable().Sum(m => m["jzmj"].doubls());
                 }
                 return _sz_cj_jzmj;
             }
@@ -320,7 +321,7 @@ namespace Calculation.JS
             {
                 if (_sz_cj_tnmj == 0)
                 {
-                    _sz_cj_tnmj = Cache_data_cjjl.sz.AsEnumerable().Sum(m => double.Parse(m["tnmj"].ToString()));
+                    _sz_cj_tnmj = Cache_data_cjjl.sz.AsEnumerable().Sum(m => m["tnmj"].doubls());
                 }
                 return _sz_cj_tnmj;
             }
@@ -334,7 +335,7 @@ namespace Calculation.JS
             {
                 if (_sz_cj_cjje == 0)
                 {
-                    _sz_cj_cjje = Cache_data_cjjl.sz.AsEnumerable().Sum(m => double.Parse(m["cjje"].ToString()));
+                    _sz_cj_cjje = Cache_data_cjjl.sz.AsEnumerable().Sum(m =>m["cjje"].longs());
                 }
                 return _sz_cj_cjje;
             }
@@ -372,7 +373,7 @@ namespace Calculation.JS
             {
                 if (_tz_cj_jzmj_xzys == 0)
                 {
-                    _tz_cj_jzmj_xzys = Cache_data_xzys.tz.AsEnumerable().Sum(m => double.Parse(m["jzmj"].ToString()));
+                    _tz_cj_jzmj_xzys = Cache_data_xzys.tz.AsEnumerable().Sum(m => m["jzmj"].doubls());
                 }
                 return _tz_cj_jzmj_xzys;
             }
@@ -386,7 +387,7 @@ namespace Calculation.JS
             {
                 if (_tz_cj_jzmj_fzz_xzys == 0)
                 {
-                    _tz_cj_jzmj_fzz_xzys = Cache_data_xzys.tz.AsEnumerable().Sum(m => string.IsNullOrEmpty(m["fzzmj"].ToString()) ? 0 : double.Parse(m["fzzmj"].ToString()));
+                    _tz_cj_jzmj_fzz_xzys = Cache_data_xzys.tz.AsEnumerable().Sum(m => m["fzzmj"].doubls());
                 }
                 return _tz_cj_jzmj_fzz_xzys;
             }
@@ -400,7 +401,7 @@ namespace Calculation.JS
             {
                 if (_tz_cj_jzmj == 0)
                 {
-                    _tz_cj_jzmj = Cache_data_cjjl.tz.AsEnumerable().Sum(m => double.Parse(m["jzmj"].ToString()));
+                    _tz_cj_jzmj = Cache_data_cjjl.tz.AsEnumerable().Sum(m => m["jzmj"].doubls());
                 }
                 return _tz_cj_jzmj;
             }
@@ -414,7 +415,7 @@ namespace Calculation.JS
             {
                 if (_tz_cj_tnmj == 0)
                 {
-                    _tz_cj_tnmj = Cache_data_cjjl.tz.AsEnumerable().Sum(m => double.Parse(m["tnmj"].ToString()));
+                    _tz_cj_tnmj = Cache_data_cjjl.tz.AsEnumerable().Sum(m => m["tnmj"].doubls());
                 }
                 return _tz_cj_tnmj;
             }
@@ -428,7 +429,7 @@ namespace Calculation.JS
             {
                 if (_tz_cj_cjje == 0)
                 {
-                    _tz_cj_cjje = Cache_data_cjjl.tz.AsEnumerable().Sum(m => double.Parse(m["cjje"].ToString()));
+                    _tz_cj_cjje = Cache_data_cjjl.tz.AsEnumerable().Sum(m => m["cjje"].longs());
                 }
                 return _tz_cj_cjje;
             }

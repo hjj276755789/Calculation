@@ -111,7 +111,7 @@ namespace Calculation.JS
                         select new
                         {
                             kfsmc = m.Key.t1,
-                            cjje = m.Sum(n => double.Parse(n.Field<long>("cjje").ToString()))
+                            cjje = m.Sum(n => n.Field<long>("cjje"))
                         };
             DataTable dt = new DataTable();
             dt.Columns.Add("kfsmc");
@@ -142,7 +142,7 @@ namespace Calculation.JS
                         select new
                         {
                             lpmc = m.Key.t1,
-                            cjje = m.Sum(n => double.Parse(n.Field<long>("cjje").ToString()))
+                            cjje = m.Sum(n => n.Field<long>("cjje"))
                         };
             DataTable dt = new DataTable();
             dt.Columns.Add("lpmc");
@@ -180,7 +180,7 @@ namespace Calculation.JS
                 ((Cache_Result_yb.by_cj_jzmj - Cache_Result_yb.sy_cj_jzmj) * 100 / Cache_Result_yb.sy_cj_jzmj).ss_bfb(), //环比
                 "0",//同比
                  Cache_Result_yb.by_cj_cjje.je_yy(),//成交金额
-                ((Cache_Result_yb.by_cj_cjje - Cache_Result_yb.sy_cj_cjje) * 100 / Cache_Result_yb.sy_cj_cjje).ss_bfb(),//环比
+                ((Cache_Result_yb.by_cj_cjje - Cache_Result_yb.sy_cj_cjje) * 100 / Cache_Result_yb.sy_cj_cjje).doubls().ss_bfb(),//环比
                 "0",//同比
                 (Cache_Result_yb.by_cj_cjje / Cache_Result_yb.by_cj_jzmj).je_y(), //建面单价
                 (Cache_Result_yb.by_cj_cjje / Cache_Result_yb.by_cj_tnmj).je_y(), //套内单价
@@ -281,7 +281,7 @@ namespace Calculation.JS
                 ((Cache_Result_yb.by_cj_jzmj - Cache_Result_yb.sy_cj_jzmj) * 100 / Cache_Result_yb.sy_cj_jzmj).ss_bfb(), //环比
                 "0",//同比
                 Cache_Result_yb.by_cj_cjje.je_yy(),//成交金额
-                ((Cache_Result_yb.by_cj_cjje - Cache_Result_yb.sy_cj_cjje) * 100 / Cache_Result_yb.sy_cj_cjje).ss_bfb(),//环比
+                ((Cache_Result_yb.by_cj_cjje - Cache_Result_yb.sy_cj_cjje) * 100 / Cache_Result_yb.sy_cj_cjje).doubls().ss_bfb(),//环比
                 "0",//同比
                 (Cache_Result_yb.by_cj_cjje / Cache_Result_yb.by_cj_jzmj).je_y(), //建面单价
                 (Cache_Result_yb.by_cj_cjje / Cache_Result_yb.by_cj_tnmj).je_y(), //套内单价

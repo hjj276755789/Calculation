@@ -5,6 +5,7 @@ using Calculation.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -28,7 +29,7 @@ namespace Calculation
         private static bool islistening = false;
         private static HttpListener listerner;
         private static int yxsc = 0;
-
+        private static int jsqq = 0;
 
 
         void init()
@@ -82,10 +83,10 @@ namespace Calculation
 
                         ThreadPool.QueueUserWorkItem(new WaitCallback(TaskProc), ctx);
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
 
-                        
+                       // new Base_Log().Log("线程问题：" + e.Message);
                     }
 
                 }
@@ -102,33 +103,42 @@ namespace Calculation
             HttpListenerContext ctx = (HttpListenerContext)o;
 
             ctx.Response.StatusCode = 200;//设置返回给客服端http状态代码
-
+            jsqq++;
             //接收Get参数
-            int nf = Int32.Parse(ctx.Request.QueryString["nf"]);
-            int zc = Int32.Parse(ctx.Request.QueryString["zc"]);
-            int mbid = Int32.Parse(ctx.Request.QueryString["mbid"]);
-
-            //进行处理
-            dateTask dt = new dateTask(mbid, nf,null,zc);
-            //接收POST参数
-            Stream stream = ctx.Request.InputStream;
-            System.IO.StreamReader reader = new System.IO.StreamReader(stream, Encoding.UTF8);
-            String body = reader.ReadToEnd();
-            Console.WriteLine("收到POST数据:" + HttpUtility.UrlDecode(body));
-           
-
-            //使用Writer输出http响应代码,UTF8格式
-            using (StreamWriter writer = new StreamWriter(ctx.Response.OutputStream, Encoding.UTF8))
+            try
             {
-                writer.Write(SResult.Success);
-                
-                Thread th = new Thread(new ParameterizedThreadStart(tt));
-                th.Start(dt);
-                writer.Write("任务已经启动！");
-                writer.Close();
-                ctx.Response.Close();
-                
+                int nf = Int32.Parse(ctx.Request.QueryString["nf"]);
+                int zc = Int32.Parse(ctx.Request.QueryString["zc"]);
+                int mbid = Int32.Parse(ctx.Request.QueryString["mbid"]);
+
+                //进行处理
+                dateTask dt = new dateTask(mbid, nf, null, zc);
+                //接收POST参数
+                Stream stream = ctx.Request.InputStream;
+                System.IO.StreamReader reader = new System.IO.StreamReader(stream, Encoding.UTF8);
+                String body = reader.ReadToEnd();
+                Console.WriteLine("收到POST数据:" + HttpUtility.UrlDecode(body));
+
+
+                //使用Writer输出http响应代码,UTF8格式
+                using (StreamWriter writer = new StreamWriter(ctx.Response.OutputStream, Encoding.UTF8))
+                {
+                    writer.Write(SResult.Success);
+
+                    Thread th = new Thread(new ParameterizedThreadStart(tt));
+                    th.Start(dt);
+
+                    writer.Write("任务已经启动！");
+                    writer.Close();
+                    ctx.Response.Close();
+
+                }
             }
+            catch (Exception e)
+            {
+                Base_Log.Log("准备阶段" + e.Message);
+            }
+           
         }
 
         
@@ -144,16 +154,19 @@ namespace Calculation
             }
             catch (Exception e)
             {
-                Console.WriteLine("生成失败："+e.Message);
+                //new Base_Log().Log("生成失败："+e.Message);
             }
   
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            listerner.Stop();
             islistening = false;
+            if (listerner.IsListening) { 
+                listerner.Stop();
+            }
             this.timer1.Stop();
+            this.Dispose();
             this.button1.Enabled = true;
             this.button2.Enabled = false;
             yxsc = 0;
@@ -163,6 +176,20 @@ namespace Calculation
         {
             yxsc++;
             this.label1.Text = "运行时长："+ yxsc+"秒";
+            this.label2.Text = "接受请求：" + jsqq +"次";
+        }
+
+        
+        ~Service()
+　    { 
+　    // 为了保持代码的可读性性和可维护性,千万不要在这里写释放非托管资源的代码 
+　    // 必须以Dispose(false)方式调用,以false告诉Dispose(bool disposing)函数是从垃圾回收器在调用 析构函数 时调用的 
+   　    Dispose(false); 
+　    }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(ConfigurationManager.AppSettings["sqlconn"]);
         }
     }
 }

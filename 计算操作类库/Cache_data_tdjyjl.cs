@@ -11,6 +11,7 @@ namespace Calculation.JS
 {
     public class Cache_data_tdjyjl
     {
+        private static dateTask nowdatetask;
         private static Cache_data_tdjyjl uniqueInstance;
 
         public static Cache_data_tdjyjl ini_yb()
@@ -18,23 +19,43 @@ namespace Calculation.JS
             if (uniqueInstance == null)
             {
                 uniqueInstance = new Cache_data_tdjyjl();
-                by = ZB_Data_TDCJ_DataProvider.GET_BY(Base_date.by_First, Base_date.by_Last);
-                sy = ZB_Data_TDCJ_DataProvider.GET_BY(Base_date.sy_First, Base_date.sy_Last);
-                ty = ZB_Data_TDCJ_DataProvider.GET_BY(Base_date.ty_first, Base_date.sy_Last);
+                //by = ZB_Data_TDCJ_DataProvider.GET_BY(Base_date.by_First, Base_date.by_Last);
+                //sy = ZB_Data_TDCJ_DataProvider.GET_BY(Base_date.sy_First, Base_date.sy_Last);
+                //ty = ZB_Data_TDCJ_DataProvider.GET_BY(Base_date.ty_first, Base_date.sy_Last);
             }
             return uniqueInstance;
         }
 
         public static Cache_data_tdjyjl ini_zb()
         {
+
             if (uniqueInstance == null)
             {
                 uniqueInstance = new Cache_data_tdjyjl();
-                bz = ZB_Data_TDCJ_DataProvider.GET_BY(Base_date.bz_first, Base_date.bz_Last);
-                sz = ZB_Data_TDCJ_DataProvider.GET_BY(Base_date.sz_first, Base_date.sz_Last);
-                tz = ZB_Data_TDCJ_DataProvider.GET_BY(Base_date.tz_first, Base_date.sz_Last);
+                jbz = ZB_Data_TDCJ_DataProvider.GET_JBZ(Base_date.bn,Base_date.bz);
+                var bztemp = jbz.Select("zc=" + Base_date.bz);
+                bz = bztemp.Count() != 0 ? bztemp.CopyToDataTable() : new DataTable();
+                var sztemp = jbz.Select("zc=" + (Base_date.bz - 1));
+                sz = sztemp.Count() != 0 ? sztemp.CopyToDataTable() : new DataTable();
+                tz = ZB_Data_TDCJ_DataProvider.GET_ZB(Base_date.tz_first, Base_date.tz_Last);
+                nowdatetask = new dateTask(null, Base_date.bn, null, Base_date.bz);
+            }
+            else
+            {
+                if (nowdatetask != null && (nowdatetask.nf != Base_date.bn && nowdatetask.zc != Base_date.bz))
+                {
+                    uniqueInstance = new Cache_data_tdjyjl();
+                    jbz = ZB_Data_TDCJ_DataProvider.GET_JBZ(Base_date.bn, Base_date.bz);
+                    var bztemp = jbz.Select("zc=" + Base_date.bz);
+                    bz = bztemp.Count() != 0 ? bztemp.CopyToDataTable() : new DataTable();
+                    var sztemp = jbz.Select("zc=" + (Base_date.bz - 1));
+                    sz = sztemp.Count() != 0 ? sztemp.CopyToDataTable() : new DataTable();
+                    tz = ZB_Data_TDCJ_DataProvider.GET_ZB(Base_date.tz_first, Base_date.tz_Last);
+                    nowdatetask = new dateTask(null, Base_date.bn, null, Base_date.bz);
+                }
             }
             return uniqueInstance;
+            
         }
         /// <summary>
         /// 本月
@@ -64,5 +85,6 @@ namespace Calculation.JS
         {
             get; set;
         }
+        public static DataTable jbz { get; set; }
     }
 }

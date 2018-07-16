@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Calculation.Base;
 
 namespace Calculation.JS
 {
@@ -64,7 +65,7 @@ namespace Calculation.JS
 
         private static double _td_sy_zyd { get; set; }
         private static double _td_sy_kjtl { get; set; }
-        private static double _td_sy_cjje { get; set; }
+        private static long _td_sy_cjje { get; set; }
 
 
         #endregion
@@ -138,13 +139,13 @@ namespace Calculation.JS
         /// <summary>
         /// 土地综合出让金
         /// </summary>
-        public static double td_sy_cjje
+        public static long td_sy_cjje
         {
             get
             {
                 if (_td_sy_cjje == 0)
                 {
-                    _td_sy_cjje = Cache_data_tdjyjl.sy.AsEnumerable().Sum(m => double.Parse(m[5].ToString()));
+                    _td_sy_cjje = Cache_data_tdjyjl.sy.AsEnumerable().Sum(m => m[5].longs());
                 }
                 return _td_sy_cjje;
             }
@@ -158,14 +159,14 @@ namespace Calculation.JS
         private static double _by_cj_jzmj_fzz_xzys { get; set; }
         private static double _by_cj_jzmj { get; set; }
         private static double _by_cj_tnmj { get; set; }
-        private static double _by_cj_cjje { get; set; }
+        private static long _by_cj_cjje { get; set; }
         private static EnumerableRowCollection<DataRow> _by_cj_czz { get; set; }
         //----------------------上月-------------------------//
         private static double _sy_cj_jzmj_xzys { get; set; }
         private static double _sy_cj_jzmj_fzz_xzys { get; set; }
         private static double _sy_cj_jzmj { get; set; }
         private static double _sy_cj_tnmj { get; set; }
-        private static double _sy_cj_cjje { get; set; }
+        private static long _sy_cj_cjje { get; set; }
         private static EnumerableRowCollection<DataRow> _sy_cj_czz { get; set; }
         #endregion
 
@@ -228,13 +229,13 @@ namespace Calculation.JS
         /// <summary>
         /// 成交记录-成交金额
         /// </summary>
-        public static double by_cj_cjje
+        public static long by_cj_cjje
         {
             get
             {
                 if (_by_cj_cjje == 0)
                 {
-                    _by_cj_cjje = Cache_data_cjjl.by.AsEnumerable().Sum(m => double.Parse(m["cjje"].ToString()));
+                    _by_cj_cjje = Cache_data_cjjl.by.AsEnumerable().Sum(m => m["cjje"].longs());
                 }
                 return _by_cj_cjje;
             }
@@ -310,13 +311,13 @@ namespace Calculation.JS
         /// <summary>
         /// 成交记录-成交金额
         /// </summary>
-        public static double sy_cj_cjje
+        public static long sy_cj_cjje
         {
             get
             {
                 if (_sy_cj_cjje == 0)
                 {
-                    _sy_cj_cjje = Cache_data_cjjl.sy.AsEnumerable().Sum(m => double.Parse(m["cjje"].ToString()));
+                    _sy_cj_cjje = Cache_data_cjjl.sy.AsEnumerable().Sum(m =>m["cjje"].longs());
                 }
                 return _sy_cj_cjje;
             }

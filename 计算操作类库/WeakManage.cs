@@ -57,7 +57,7 @@ namespace Calculation.JS
                 );
             //商业
             var bz_gy_sy = Cache_data_xzys.bz.AsEnumerable().Where(m => m["tyyt"].ToString() == "商业");
-            var bz_cj_sy = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["yt"].ToString() == "商业");
+            var bz_cj_sy = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["yt"].ToString() == "商铺");
 
             string str4 = string.Format("本周供应{0}万方，成交面积{1}万方，均价{2}元/㎡，[总结]",
                bz_gy_sy.Sum(m => double.Parse(m["jzmj"].ToString())).mj_wf(),
@@ -65,7 +65,7 @@ namespace Calculation.JS
                 (bz_cj_sy.Sum(m => double.Parse(m["cjje"].ToString())) / bz_cj_sy.Sum(m => double.Parse(m["jzmj"].ToString()))).je_y()
                 );
             //商业
-            string str5 = "本周新开{0}个项目，较上周增加{1}个，共计推出房源{2}套，环比上涨{3}，[总结]。热销项目为：[调整]";
+            string str5 = "【自填】，[总结]。热销项目为：[调整]";
 
             IAutoShape text1 = (IAutoShape)t[0].Shapes[4];
             IAutoShape text2 = (IAutoShape)t[0].Shapes[7];
@@ -166,8 +166,9 @@ namespace Calculation.JS
                 dr[9] = cjje1[i].cjje.je_wy();
                 dt.Rows.Add(dr);
             }
-            
 
+            IAutoShape test = (IAutoShape)t[3].Shapes[2];
+            test.TextFrame.Text = string.Format("本周成交排名（{0}", Base_date.bzwz);
             Office_Tables.SetChart(t[3], dt, 4, null,10);
             return t;
         }
@@ -187,7 +188,7 @@ namespace Calculation.JS
                       {
                           zc=s.Key.zc,
                           zcmc= s.Key.zcmc,
-                          xzgyl = s.Sum(m => double.Parse(m["jzmj"].ToString())+ (string.IsNullOrEmpty( m["fzzmj"].ToString())? 0.0: double.Parse(m["fzzmj"].ToString()))).mj_wf() 
+                          xzgyl = s.Sum(m => m["jzmj"].doubls()+  m["fzzmj"].doubls()).mj_wf() 
                       };
             var dt1_2 = from a in Cache_data_cjjl.jbz.AsEnumerable()
                         group a by new { zc = a["zc"] } into s
@@ -241,12 +242,12 @@ namespace Calculation.JS
                     select new
                     {
                         zc = s.Key.zc,
-                        cjje = s.Sum(a=>double.Parse( a["cjje"].ToString())),
+                        cjje = s.Sum(a=>a["cjje"].longs()),
                         jzmj = s.Sum(a => double.Parse(a["jzmj"].ToString())),
                     };
             System.Data.DataTable ljgx_dt = new System.Data.DataTable();
             ljgx_dt.Columns.Add("时间");
-            ljgx_dt.Columns.Add("成交金额（亿元）", typeof(double));
+            ljgx_dt.Columns.Add("成交金额（亿元）", typeof(long));
             ljgx_dt.Columns.Add("成交建面（万㎡）", typeof(double));
             ljgx_dt.Columns.Add("建面均价", typeof(string));
             ///量价关系
@@ -263,20 +264,23 @@ namespace Calculation.JS
             Office_Charts.Chart_gxfx(s2, ljgx_dt, 6);
 
             IAutoShape text2 = (IAutoShape)s2.Shapes[3];
-            text2.TextFrame.Paragraphs[0].Text = string.Format("本周成交面积{0}，环比{1}，比去年同期{2}，同比{3}",
+            text2.TextFrame.Paragraphs[0].Text = string.Format("本周成交面积{0}万方，环比{1}，比去年同期{2}，同比{3}",
                 Cache_Result_zb.bz_cj_jzmj.mj_wf(),
                 ((Cache_Result_zb.bz_cj_jzmj - Cache_Result_zb.sz_cj_jzmj) / Cache_Result_zb.sz_cj_jzmj).ss_bfb(),
                 Cache_Result_zb.bz_cj_jzmj - Cache_Result_zb.tz_cj_jzmj,
                 ((Cache_Result_zb.bz_cj_jzmj - Cache_Result_zb.tz_cj_jzmj) / Cache_Result_zb.tz_cj_jzmj).ss_bfb());
-            text2.TextFrame.Paragraphs[2].Text = string.Format("本周成交面积{0}，环比{1}；[总结]", Cache_Result_zb.bz_cj_jzmj.mj_wf(),
-                ((Cache_Result_zb.bz_cj_jzmj - Cache_Result_zb.sz_cj_jzmj) / Cache_Result_zb.sz_cj_jzmj).ss_bfb());
 
-            text2.TextFrame.Paragraphs[4].Text = string.Format("本周成交{0}套，环比{1}，其中车库及经适房{2}套，占比{3}，体量占比{4}",
-                Cache_data_cjjl.bz.Rows.Count,
-                ((Cache_data_cjjl.bz.Rows.Count - Cache_data_cjjl.sz.Rows.Count) / (double)Cache_data_cjjl.sz.Rows.Count).ss_bfb(),
-                100,
-                ((Cache_Result_zb.bz_cj_jzmj_xzys - Cache_Result_zb.sz_cj_jzmj_xzys) / Cache_Result_zb.sz_cj_jzmj_xzys).ss_bfb(),
-                80
+            text2.TextFrame.Paragraphs[2].Text = string.Format("本周成交均价{0}元/㎡，环比{1}，比去年同期{2}元/㎡，同比{3}", 
+                (Cache_Result_zb.bz_cj_cjje / Cache_Result_zb.bz_cj_jzmj).je_y(),
+                (((Cache_Result_zb.bz_cj_cjje / Cache_Result_zb.bz_cj_jzmj) - (Cache_Result_zb.sz_cj_cjje / Cache_Result_zb.sz_cj_jzmj)) / (Cache_Result_zb.sz_cj_cjje / Cache_Result_zb.sz_cj_jzmj)).ss_bfb(),
+                (Cache_Result_zb.bz_cj_cjje / Cache_Result_zb.bz_cj_jzmj) - (Cache_Result_zb.tz_cj_cjje / Cache_Result_zb.tz_cj_jzmj),
+                (((Cache_Result_zb.bz_cj_cjje / Cache_Result_zb.bz_cj_jzmj) - (Cache_Result_zb.tz_cj_cjje / Cache_Result_zb.tz_cj_jzmj)) / (Cache_Result_zb.tz_cj_cjje / Cache_Result_zb.tz_cj_jzmj)).ss_bfb()
+                );
+
+            text2.TextFrame.Paragraphs[4].Text = string.Format("本周成交金额{0}亿元，环比{1}％，【总结】，成交金额同比{2}",
+                Cache_Result_zb.bz_cj_cjje.je_yy(),
+                ((Cache_Result_zb.bz_cj_cjje - Cache_Result_zb.sz_cj_cjje) / Cache_Result_zb.sz_cj_cjje).ss_bfb(),
+                ((Cache_Result_zb.bz_cj_cjje - Cache_Result_zb.tz_cj_cjje) / Cache_Result_zb.tz_cj_cjje).ss_bfb()
                 );
 
 
@@ -284,7 +288,7 @@ namespace Calculation.JS
             #endregion
 
             #region 第三页 成交区域对比
-            var s3 = t[3];
+             var s3 = t[3];
             IChart c3 = (IChart)s3.Shapes[5];
             System.Data.DataTable dt1 = Cache_data_cjjl.bz;
             var cjqy = from a in Cache_data_cjjl.bz.AsEnumerable()
@@ -299,7 +303,7 @@ namespace Calculation.JS
             System.Data.DataTable dt = new System.Data.DataTable();
             dt.Columns.Add("qymc");
             dt.Columns.Add("成交面积",typeof(double));
-            dt.Columns.Add("成交金额",typeof(double));
+            dt.Columns.Add("成交金额",typeof(long));
             dt.Columns.Add("建面均价",typeof(double));
             dt.Columns.Add("市场均价",typeof(double));
             var cjqy1 = cjqy.OrderByDescending(m=>m.jzmj).ToList();
@@ -308,7 +312,7 @@ namespace Calculation.JS
                 DataRow dr = dt.NewRow();
                 dr[0] = cjqy1[i1].qymc;
                 dr[1] = cjqy1[i1].jzmj;
-                dr[2] = double.Parse( cjqy1[i1].cjje.ToString()).je_yy();
+                dr[2] = cjqy1[i1].cjje.je_yy();
                 dr[3] = cjqy1[i1].jmjj;
                 dr[4] = (Cache_Result_zb.bz_cj_cjje / Cache_Result_zb.bz_cj_jzmj).je_y();
                 dt.Rows.Add(dr);
@@ -409,7 +413,7 @@ namespace Calculation.JS
                 DataRow dr = zz_dt.NewRow();
                 dr[0] = zz_cjqy1[i1].qymc;
                 dr[1] = zz_cjqy1[i1].jzmj.mj_wf();
-                dr[4] = (Cache_Result_zb.bz_cj_cjje / Cache_Result_zb.bz_cj_jzmj).je_y();
+                dr[2] = zz_cjqy1[i1].cjje.je_yy();
                 dr[3] = zz_cjqy1[i1].jmjj.je_y();
                 dr[4] = (Cache_Result_zb.bz_cj_cjje / Cache_Result_zb.bz_cj_jzmj).je_y();
                 zz_dt.Rows.Add(dr);
@@ -435,14 +439,15 @@ namespace Calculation.JS
                         {
                             zc = s.Key.zc,
                             zcmc = s.Key.zcmc,
-                            xzgyl = s.Sum(m => double.Parse(m["jzmj"].ToString()))
+                            xzgyl = s.Sum(m => double.Parse(m["fzzmj"].ToString()))
                         };
             var dt6_2 = from a in Cache_data_cjjl.jbz.AsEnumerable()
                         where a["yt"].ToString() == "商务"
-                        group a by new { zc = a["zc"] } into s
+                        group a by new { zc = a["zc"], zcmc = a["zcmc"] } into s
                         select new
                         {
                             zc = s.Key.zc,
+                            zcmc=s.Key.zcmc,
                             cjje = s.Sum(m => double.Parse(m["cjje"].ToString())),
                             cjmj = s.Sum(m => double.Parse(m["jzmj"].ToString()))
                         };
@@ -455,13 +460,26 @@ namespace Calculation.JS
 
             var swsc_gy = dt6_1.OrderBy(m => int.Parse(m.zc.ToString())).ToList();
             var swsc_cj = dt6_2.OrderBy(m => int.Parse(m.zc.ToString())).ToList();
-            for (int i1 = 0; i1 < swsc_gy.Count(); i1++)
+
+            var temp6 = (from a in swsc_cj
+                    join b in swsc_gy on a.zc equals b.zc into temp
+                              from tt in temp.DefaultIfEmpty()
+                              select new
+                              {
+                                  zcmc = a.zcmc,
+                                  xzgyl = tt == null ? 0 : tt.xzgyl,//这里主要第二个集合有可能为空。需要判断
+                                  cjmj =a.cjmj,
+                                  jmjj = a.cjje /a.cjmj
+                              }).ToList();
+
+
+            for (int i1 = 0; i1 < temp6.Count(); i1++)
             {
                 DataRow dr = swsc_dt.NewRow();
-                dr[0] = swsc_gy[i1].zcmc;
-                dr[1] = swsc_gy[i1].xzgyl;
-                dr[2] = swsc_cj[i1].cjmj.mj_wf();
-                dr[3] = (swsc_cj[i1].cjje / swsc_cj[i1].cjmj).je_y();
+                dr[0] = temp6[i1].zcmc;
+                dr[1] = temp6[i1].xzgyl.mj_wf();
+                dr[2] = temp6[i1].cjmj.mj_wf();
+                dr[3] = temp6[i1].jmjj.je_y();
                 swsc_dt.Rows.Add(dr);
             }
             Office_Charts.Chart_gxfx(s6, swsc_dt, 5);
@@ -480,7 +498,7 @@ namespace Calculation.JS
             double sw_bz_cjjj = sw_bz_cjjl.Sum(m => double.Parse(m["cjje"].ToString())) / sw_bz_cjjl.Sum(m => double.Parse(m["jzmj"].ToString()));
             double sw_sz_cjjj = sw_sz_cjjl.Sum(m => double.Parse(m["cjje"].ToString())) / sw_sz_cjjl.Sum(m => double.Parse(m["jzmj"].ToString()));
 
-            text6.TextFrame.Paragraphs[0].Text = string.Format("本周新增供应{0}万方，[总结]", sw_bz_xzys.Sum(m => double.Parse(m["jzmj"].ToString()) + double.Parse(m["fzzmj"].ToString())).mj_wf());
+            text6.TextFrame.Paragraphs[0].Text = string.Format("本周新增供应{0}万方，[总结]", sw_bz_xzys.Sum(m =>m["fzzmj"].doubls().mj_wf()));
             text6.TextFrame.Paragraphs[2].Text = string.Format("本周成交面积{0}万方，环比{1}，[总结]",
                 sw_bz_cjjl.Sum(m => double.Parse(m["jzmj"].ToString())).mj_wf(),
                 ((sw_bz_jzmj - sw_sz_jzmj) / sw_sz_jzmj).ss_bfb());
@@ -494,14 +512,23 @@ namespace Calculation.JS
             var s7 = t[7];
 
             IChart c7 = (IChart)s7.Shapes[5];
-            var dt7_1 = from a in Cache_data_xzys.jbz.AsEnumerable()
+            var dt7_1_1 = from a in Cache_data_xzys.jbz.AsEnumerable()
+                          where a["tyyt"].ToString() == "别墅" || a["tyyt"].ToString() == "高层" || a["tyyt"].ToString() == "小高层" || a["tyyt"].ToString() == "洋房" || a["tyyt"].ToString() == "洋楼"
+                          group a by new { zc = a["zc"], zcmc = a["zcmc"] } into s
+                        select new
+                        {
+                            zc = s.Key.zc,
+                            zcmc = s.Key.zcmc,
+                            xzgyl = s.Sum(m => double.Parse(m["fzzmj"].ToString()))
+                        };
+            var dt7_1_2 = from a in Cache_data_xzys.jbz.AsEnumerable()
                         where a["tyyt"].ToString() == "商业"
                         group a by new { zc = a["zc"], zcmc = a["zcmc"] } into s
                         select new
                         {
                             zc = s.Key.zc,
                             zcmc = s.Key.zcmc,
-                            xzgyl = s.Sum(m => double.Parse(m["jzmj"].ToString()))
+                            xzgyl = s.Sum(m => double.Parse(m["fzzmj"].ToString()))
                         };
             var dt7_2 = from a in Cache_data_cjjl.jbz.AsEnumerable()
                         where a["yt"].ToString() == "商铺"
@@ -519,13 +546,14 @@ namespace Calculation.JS
             sysc_dt.Columns.Add("成交建面（万㎡）", typeof(double));
             sysc_dt.Columns.Add("建面均价", typeof(double));
 
-            var sysc_gy = dt7_1.OrderBy(m => int.Parse(m.zc.ToString())).ToList();
+            var sysc_gy_1 = dt7_1_1.OrderBy(m => int.Parse(m.zc.ToString())).ToList();
+            var sysc_gy_2 = dt7_1_2.OrderBy(m => int.Parse(m.zc.ToString())).ToList();
             var sysc_cj = dt7_2.OrderBy(m => int.Parse(m.zc.ToString())).ToList();
-            for (int i1 = 0; i1 < sysc_gy.Count(); i1++)
+            for (int i1 = 0; i1 < sysc_gy_1.Count(); i1++)
             {
                 DataRow dr = sysc_dt.NewRow();
-                dr[0] = sysc_gy[i1].zcmc;
-                dr[1] = sysc_gy[i1].xzgyl;
+                dr[0] = sysc_gy_1[i1].zcmc;
+                dr[1] = (sysc_gy_1[i1].xzgyl + sysc_gy_2[i1].xzgyl).mj_wf();
                 dr[2] = sysc_cj[i1].cjmj.mj_wf();
                 dr[3] = (sysc_cj[i1].cjje / sysc_cj[i1].cjmj).je_y();
                 sysc_dt.Rows.Add(dr);
@@ -536,7 +564,13 @@ namespace Calculation.JS
 
 
             IAutoShape text7 = (IAutoShape)s7.Shapes[6];
-            var sy_bz_xzys = Cache_data_xzys.bz.AsEnumerable().Where(m => m["tyyt"].ToString() == "商业");
+
+
+            var sy_bz_xzys1 = Cache_data_xzys.bz.AsEnumerable().Where(m => m["tyyt"].ToString() == "商业");
+            var sy_bz_xzys2 = Cache_data_xzys.bz.AsEnumerable().Where(a => a["tyyt"].ToString() == "别墅" || a["tyyt"].ToString() == "高层" || a["tyyt"].ToString() == "小高层" || a["tyyt"].ToString() == "洋房" || a["tyyt"].ToString() == "洋楼");
+            var sy_sz_xzys1 = Cache_data_xzys.sz.AsEnumerable().Where(m => m["tyyt"].ToString() == "商业");
+            var sy_sz_xzys2 = Cache_data_xzys.sz.AsEnumerable().Where(a => a["tyyt"].ToString() == "别墅" || a["tyyt"].ToString() == "高层" || a["tyyt"].ToString() == "小高层" || a["tyyt"].ToString() == "洋房" || a["tyyt"].ToString() == "洋楼");
+
             var sy_bz_cjjl = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["yt"].ToString() == "商铺");
             var sy_sz_cjjl = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["yt"].ToString() == "商铺");
 
@@ -546,8 +580,10 @@ namespace Calculation.JS
             double sy_bz_cjjj = sy_bz_cjjl.Sum(m => double.Parse(m["cjje"].ToString())) / sy_bz_cjjl.Sum(m => double.Parse(m["jzmj"].ToString()));
             double sy_sz_cjjj = sy_sz_cjjl.Sum(m => double.Parse(m["cjje"].ToString())) / sy_sz_cjjl.Sum(m => double.Parse(m["jzmj"].ToString()));
 
-            text7.TextFrame.Paragraphs[0].Text = string.Format("本周新增供应{0}万方，[总结]",
-                sy_bz_xzys.Sum(m => double.Parse(m["jzmj"].ToString()) + double.Parse(m["fzzmj"].ToString())).mj_wf());
+            text7.TextFrame.Paragraphs[0].Text = string.Format("本周新增供应{0}万方,环比{1}，[总结]",
+                (sy_bz_xzys1.Sum(m =>m["fzzmj"].doubls()) + sy_bz_xzys2.Sum(m => m["fzzmj"].doubls())).mj_wf(),
+                
+                ((sy_bz_xzys1.Sum(m => m["fzzmj"].doubls()) + sy_bz_xzys2.Sum(m => m["fzzmj"].doubls())- sy_sz_xzys1.Sum(m => m["fzzmj"].doubls()) - sy_sz_xzys2.Sum(m => m["fzzmj"].doubls())) / (sy_sz_xzys1.Sum(m => m["fzzmj"].doubls()) + sy_sz_xzys2.Sum(m => m["fzzmj"].doubls()))).ss_bfb());
             text7.TextFrame.Paragraphs[2].Text = string.Format("本周成交面积{0}万方，环比{1}，[总结]",
                 sy_bz_cjjl.Sum(m => double.Parse(m["jzmj"].ToString())).mj_wf(),
                 ((sy_bz_jzmj - sy_sz_jzmj) / sy_sz_jzmj).ss_bfb());

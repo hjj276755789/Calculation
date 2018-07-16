@@ -46,7 +46,7 @@ namespace 管理网站.Controllers
             this.ViewBag.mbbh = mbbh;
             return PartialView();
         }
-        [IdentityCheck]
+
         public PartialViewResult add_cs(int mbbh,int rwid)
         {
 

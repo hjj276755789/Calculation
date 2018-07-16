@@ -64,17 +64,19 @@ namespace Calculation.Base
         /// <returns></returns>
         public static double je_wy(this double target)
         {
-            return Math.Round(target / 10000, 2);
+            return Math.Round(target / 10000, 0);
         }
         /// <summary>
         /// 金额_亿元
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public static double je_yy(this double target)
+        public static double je_yy(this long target)
         {
-            return Math.Round(target / 10000 /10000, 2);
+            var t = target / 10000 / 10000;
+            return Math.Round(t.doubls(), 2);
         }
+
 
         public static double je_w_to_y(this double target)
         {
@@ -91,7 +93,7 @@ namespace Calculation.Base
         /// <returns></returns>
         public static double je_y(this double target)
         {
-            return Math.Round(target, 2);
+            return Math.Round(target,0);
         }
         /// <summary>
         /// 算式_百分比
