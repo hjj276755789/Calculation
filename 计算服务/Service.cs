@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -68,8 +69,8 @@ namespace Calculation
                 int maxThreadNum;
                 ThreadPool.GetMaxThreads(out maxThreadNum, out portThreadNum);
                 ThreadPool.GetMinThreads(out minThreadNum, out portThreadNum);
-                Console.WriteLine("最大线程数：{0}", maxThreadNum);
-                Console.WriteLine("最小空闲线程数：{0}", minThreadNum);
+                Base_Log.Log(string.Format("最大线程数：{0}", maxThreadNum));
+                Base_Log.Log(string.Format("最小空闲线程数：{0}", minThreadNum));
                 //ThreadPool.QueueUserWorkItem(new WaitCallback(TaskProc1), x);
 
                 Console.WriteLine("\n\n等待客户连接中。。。。");
@@ -150,38 +151,106 @@ namespace Calculation
                 dateTask dt = zc as dateTask;
                 TemplateManage m = new TemplateManage();
                 string xzdz= m.Create_zb(dt.mbid,dt.nf, dt.zc);
-                new Dal.RWGL_DataProvider().SET_RWZT(dt.mbid, dt.nf, dt.zc, RW_ZT.完成可下载, xzdz);
+                if(!string.IsNullOrEmpty(xzdz))
+                    new Dal.RWGL_DataProvider().SET_RWZT(dt.mbid, dt.nf, dt.zc, RW_ZT.完成可下载, xzdz);
+                else
+                {
+                    Base_Log.Log("生成失败：下载地址并未生成并返回！");
+                }
+                Base_Log.Log("生成成功\n");
             }
             catch (Exception e)
             {
-                //new Base_Log().Log("生成失败："+e.Message);
+                Base_Log.Log("生成失败：" + e.Message);
+                //关闭线程
+                Process.GetCurrentProcess().Kill();
+                
             }
   
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            ini();
+        }
+
+        public void ini()
+        {
+            n = 0;
+            r = 0;
+            s = 0;
+            f = 0;
+            m = 0;
             islistening = false;
             if (listerner == null)
                 return;
-            if (listerner.IsListening) { 
+            if (listerner.IsListening)
+            {
                 listerner.Stop();
             }
-            this.timer1.Stop();
-            this.Dispose();
             this.button1.Enabled = true;
             this.button2.Enabled = false;
-            yxsc = 0;
+            timer1.Stop();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            yxsc++;
-            this.label1.Text = "运行时长："+ yxsc+"秒";
+            this.label1.Text = "运行时长：" + sj();
             this.label2.Text = "接受请求：" + jsqq +"次";
         }
+        /// <summary>
+        /// 年
+        /// </summary>
+        public static int n = 0;
+        /// <summary>
+        /// 日
+        /// </summary>
+        public static int r = 0;
+        /// <summary>
+        /// 时
+        /// </summary>
+        public static int s = 0;
+        /// <summary>
+        /// 分
+        /// </summary>
+        public static int f = 0;
+        /// <summary>
+        /// 秒
+        /// </summary>
+        public static int m = 0;
 
-        
+        public static string sj()
+        {
+            m++;
+            if(m>=60)
+            {
+                f++;
+                m = 0;
+                if (f >= 60)
+                { 
+                    f = 0;
+                    s++;
+                    if(s>=24)
+                    {
+                        s = 0;
+                        r++;
+                        if (r >= 360)
+                        { 
+                            r = 0;
+                            n++;
+                        }
+
+                    }
+                }
+
+            }
+            return string.Format("{0}年{1}天{2}时{3}分{4}秒", n, r, s, f, m);
+        }
+
+
+
+
+
         ~Service()
 　    { 
 　    // 为了保持代码的可读性性和可维护性,千万不要在这里写释放非托管资源的代码 

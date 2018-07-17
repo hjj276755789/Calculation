@@ -29,34 +29,35 @@ namespace Calculation.JS
                 {
                     Type type = Type.GetType(row["cjclass"].ToString());      // 
                     var obj = System.Activator.CreateInstance(type);       // 创建实例
-
                     MethodInfo method = type.GetMethod(row["cjmethod"].ToString(), new Type[] { typeof(string), typeof(int) });      // 获取方法信息
-                    object[] parameters = new object[] { row["cjdz"], Int32.Parse(row["cjbh"].ToString()) };
+                    object[] parameters = new object[] { row["cjdz"], row["cjbh"].ints() };
                     var slide = method.Invoke(obj, parameters);
                     if (slide != null && ((SlideCollection)slide).Count > 0)
                     {
-                        foreach (var item in (SlideCollection)method.Invoke(obj, parameters))
+                        foreach (var item in (SlideCollection)slide)
                         {
                             if (item != null)
                                 p1.Slides.AddClone(item);
                         }                        // 调用方法，参数为空
                     }
                 }
+                string path = "d:\\zb\\" + mbid + "\\" + year + "\\" + zc + "\\";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                string filename = path + Base.Base_date.bz + ".pptx";
+                p1.Save(filename, Aspose.Slides.Export.SaveFormat.Pptx);
+                return filename;
             }
             catch (Exception e)
             {
-                //new Base_Log().Log("插件生成报错:" + e.Message);
+                Base_Log.Log("插件生成报错:" + e.Message);
+              
             }
-            
-            
-            string path = "d:\\zb\\" + mbid + "\\" + year + "\\" + zc + "\\" ;
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            string filename = path + Base.Base_date.bz + ".pptx";
-            p1.Save(filename, Aspose.Slides.Export.SaveFormat.Pptx);
-            return filename;
+
+            return null;
+         
         }
 
     }

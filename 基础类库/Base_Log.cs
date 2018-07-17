@@ -11,7 +11,7 @@ namespace Calculation.Base
     {
         public static void Log(string message)
         {
-            FileStream fs = new FileStream("d:\\log.txt", FileMode.Create);
+            FileStream fs = new FileStream("d:\\log.txt", FileMode.Append);
             //获得字节数组
             byte[] data = System.Text.Encoding.Default.GetBytes(message);
             //开始写入
