@@ -151,11 +151,15 @@ namespace Calculation
                 dateTask dt = zc as dateTask;
                 TemplateManage m = new TemplateManage();
                 string xzdz= m.Create_zb(dt.mbid,dt.nf, dt.zc);
-                if(!string.IsNullOrEmpty(xzdz))
-                    new Dal.RWGL_DataProvider().SET_RWZT(dt.mbid, dt.nf, dt.zc, RW_ZT.完成可下载, xzdz);
+                if (!string.IsNullOrEmpty(xzdz))
+                {
+                    if (!new Dal.RWGL_DataProvider().SET_RWZT(dt.mbid, dt.nf, dt.zc, RW_ZT.完成可下载, xzdz))
+                        Base_Log.Log("创建文件成功，插入数据失败");
+                    }
                 else
                 {
                     Base_Log.Log("生成失败：下载地址并未生成并返回！");
+                    return;
                 }
                 Base_Log.Log("生成成功\n");
             }

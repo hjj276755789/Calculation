@@ -6,20 +6,24 @@
     var wjlx = p.Where(m => m.cslx == Calculation.Models.Enums.CS_LX.文件型).ToList();
     var sxlx = p.Where(m => m.cslx == Calculation.Models.Enums.CS_LX.筛选型).ToList();
     var wzlx = p.Where(m => m.cslx == Calculation.Models.Enums.CS_LX.文字型).ToList();
+    int j = 0;
+    int k = sxlx != null ? sxlx.Count : 0;
 }
 <script>
     var xscslist = [];
 
     $(function () {
 
-        if(@sxlx.Count>0){
-              @{ int j = 0; }
-            for (var i = 0; i < @sxlx.Count; i++) {
-                init('@this.ViewBag.rwid','@sxlx[j].csid')
-                @{ j ++; }
+        for (var i = 0; i < @sxlx.Count; i++) {
+            @{
+                 string csid = sxlx != null &&sxlx.Count>0 ? sxlx[j].csid.ToString() : "";
+            }
+            init('@this.ViewBag.rwid','@csid')
+            @{ 
+                 j ++;
             }
         }
-    })
+    });
     function init(a, b) {
         $.ajax({
             url: '/zb/get_wzcs',

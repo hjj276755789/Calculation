@@ -11,14 +11,21 @@ namespace Calculation.Base
     {
         public static void Log(string message)
         {
-            FileStream fs = new FileStream("d:\\log.txt", FileMode.Append);
-            //获得字节数组
-            byte[] data = System.Text.Encoding.Default.GetBytes(message);
-            //开始写入
-            fs.Write(data, 0, data.Length);
-            //清空缓冲区、关闭流
-            fs.Flush();
+            string path = @"D:\log.txt";
+            
+            FileStream fs = new FileStream(path, FileMode.Append);//文本加入不覆盖
+
+            StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.Default);//转码
+
+            sw.WriteLine(message);
+
+            //清空缓冲区
+            sw.Flush();
+            //关闭流
+            sw.Close();
             fs.Close();
+
+
         }
     }
 }
