@@ -526,11 +526,10 @@
     <Content Include="Views\Sys\yhjs.cshtml" />
     <Content Include="Views\Sys\add_yhxx.cshtml" />
     <Content Include="Views\Sys\jsgl.cshtml" />
+    <Content Include="Views\yb\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Base\" />
-    <Folder Include="Views\yb\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
