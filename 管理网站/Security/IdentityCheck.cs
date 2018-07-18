@@ -8,6 +8,7 @@ using System.Web.Routing;
 
 namespace 管理网站
 {
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
     public class IdentityCheck: AuthorizeAttribute
     {
         private FW_QXGL_DataProvider _qx;
@@ -20,13 +21,16 @@ namespace 管理网站
             }
             else
             {
-                var user = new CurrentUser(httpContext.User.Identity);
-                if (user == null || !user.IsAuthenticated)
+                var currentUser = httpContext.User as CurrentUser;
+
+                if (currentUser == null || !currentUser.IsAuthenticated)
                 {
                     return false;
                 }
-               
-                return true;
+                else
+                {
+                    return true;
+                }
             }
         }
         /// <summary>
@@ -52,10 +56,10 @@ namespace 管理网站
         }
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-
+           
             var actionName = filterContext.ActionDescriptor.ActionName;
             var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-            var user = new CurrentUser(filterContext.HttpContext.User.Identity);
+            var user = filterContext.HttpContext.User as CurrentUser;
             if (user != null&&user.IsAuthenticated)
             {
                 var userid = user.YHID;

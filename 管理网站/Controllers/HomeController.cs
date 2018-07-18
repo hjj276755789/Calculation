@@ -4,55 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace 管理网站.Controllers
 {
     public class HomeController : BaseController
     {
-
-        FW_QXGL_DataProvider gl;
-
-        public HomeController()
-        {
-            gl = new FW_QXGL_DataProvider();
-        }
         /// <summary>
         /// 首页
         /// </summary>
         /// <returns></returns>
         public ActionResult Index()
         {
-            return View();
-        }
-        /// <summary>
-        /// 登陆页
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult Login()
-        {
-            return View();
-        }
-        /// <summary>
-        /// 登陆提交地址
-        /// </summary>
-        /// <param name="username">用户名</param>
-        /// <param name="password">密码</param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult Login(string username,string password)
-        {
-            if (gl.CHECK_LOGIN(username, password))
+            if (this.CurrentUser!=null&&this.CurrentUser.IsAuthenticated)
             {
-                CurrentUser.SignIn(username);
-                return RedirectToAction("index");
+                return View();
             }
             else
             {
-                this.ViewBag.message = "用户名或密码错误！";
-                return View();
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "account", action = "login", returnMessage = "您无权查看." }));
             }
         }
+    }
 
-     }
+     
 }

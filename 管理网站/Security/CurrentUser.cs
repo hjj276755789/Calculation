@@ -44,7 +44,7 @@ namespace 管理网站
 
             var ticket = new FormsAuthenticationTicket(
                 1,
-                Guid.NewGuid().ToString(),
+                YHID,
                 now,
                 now.AddDays(1),
                 true,

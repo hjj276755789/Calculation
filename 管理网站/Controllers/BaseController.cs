@@ -15,17 +15,10 @@ namespace 管理网站.Controllers
         {
             get
             {
-                CurrentUser.SignIn(CurrentUser.Test.YHID);
-                return CurrentUser.Test;
-                //return this.User as CurrentUser;
-            }
-        }
-
-        public BaseController()
-        {
-            if (this.CurrentUser != null)
-            {
-                this.ViewBag.nav = new FW_QXGL_DataProvider().GET_YHQX(this.CurrentUser.YHID);
+                return this.User as CurrentUser;
+                //if (HttpContext!=null&&HttpContext.User != null)
+                //    return new CurrentUser(HttpContext.User.Identity);
+                //else return null;
             }
         }
         
