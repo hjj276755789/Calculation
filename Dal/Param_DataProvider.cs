@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Calculation.Base;
+using System.Data;
 
 namespace Calculation.Dal
 {
@@ -129,10 +130,7 @@ where c.rwid = @rwid and a.csid =@csid";
         {
             string sql = @"INSERT INTO calculation.xtgl_param_jpba
                         ( rwid, bamc)
-                        SELECT @rwid, @bamc
-                        FROM dual
-                        WHERE not exists (select * from calculation.xtgl_param_jpba t1
-                        where t1.rwid=@rwid and t1.bamc=@bamc);";
+                        values (@rwid,@bamc)";
             MySqlParameter[] p = { new MySqlParameter("rwid", rwid), new MySqlParameter("bamc", bamc) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
@@ -142,6 +140,12 @@ where c.rwid = @rwid and a.csid =@csid";
             string sql = "select * from calculation.xtgl_param_jpba where rwid=@rwid";
             MySqlParameter[] p = { new MySqlParameter("rwid", rwid) };
             return Models.Modelhelper.类列表赋值<JP_BA>(new JP_BA(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
+        }
+        public static JP_BA GET_JP_BA_XQ(int id)
+        {
+            string sql = "select * from calculation.xtgl_param_jpba where id=@id";
+            MySqlParameter[] p = { new MySqlParameter("id", id) };
+            return Models.Modelhelper.类对象赋值<JP_BA>(new JP_BA(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
         public static bool DEL_JP_BA(int id)
         {
@@ -181,12 +185,47 @@ where c.rwid = @rwid and a.csid =@csid";
             MySqlParameter[] p = { new MySqlParameter("baid", baid) };
             return Models.Modelhelper.类列表赋值<JP_JPXM>(new JP_JPXM(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
-
+        public static JP_JPXM GET_JP_JPXM_XQ(int id)
+        {
+            string sql = "select * from  calculation.xtgl_param_jpba t1  where id=@id";
+            MySqlParameter[] p = { new MySqlParameter("id", id) };
+            return Models.Modelhelper.类对象赋值<JP_JPXM>(new JP_JPXM(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
+        }
         public static bool add_jp_jpxm(int baid,int jzgjid)
         {
             string sql = "insert into  calculation.xtgl_param_jpgj (baid,jzgjid) values(@baid,@jzgjid)";
             MySqlParameter[] p = { new MySqlParameter("baid", baid), new MySqlParameter("jzgjid", jzgjid) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
+        }
+
+        public static bool del_jp_jpxm(int id)
+        {
+            string sql = "delete from calculation.xtgl_param_jpgj where id =@id";
+            MySqlParameter[] p = { new MySqlParameter("id", id) };
+            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
+        }
+        #endregion
+
+        #region 竞品-导出
+        public static DataTable GET_JP_BAXX(int mbid,int nf,int zc)
+        {
+            string sql = @"select t2.*,t3.cjbh cjid from calculation.xtgl_bbrw  t1 ,calculation.xtgl_param_jpba t2 ,calculation.xtgl_bbmbcj t3
+                where t1.rwid=t2.rwid and t1.mbid =t3.mbid 
+                and t1.mbid=@mbid and nf=@nf and zc=@zc
+                ";
+            MySqlParameter[] p = { new MySqlParameter("mbid", mbid), new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
+            return MySqlDbhelper.GetDataSet(sql, p).Tables[0];
+
+        }
+        public static DataTable GET_JP_JPXMXX(int mbid, int nf, int zc)
+        {
+            string sql = @"select t3.* ,t4.jzgjmc from calculation.xtgl_bbrw  t1 ,calculation.xtgl_param_jpba t2 ,calculation.xtgl_param_jpgj t3 ,calculation.dmb_jzgj t4
+                    where t1.rwid=t2.rwid and t2.id =t3.baid and t3.jzgjid =t4.id order by t3.baid,t4.px
+                    and t1.mbid=@mbid and nf=@nf and zc=@zc
+                ";
+            MySqlParameter[] p = { new MySqlParameter("mbid", mbid), new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
+            return MySqlDbhelper.GetDataSet(sql, p).Tables[0];
+
         }
         #endregion
     } 

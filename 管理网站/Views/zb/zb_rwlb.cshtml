@@ -61,6 +61,28 @@
             });
 
         }
+        function sc(a, b, c)
+        {
+            $.ajax({
+                url: "/zb/sc",
+                data: { 'mbid': a, 'nf': b ,'zc':c},
+                type: "post",
+                success: function (data) {
+                    if (data.IsSuccessful) {
+                        alert("生成任务已发布，请等待30秒！");
+                        setTimeout(flush, 30);
+                    }
+                    else alert(data.ErrMsg);
+
+                }
+            })
+
+        }
+        function flush()
+        {
+            table.reflush(option);
+            init1();
+        }
         function Table_bs($box) {
 
             var _init_bit = false;
@@ -189,12 +211,12 @@
 
                             case 3: {
                                 d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "可生成PTT",
-                                    '<a class="btn btn-primary waves-effect waves-light" href="/zb/sc?mbid=' + data[i].mbid + '&nf=' + data[i].nf + '&zc=' + data[i].zc + '">开始任务</a>',
+                                    '<a class="btn btn-primary waves-effect waves-light" onclick="sc(' + data[i].mbid + ',' + data[i].nf + ',' + data[i].zc + ')">开始任务</a>',
                                 ]);
                             }; break;
                             case 4: {
                                 d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "可下载",
-                                    '<a class="btn btn-link" href="/zb/sc?mbid=' + data[i].mbid + '&nf=' + data[i].nf + '&zc=' + data[i].zc + '">重新生成</a><a class="btn btn-link " href="/zb/export?rwid=' + data[i].rwid + '">下载文件</a>',
+                                    '<a class="btn btn-link" onclick="sc(' + data[i].mbid + ',' + data[i].nf + ',' + data[i].zc + ')">重新生成</a><a class="btn btn-link " href="/zb/export?rwid=' + data[i].rwid + '">下载文件</a>',
                                 ]);
                             }; break;
                         }

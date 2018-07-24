@@ -3726,7 +3726,7 @@
 		<row><td>IDS__TargetReq_DESC_PROCESSOR</td><td>2052</td><td>对于运行 [ProductName] 处理器不足。</td><td>0</td><td/><td>2074491566</td></row>
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>2052</td><td>对于运行 [ProductName] 内存量不足。</td><td>0</td><td/><td>2074491566</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>2052</td><td>对于运行 [ProductName] 屏幕分辨率不足。</td><td>0</td><td/><td>2074491566</td></row>
-		<row><td>ID_STRING1</td><td>2052</td><td>http://www.公司名称.com</td><td>0</td><td/><td>2074536463</td></row>
+		<row><td>ID_STRING1</td><td>2052</td><td>http://www.micosen.com</td><td>0</td><td/><td>-1012526671</td></row>
 		<row><td>ID_STRING2</td><td>2052</td><td>公司名称</td><td>0</td><td/><td>2074536463</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>2052</td><td>系统将不安装此功能。</td><td>0</td><td/><td>2074491566</td></row>
 	</table>
@@ -3974,7 +3974,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{6FFA3D24-CECB-4BEB-B0AC-5E54A5D056DF}</td></row>
 		<row><td>ISUSSignature</td><td>{65861015-C208-477F-9E48-EA0041ECD113}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewAppFiles,viewUI,viewISToday</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewAppFiles,viewUI,viewISToday,viewLearnMore</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>

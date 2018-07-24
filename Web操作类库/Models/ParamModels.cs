@@ -1,6 +1,7 @@
 ﻿using Calculation.Models.Enums;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -109,5 +110,35 @@ namespace Calculation.Models.Models
         public int id { get; set; }
         public string jzgjmc { get; set; }
         public int px { get; set; }
+    }
+
+    public class JP_BA_INFO 
+    {
+        public int cjid { get; set; }
+        public int id { get; set; }
+        public int rwid { get; set; }
+        public string bamc { get; set; }
+        public string [] qycs { get; set; }
+        public string [] ztcs { get; set; }
+        public string [] lpcs { get; set; }
+        public string [] ytcs { get; set; }
+        public string [] xfytcs { get; set; }
+        public string [] hxcs { get; set; }
+
+        public List<JP_JPXM_INFO> jpxmlb { get; set; }
+    }
+    public class JP_JPXM_INFO
+    {
+        public int id { get; set; }
+        public int baid { get; set; }
+        public int jzgjid { get; set; }
+        public string jzgjmc { get; set; }
+        public string[] qycs { get; set; }
+        public string[] ztcs { get; set; }
+        public string[] lpcs { get; set; }
+        public string[] ytcs { get; set; }
+        public string[] xfytcs { get; set; }
+        public string[] hxcs { get; set; }
+
     }
 }

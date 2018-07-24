@@ -3,10 +3,12 @@
 
     Rw_Item_Model p = this.ViewBag.rwxq as Rw_Item_Model;
 }
-
+<style>
+    .btn{margin-left:5px;margin-right:5px;}
+</style>
 
 <div class="row" style="width: 90%; margin: 20px;">
-    <input type="text" id="bamc" class="form-control" /><input type="button" value="添加竞品本案项目" onclick="add()" class="btn btn-danger" />
+    <input type="text" id="bamc" class="form-control" placeholder="添加竞品本案项目" /><input type="button" value="添加竞品本案项目" onclick="add()" class="btn btn-danger" /><input type="button" value="确认参数设置通过" onclick="sub()" class="btn btn-danger" />
 </div>
 <div class="table row" id="baxm">
 
@@ -34,7 +36,7 @@
                             init1();
                         }
                         else alert(data.ErrMsg);
-                        
+
                     }
                 })
             }
@@ -54,11 +56,30 @@
                             init1();
                         }
                         else alert(data.ErrMsg);
-                        
+
                     }
                 })
-          
+
         }
+
+        function sub()
+        {
+            $.ajax({
+                url: "/zb/tgcssz",
+                data: {'rwid':rwid},
+                type: "post",
+                success: function (data) {
+                    if (data.IsSuccessful) {
+                        alert("确认成功");
+                    }
+                    else alert(data.ErrMsg);
+
+                }
+            })
+
+        }
+
+
         var table = new Table_bs($('#baxm'));
         function cleardata(a) {
             $(a).on("hidden.bs.modal", function () {
@@ -154,7 +175,7 @@
             init1();
         });
 
-    
+
         function init1() {
             var data = {'rwid':@p.rwid};
             $.ajax({

@@ -108,7 +108,6 @@
             {
                 alert("请填内容！")
             }
-
         }
         function del(a, b) {
             document.getElementById(a + "_param").removeChild(b);
@@ -123,7 +122,21 @@
             option.pagenow = 1;
             init2();
         }
-
+        function add_default(a,b) {
+       
+            $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + b+ "<i class='md md-clear'></i></a>");
+            switch (a) {
+                case 'ztmc': { zt.push(b); }; break;
+                case 'qymc': { qy.push(b); }; break;
+                case 'lpmc': { lpmc.push(b); }; break;
+                case 'ytmc': { yt.push(b); }; break;
+                case 'xfyt': { xfyt.push(b); }; break;
+                case 'hxmc': { hx.push(b); }; break;
+            }
+            option.pagenow = 1;
+            init2();
+           
+        }
 
         var table = new Table_bs($('#cjsj'));
         function cleardata(a) {
@@ -212,12 +225,13 @@
 
             ],
             pagenow :1,
-            pagesize: 10,
+            pagesize: 50,
             datacount :0,
         }
 
         $(function () {
             init1();
+            init3();
         });
 
         function pre()
@@ -266,7 +280,6 @@
                         d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, ]);
                     };
                     option.data = d;
-                    option.data = d;
                     option.datacount = data.datacount;
                     option.pagenow = data.pagenow;
                     table.reflush(option);
@@ -275,7 +288,61 @@
             })
 
         }
-
+        function init3()
+        {
+            $.ajax({
+                url: "/jp_zb/get_jpxm_xq",
+                data: {'id': @ViewBag.id},
+                type: "post",
+                success: function (data) {
+                    if(data)
+                    {
+                        if(data.ztcs)
+                        {
+                            var ztlb =data.ztcs.split(",");
+                            for (var i = 0; i < ztlb; i++) {
+                                add_default("ztmc",ztlb[i]);
+                            }
+                        }
+                        if(data.qycs)
+                        {
+                            var qylb =data.qycs.split(",");
+                            for (var i = 0; i < qylb.length; i++) {
+                                add_default("qymc",qylb[i]);
+                            }
+                        }
+                        if(data.lpcs)
+                        {
+                            var lplb =data.lpcs.split(",");
+                            for (var i = 0; i < lplb.length; i++) {
+                                add_default("lpmc",lplb[i]);
+                            }
+                        }
+                        if(data.ytcs)
+                        {
+                            var ytlb =data.ytcs.split(",");
+                            for (var i = 0; i < ytlb.length; i++) {
+                                add_default("tycs",ytlb[i]);
+                            }
+                        }
+                        if(data.xfytcs)
+                        {
+                            var xfytlb =data.xfytcs.split(",");
+                            for (var i = 0; i < xfytlb.length; i++) {
+                                add_default("xfyt",xfytlb[i]);
+                            }
+                        }
+                        if(data.hxcs)
+                        {
+                            var hxlb =data.hxcs.split(",");
+                            for (var i = 0; i < hxlb.length; i++) {
+                                add_default("hxmc",hxlb[i]);
+                            }
+                        }
+                    }
+                }
+            })
+        }
 
         function save()
         {

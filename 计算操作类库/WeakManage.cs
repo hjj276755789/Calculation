@@ -627,10 +627,7 @@ namespace Calculation.JS
             else
                 return null;
         }
-        public ISlideCollection plus7(string str, int cjbh)
-        {
-            return new Presentation(str).Slides;
-        }
+       
         /// <summary>
         /// 进8周板块走势
         /// </summary>
@@ -1091,20 +1088,17 @@ namespace Calculation.JS
         }
         #endregion
 
-        #region 竞品插件
-        #region 复地
+        #region 目录插件
         /// <summary>
-        /// 复地竞品插件
+        /// 目录—竞品
         /// </summary>
         /// <param name="str"></param>
         /// <param name="cjbh"></param>
         /// <returns></returns>
-        public ISlideCollection _plus_jp_fudi(string str, int cjbh)
+        public ISlideCollection ml_jp(string str, int cjbh)
         {
-            Cache_data_cjjl.bz.Select("");
             return new Presentation(str).Slides;
         }
-        #endregion
         #endregion
 
     }

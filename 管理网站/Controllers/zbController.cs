@@ -89,8 +89,18 @@ namespace 管理网站.Controllers
         public JsonResult sc(int mbid, int nf, int zc)
         {
             string url = ConfigurationManager.AppSettings["SerPath"] + "?mbid=" + mbid + "&nf=" + nf + "&zc=" + zc;
-            string sql = HttpHelper.GetResponseString(HttpHelper.HttpPost(url, null, 3000));
-            return Json(sql, JsonRequestBehavior.AllowGet);
+            try
+            {
+                string sql = HttpHelper.GetResponseString(HttpHelper.HttpPost(url, null, 3000));
+
+                return Json(SResult.Success);
+            }
+            catch (Exception)
+            {
+
+                return Json( SResult.Error("生成报表服务未启动或服务器无法链接"));
+            }
+            
         }
         [HttpPost]
         public JsonResult add_wzcs(int rwid, int csid, string csnr, int sfbl)
@@ -180,17 +190,18 @@ namespace 管理网站.Controllers
         /// 本案竞争格局
         /// </summary>
         /// <returns></returns>
-        public ActionResult Bajzgj(int nf,int zc)
+        public ActionResult Bajzgj(int id, int nf, int zc)
         {
             this.ViewBag.nf = nf;
             this.ViewBag.zc = zc;
+            this.ViewBag.id = id;
             return View();
         }
         /// <summary>
         /// 竞品竞争格局
         /// </summary>
         /// <returns></returns>
-        public ActionResult Set_Jpjzgj_Param(int id,int nf,int zc)
+        public ActionResult Set_Jpjzgj_Param(int id, int nf, int zc)
         {
             this.ViewBag.nf = nf;
             this.ViewBag.zc = zc;
@@ -202,7 +213,7 @@ namespace 管理网站.Controllers
         /// </summary>
         /// <param name="baid"></param>
         /// <returns></returns>
-        public ActionResult Jpxm(int baid,int nf,int zc)
+        public ActionResult Jpxm(int baid, int nf, int zc)
         {
             this.ViewBag.baid = baid;
             this.ViewBag.nf = nf;
@@ -221,10 +232,25 @@ namespace 管理网站.Controllers
         #endregion
 
         #region 数据
-        public JsonResult cxjg(int nf,int zc,string[] zt,string [] qy,string [] lpmc,string [] yt,string [] xfyt,string [] hx,int? pagesize,int? pagenow)
+
+        /// <summary>
+        /// 通用成交备案数据查询接口
+        /// </summary>
+        /// <param name="nf"></param>
+        /// <param name="zc"></param>
+        /// <param name="zt"></param>
+        /// <param name="qy"></param>
+        /// <param name="lpmc"></param>
+        /// <param name="yt"></param>
+        /// <param name="xfyt"></param>
+        /// <param name="hx"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="pagenow"></param>
+        /// <returns></returns>
+        public JsonResult cxjg(int nf, int zc, string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx, int? pagesize, int? pagenow)
         {
             IPageList<Data_Cjba_Default> list = null;
-            if(zt!=null|| qy != null || lpmc != null || yt != null || xfyt != null || hx != null) { 
+            if (zt != null || qy != null || lpmc != null || yt != null || xfyt != null || hx != null) {
                 JP_ParamValueModel param = new JP_ParamValueModel();
                 param.zt = zt;
                 param.qy = qy;
@@ -232,11 +258,11 @@ namespace 管理网站.Controllers
                 param.yt = yt;
                 param.xfyt = xfyt;
                 param.hx = hx;
-                list = Param_DataProvider.GET_JP_CJBAXX(nf,zc,param, pagesize.HasValue? pagesize.Value:10, pagenow.HasValue?pagenow.Value:1);
+                list = Param_DataProvider.GET_JP_CJBAXX(nf, zc, param, pagesize.HasValue ? pagesize.Value : 10, pagenow.HasValue ? pagenow.Value : 1);
             }
             else
             {
-                list= Param_DataProvider.GET_JP_CJBAXX(nf,zc, pagesize.HasValue ? pagesize.Value : 10, pagenow.HasValue ? pagenow.Value : 1);
+                list = Param_DataProvider.GET_JP_CJBAXX(nf, zc, pagesize.HasValue ? pagesize.Value : 10, pagenow.HasValue ? pagenow.Value : 1);
             }
             var s = new
             {
@@ -249,15 +275,20 @@ namespace 管理网站.Controllers
 
         }
 
-        public JsonResult add_ba(int rwid,string bamc)
+        /// <summary>
+        /// 获取竞品本案
+        /// </summary>
+        /// <param name="rwid"></param>
+        /// <returns></returns>
+        public JsonResult get_ba(int rwid)
+        {
+            return Json(Param_DataProvider.GET_JP_BA(rwid));
+        }
+        public JsonResult add_ba(int rwid, string bamc)
         {
             if (Param_DataProvider.ADD_JP_BA(rwid, bamc))
                 return Json(SResult.Success);
             else return Json(SResult.Error("添加失败"));
-        }
-        public JsonResult get_ba(int rwid)
-        {
-            return Json(Param_DataProvider.GET_JP_BA(rwid));
         }
         public JsonResult del_ba(int id)
         {
@@ -265,27 +296,6 @@ namespace 管理网站.Controllers
                 return Json(SResult.Success);
             else return Json(SResult.Error("删除失败"));
         }
-        public JsonResult save_jpxmcs(string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx,int id)
-        {
-            if (zt != null || qy != null || lpmc != null || yt != null || xfyt != null || hx != null)
-            {
-                JP_ParamValueModel param = new JP_ParamValueModel();
-                param.zt = zt;
-                param.qy = qy;
-                param.lpmc = lpmc;
-                param.yt = yt;
-                param.xfyt = xfyt;
-                param.hx = hx;
-
-                if (Param_DataProvider.SAVE_JP_JPXMCS(id, param))
-                    return Json(SResult.Success);
-                else return Json(SResult.Error("保存失败"));
-            }
-            else
-            { return Json(SResult.Error("竞品参数为空")); }
-           
-        }
-
         public JsonResult save_baxmcs(string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx, int id)
         {
             if (zt != null || qy != null || lpmc != null || yt != null || xfyt != null || hx != null)
@@ -306,6 +316,12 @@ namespace 管理网站.Controllers
             { return Json(SResult.Error("竞品参数为空")); }
 
         }
+        public JsonResult get_jpba_xq(int id)
+        {
+            var T = Param_DataProvider.GET_JP_BA_XQ(id);
+            return Json(T);
+        }
+
         /// <summary>
         /// 获取竞品项目
         /// </summary>
@@ -316,14 +332,46 @@ namespace 管理网站.Controllers
             var T = Param_DataProvider.GET_JP_JPXM(baid);
             return Json(T);
         }
-
-        public JsonResult add_jpxm(int baid,int jzgjid)
+        public JsonResult add_jpxm(int baid, int jzgjid)
         {
             if (Param_DataProvider.add_jp_jpxm(baid, jzgjid))
                 return Json(SResult.Success);
             else return Json(SResult.Error("添加失败"));
 
         }
+        public JsonResult del_jpxm(int id)
+        {
+            if(Param_DataProvider.del_jp_jpxm(id))
+            return Json(SResult.Success);
+            else return Json(SResult.Error("删除失败"));
+        }
+        public JsonResult save_jpxmcs(string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx, int id)
+        {
+            if (zt != null || qy != null || lpmc != null || yt != null || xfyt != null || hx != null)
+            {
+                JP_ParamValueModel param = new JP_ParamValueModel();
+                param.zt = zt;
+                param.qy = qy;
+                param.lpmc = lpmc;
+                param.yt = yt;
+                param.xfyt = xfyt;
+                param.hx = hx;
+
+                if (Param_DataProvider.SAVE_JP_JPXMCS(id, param))
+                    return Json(SResult.Success);
+                else return Json(SResult.Error("保存失败"));
+            }
+            else
+            { return Json(SResult.Error("竞品参数为空")); }
+
+        }
+        public JsonResult get_jpxm_xq(int id)
+        {
+            var T = Param_DataProvider.GET_JP_JPXM_XQ(id);
+            return Json(T);
+        }
+
+        
         #endregion
     }
 }

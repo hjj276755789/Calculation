@@ -57,13 +57,6 @@ on t1.rwid = t2.rwid where t1.rwid=@rwid and  t1.nf = @nf and t1.zc=@zc";
             MySqlParameter[] p = { new MySqlParameter("rwid", rwid), new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
             return Modelhelper.类对象赋值(new Rw_Cofirm_data(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
-        public Rw_Cofirm_data GET_RWZT(int nf, int zc)
-        {
-            string sql = @"select t1.rwid,t1.rwmc,t1.nf,t1.zc,t2.cjjl_zt,t2.xzys_zt,t2.tdcj_zt,t2.rgsj_zt from calculation.xtgl_bbrw t1 left join  calculation.xtgl_ConfirmData t2 
-on t1.rwid = t2.rwid where   t1.nf = @nf and t1.zc=@zc";
-            MySqlParameter[] p = {  new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
-            return Modelhelper.类对象赋值(new Rw_Cofirm_data(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
-        }
         /// <summary>
         /// 确认成交数据
         /// </summary>

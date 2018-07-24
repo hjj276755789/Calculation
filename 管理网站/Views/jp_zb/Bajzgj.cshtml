@@ -26,7 +26,7 @@
 <div class="row">
     <div><h4>本案格局</h4></div>
     <div>
-        <input type="button" class="btn btn-danger" value="保存本案格局" id="btn_sub" />
+        <input type="button" class="btn btn-danger" value="保存本案格局" id="btn_sub" onclick="save()" />
         <a class="btn btn-primary waves-effect waves-light" onclick="javascript:history.back(-1);" >返回</a>
     </div>
 </div>
@@ -114,7 +114,7 @@
                     case 'xfyt': { xfyt.push($("#" + a).val()); }; break;
                     case 'hxmc': { hx.push($("#" + a).val()); }; break;
                 }
-                option.pagenow = 0;
+                option.pagenow = 1;
                 init2();
             }
             else
@@ -133,9 +133,42 @@
                 case 'xfyt': { xfyt.splice(zt.indexOf(b.value), 1); }; break;
                 case 'hxmc': { hx.splice(zt.indexOf(b.value), 1); }; break;
             }
-            option.pagenow = 0;
+            option.pagenow = 1;
             init2();
         }
+
+        function save(){
+            var data = { 'zt': zt, 'qy': qy, 'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx, 'id': @ViewBag.id };
+            $.ajax({
+                url: "/jp_zb/save_baxmcs",
+                data: data,
+                type: "post",
+                success: function (data) {
+                    if (data.IsSuccessful) {
+                        alert("保存成功");
+                        table.reflush(option);
+                        init1();
+                    }
+                    else alert(data.ErrMsg);
+                }
+            })
+        }
+        function add_default(a,b) {
+
+            $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + b+ "<i class='md md-clear'></i></a>");
+            switch (a) {
+                case 'ztmc': { zt.push(b); }; break;
+                case 'qymc': { qy.push(b); }; break;
+                case 'lpmc': { lpmc.push(b); }; break;
+                case 'ytmc': { yt.push(b); }; break;
+                case 'xfyt': { xfyt.push(b); }; break;
+                case 'hxmc': { hx.push(b); }; break;
+            }
+            option.pagenow = 1;
+            init2();
+
+        }
+
 
 
         var table = new Table_bs($('#cjsj'));
@@ -231,6 +264,7 @@
 
         $(function () {
             init1();
+            init3();
         });
 
         function pre()
@@ -242,8 +276,8 @@
             }
         }
         function next() {
-            if ((option.pagenow+1)*option.pagesize>option.datacount) {
-                option.pagenow -= 1;
+            if (option.pagenow<(option.datacount / option.pagesize)+1) {
+                option.pagenow += 1;
                 init2();
             }
         }
@@ -288,5 +322,61 @@
             })
 
         }
+        function init3()
+        {
+            $.ajax({
+                url: "/jp_zb/get_jpba_xq",
+                data: {'id': @ViewBag.id},
+                type: "post",
+                success: function (data) {
+                    if(data)
+                    {
+                        if(data.ztcs)
+                        {
+                            var ztlb =data.ztcs.split(",");
+                            for (var i = 0; i < ztlb; i++) {
+                                add_default("ztmc",ztlb[i]);
+                            }
+                        }
+                        if(data.qycs)
+                        {
+                            var qylb =data.qycs.split(",");
+                            for (var i = 0; i < qylb.length; i++) {
+                                add_default("qymc",qylb[i]);
+                            }
+                        }
+                        if(data.lpcs)
+                        {
+                            var lplb =data.lpcs.split(",");
+                            for (var i = 0; i < lplb.length; i++) {
+                                add_default("lpmc",lplb[i]);
+                            }
+                        }
+                        if(data.ytcs)
+                        {
+                            var ytlb =data.ytcs.split(",");
+                            for (var i = 0; i < ytlb.length; i++) {
+                                add_default("ytmc",ytlb[i]);
+                            }
+                        }
+                        if(data.xfytcs)
+                        {
+                            var xfytlb =data.xfytcs.split(",");
+                            for (var i = 0; i < xfytlb.length; i++) {
+                                add_default("xfyt",xfytlb[i]);
+                            }
+                        }
+                        if(data.hxcs)
+                        {
+                            var hxlb =data.hxcs.split(",");
+                            for (var i = 0; i < hxlb.length; i++) {
+                                add_default("hxmc",hxlb[i]);
+                            }
+                        }
+                    }
+                }
+            })
+        }
+
     </script>
 }

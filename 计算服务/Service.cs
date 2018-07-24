@@ -25,6 +25,7 @@ namespace Calculation
     {
         public Service()
         {
+            this.FormClosed += Service_FormClosed;
             InitializeComponent();
             init();
         }
@@ -32,6 +33,7 @@ namespace Calculation
         private static HttpListener listerner;
         private static int yxsc = 0;
         private static int jsqq = 0;
+        private static Thread th;
 
 
         void init()
@@ -40,7 +42,10 @@ namespace Calculation
                 listerner = new HttpListener();
             islistening = true;
             this.timer1.Start();
-            Thread th = new Thread(new ThreadStart(thread2));
+            if (th == null) { 
+                th = new Thread(new ThreadStart(thread2));
+                th.IsBackground = true;
+            }
             th.Start();
             this.button1.Enabled = false;
             this.button2.Enabled = true;
@@ -88,7 +93,7 @@ namespace Calculation
                     catch (Exception e)
                     {
 
-                       // new Base_Log().Log("线程问题：" + e.Message);
+                        Base_Log.Log("线程问题：" + e.Message);
                     }
 
                 }
@@ -254,12 +259,14 @@ namespace Calculation
 
 
 
-        ~Service()
-　    { 
-　    // 为了保持代码的可读性性和可维护性,千万不要在这里写释放非托管资源的代码 
-　    // 必须以Dispose(false)方式调用,以false告诉Dispose(bool disposing)函数是从垃圾回收器在调用 析构函数 时调用的 
-   　    Dispose(false); 
-　    }
 
+        private void Service_FormClosed(object sender, FormClosedEventArgs e)
+        {
+           
+            if(th!=null&&th.IsAlive)
+            {
+                MessageBox.Show("线程还没关"); 
+            }
+        }
     }
 }
