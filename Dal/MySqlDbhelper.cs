@@ -1,4 +1,6 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Calculation.Base;
+using Calculation.Models.Models;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Calculation.Dal
 {
@@ -281,6 +284,30 @@ namespace Calculation.Dal
                     cmd.Parameters.Add(parm);
             }
         }
+
+
+        #region 分页处理
+        public static IPageList<T> GetPagedList<T>(string sql, MySqlParameter[] commandParameters, int pageSize, int pageNumber)
+    where T : Data_Item<T>, new()
+        {
+            int recordCount;
+            var dt = GetPagedTable(sql, commandParameters, pageSize, pageNumber, out recordCount);
+            var list = dt.AsEnumerable().ToArray().Select(i => { var t = new T(); t.ReadDataRow(i); return t; });
+            return new PageList<T>(list, pageNumber, pageSize, recordCount);
+        }
+
+        public static DataTable GetPagedTable(string sql, MySqlParameter[] commandParameters, int pageSize, int pageNumber, out int recordCount)
+        {
+            recordCount = 0;
+            int endIndex =  pageSize;
+            int startIndex = (pageNumber - 1) * pageSize;
+
+            string tmpSql = "select count(*) rcount from (" + sql + ") t1";
+            recordCount =ExecuteScalar(tmpSql, commandParameters).ints();
+            tmpSql = "select * from (" + sql + ") temp1 limit "+ startIndex + ","+ endIndex;
+            return GetDataSet(tmpSql, commandParameters).Tables[0];
+        }
+        #endregion
 
     }
 }

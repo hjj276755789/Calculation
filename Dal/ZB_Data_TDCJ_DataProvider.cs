@@ -111,7 +111,7 @@ namespace Calculation.Dal
                                                                             sjkzr, jjlc, cpqys, cyjpqy, dkwz, yt, xz, szb, dksz, xg,
                                                                             jdzt, zyd_m, zyd_wm, jsyd, rjl, kjtl_wf, kjtl_f, sytl, zztl, xm,
                                                                             sfhz, kpsj, bz, sfdd, cjzt, zdjzmd, ldl, jmxzyq, fkjz, xftj, 
-                                                                            sfxf, zc, gdf, gdsfcg,nf
+                                                                            sfxf, zichi, gdf, gdsfcg,nf,zc
                                                                             ) values ");
             string sql = "";
             foreach (DataRow item in dt.Rows)
@@ -125,7 +125,7 @@ namespace Calculation.Dal
                                                                             sjkzr, jjlc, cpqys, cyjpqy, dkwz, yt, xz, szb, dksz, xg,
                                                                             jdzt, zyd_m, zyd_wm, jsyd, rjl, kjtl_wf, kjtl_f, sytl, zztl, xm,
                                                                             sfhz, kpsj, bz, sfdd, cjzt, zdjzmd, ldl, jmxzyq, fkjz, xftj, 
-                                                                            sfxf, zc, gdf, gdsfcg,nf
+                                                                            sfxf, zichi, gdf, gdsfcg,nf,zc
                                                                             ) values ");
                 }
                 sb.Append(string.Format(@"('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}'
@@ -133,7 +133,7 @@ namespace Calculation.Dal
                                                 ,'{21}','{22}','{2}','{24}','{25}','{26}','{27}','{28}','{29}','{30}'
                                                 ,'{31}','{32}','{33}','{34}','{35}','{36}','{37}','{38}','{39}','{40}'
                                                 ,'{41}','{42}','{43}','{44}','{45}','{46}','{47}','{48}','{49}','{50}'
-                                                ,'{51}','{52}','{53}','{54}'),",
+                                                ,'{51}','{52}','{53}','{54}',{55}),",
                                                 item[0],
                                                 item[1],
                                                 item[2],
@@ -188,7 +188,8 @@ namespace Calculation.Dal
                                                 item[51],
                                                 item[52],
                                                 item[53],
-                                                nf.ToString()
+                                                nf.ToString(),
+                                                zc
                                                 ));
                 index++;
             }

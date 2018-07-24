@@ -46,6 +46,7 @@
     <Compile Include="Modelhelper.cs" />
     <Compile Include="Models\DataModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IPageList.cs" />
     <Compile Include="Models\ParamModels.cs" />
     <Compile Include="Models\RwModels.cs" />
     <Compile Include="Models\SResult.cs" />

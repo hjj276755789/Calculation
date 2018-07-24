@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calculation.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,9 @@ namespace Calculation.Models
 {
     public class Zb_Item_Model
     {
-        public int mbbh { get; set; }
+        public int mbid { get; set; }
         public string mbmc { get; set; }
+        public MB_Enums mblx { get; set; }
+        public MB_XFLX xflx { get; set; }
     }
 }

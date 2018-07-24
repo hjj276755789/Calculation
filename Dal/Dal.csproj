@@ -57,6 +57,7 @@
     <Compile Include="ZB_Data_RGSJ_DataProvider.cs" />
     <Compile Include="ZB_Data_TDCJ_DataProvider.cs" />
     <Compile Include="ZB_Data_XZYS_DataProvider.cs" />
+    <Compile Include="ZB_Param_JP_DataProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web操作类库\Web操作类库.csproj">

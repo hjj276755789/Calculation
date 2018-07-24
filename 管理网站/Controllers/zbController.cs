@@ -34,23 +34,24 @@ namespace 管理网站.Controllers
             return View();
         }
         [IdentityCheck]
-        public ActionResult zb_rwlb(int mbbh,string mbmc)
+        public ActionResult zb_rwlb(int mbid, string mbmc,MB_XFLX xflx)
         {
-            this.ViewBag.mbbh = mbbh;
+            this.ViewBag.mbid = mbid;
             this.ViewBag.mbmc = mbmc;
+            this.ViewBag.xflx = xflx;
             return View();
         }
         [IdentityCheck]
-        public PartialViewResult add_zbrw(int mbbh)
+        public PartialViewResult add_zbrw(int mbid)
         {
-            this.ViewBag.mbbh = mbbh;
+            this.ViewBag.mbid = mbid;
             return PartialView();
         }
 
-        public PartialViewResult add_cs(int mbbh,int rwid)
+        public PartialViewResult add_cs(int mbid, int rwid)
         {
 
-            this.ViewBag.data = Param_DataProvider.GET_MBCJCSLB(mbbh);
+            this.ViewBag.data = Param_DataProvider.GET_MBCJCSLB(mbid);
             this.ViewBag.rwid = rwid;
             return PartialView();
         }
@@ -67,17 +68,17 @@ namespace 管理网站.Controllers
         }
 
         [HttpPost]
-        public JsonResult get_zbrwlb(int mbbh, int pagesize, int pagenow)
+        public JsonResult get_zbrwlb(int mbid, int pagesize, int pagenow)
         {
-            var data = rwgl.GET_ZB_RWLB(mbbh, pagesize, pagenow).ToList();
+            var data = rwgl.GET_ZB_RWLB(mbid, pagesize, pagenow).ToList();
             return Json(data);
         }
 
         [HttpPost]
-        public JsonResult add_zbrw(string rwmc,int mbbh,int nf,int zc)
+        public JsonResult add_zbrw(string rwmc, int mbid, int nf, int zc)
         {
-            if(rwgl.Add_ZB(rwmc, mbbh, nf, zc))
-            return Json(SResult.Success);
+            if (rwgl.Add_ZB(rwmc, mbid, nf, zc))
+                return Json(SResult.Success);
             else
             {
                 return Json(SResult.Error("发布任务失败"));
@@ -85,11 +86,11 @@ namespace 管理网站.Controllers
 
         }
 
-        public JsonResult sc(int mbid,int nf,int zc)
+        public JsonResult sc(int mbid, int nf, int zc)
         {
-            string url = ConfigurationManager.AppSettings["SerPath"]+ "?mbid="+ mbid+"&nf="+nf+"&zc="+zc;
-            string sql = HttpHelper.GetResponseString( HttpHelper.HttpPost(url, null, 3000));
-            return Json(sql,JsonRequestBehavior.AllowGet);
+            string url = ConfigurationManager.AppSettings["SerPath"] + "?mbid=" + mbid + "&nf=" + nf + "&zc=" + zc;
+            string sql = HttpHelper.GetResponseString(HttpHelper.HttpPost(url, null, 3000));
+            return Json(sql, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult add_wzcs(int rwid, int csid, string csnr, int sfbl)
@@ -106,7 +107,7 @@ namespace 管理网站.Controllers
             return Json(SResult.Error("添加失败"));
 
         }
-        public JsonResult get_wzcs(int rwid,int csid)
+        public JsonResult get_wzcs(int rwid, int csid)
         {
             return Json(Param_DataProvider.GET_RWCSNR(rwid, csid));
         }
@@ -125,11 +126,11 @@ namespace 管理网站.Controllers
             int nf = Request.Form["nf"].ints();
             int zc = Request.Form["zc"].ints();
             string cjmc = Request.Form["cjmc"];
-            int rwid= Request.Form["rwid"].ints();
+            int rwid = Request.Form["rwid"].ints();
             int csid = Request.Form["csid"].ints();
             HttpPostedFileBase f = Request.Files["rgsj"];
-            string path = ConfigurationManager.AppSettings["ParamPath"]+nf+"\\"+zc+"\\"+ cjmc;
-            if(!Directory.Exists(path))
+            string path = ConfigurationManager.AppSettings["ParamPath"] + nf + "\\" + zc + "\\" + cjmc;
+            if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
@@ -148,7 +149,7 @@ namespace 管理网站.Controllers
         public JsonResult del_rw(int rwid)
         {
             if (rwgl.Del_ZB(rwid))
-                return Json( SResult.Success);
+                return Json(SResult.Success);
             else return Json(SResult.Error("删除失败"));
         }
 
@@ -158,8 +159,170 @@ namespace 管理网站.Controllers
         public FileStreamResult export(int rwid)
         {
             Rw_Item_Model rim = rwgl.GET_RWXQ(rwid);
-            
-            return File(new FileStream(rim.xzdz, FileMode.Open),  "application/octet-stream", Url.Encode(rim.rwmc+".pptx"));
+
+            return File(new FileStream(rim.xzdz, FileMode.Open), "application/octet-stream", Url.Encode(rim.rwmc + ".pptx"));
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// 周报—竞品
+    /// </summary>
+    public class jp_zbController : BaseController {
+        #region 页面
+        public ActionResult Index(int rwid)
+        {
+            RWGL_DataProvider rw = new RWGL_DataProvider();
+            this.ViewBag.rwxq = rw.GET_RWXQ(rwid);
+            return View();
+        }
+        /// <summary>
+        /// 本案竞争格局
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Bajzgj(int nf,int zc)
+        {
+            this.ViewBag.nf = nf;
+            this.ViewBag.zc = zc;
+            return View();
+        }
+        /// <summary>
+        /// 竞品竞争格局
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Set_Jpjzgj_Param(int id,int nf,int zc)
+        {
+            this.ViewBag.nf = nf;
+            this.ViewBag.zc = zc;
+            this.ViewBag.id = id;
+            return View();
+        }
+        /// <summary>
+        /// 管理竞品项目
+        /// </summary>
+        /// <param name="baid"></param>
+        /// <returns></returns>
+        public ActionResult Jpxm(int baid,int nf,int zc)
+        {
+            this.ViewBag.baid = baid;
+            this.ViewBag.nf = nf;
+            this.ViewBag.zc = zc;
+            return View();
+        }
+        /// <summary>
+        /// 选取竞争格局范围
+        /// </summary>
+        public PartialViewResult Jzgjfw(int baid)
+        {
+            this.ViewBag.baid = baid;
+            this.ViewBag.jzgjlb = ZB_Param_JP_DataProvider.GET_JPGJ();
+            return PartialView();
+        }
+        #endregion
+
+        #region 数据
+        public JsonResult cxjg(int nf,int zc,string[] zt,string [] qy,string [] lpmc,string [] yt,string [] xfyt,string [] hx,int? pagesize,int? pagenow)
+        {
+            IPageList<Data_Cjba_Default> list = null;
+            if(zt!=null|| qy != null || lpmc != null || yt != null || xfyt != null || hx != null) { 
+                JP_ParamValueModel param = new JP_ParamValueModel();
+                param.zt = zt;
+                param.qy = qy;
+                param.lpmc = lpmc;
+                param.yt = yt;
+                param.xfyt = xfyt;
+                param.hx = hx;
+                list = Param_DataProvider.GET_JP_CJBAXX(nf,zc,param, pagesize.HasValue? pagesize.Value:10, pagenow.HasValue?pagenow.Value:1);
+            }
+            else
+            {
+                list= Param_DataProvider.GET_JP_CJBAXX(nf,zc, pagesize.HasValue ? pagesize.Value : 10, pagenow.HasValue ? pagenow.Value : 1);
+            }
+            var s = new
+            {
+                pagenow = list.PageNumber,
+                datacount = list.TotalPageCount,
+                data = list
+            };
+            return Json(s);
+
+
+        }
+
+        public JsonResult add_ba(int rwid,string bamc)
+        {
+            if (Param_DataProvider.ADD_JP_BA(rwid, bamc))
+                return Json(SResult.Success);
+            else return Json(SResult.Error("添加失败"));
+        }
+        public JsonResult get_ba(int rwid)
+        {
+            return Json(Param_DataProvider.GET_JP_BA(rwid));
+        }
+        public JsonResult del_ba(int id)
+        {
+            if (Param_DataProvider.DEL_JP_BA(id))
+                return Json(SResult.Success);
+            else return Json(SResult.Error("删除失败"));
+        }
+        public JsonResult save_jpxmcs(string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx,int id)
+        {
+            if (zt != null || qy != null || lpmc != null || yt != null || xfyt != null || hx != null)
+            {
+                JP_ParamValueModel param = new JP_ParamValueModel();
+                param.zt = zt;
+                param.qy = qy;
+                param.lpmc = lpmc;
+                param.yt = yt;
+                param.xfyt = xfyt;
+                param.hx = hx;
+
+                if (Param_DataProvider.SAVE_JP_JPXMCS(id, param))
+                    return Json(SResult.Success);
+                else return Json(SResult.Error("保存失败"));
+            }
+            else
+            { return Json(SResult.Error("竞品参数为空")); }
+           
+        }
+
+        public JsonResult save_baxmcs(string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx, int id)
+        {
+            if (zt != null || qy != null || lpmc != null || yt != null || xfyt != null || hx != null)
+            {
+                JP_ParamValueModel param = new JP_ParamValueModel();
+                param.zt = zt;
+                param.qy = qy;
+                param.lpmc = lpmc;
+                param.yt = yt;
+                param.xfyt = xfyt;
+                param.hx = hx;
+
+                if (Param_DataProvider.SAVE_JP_BAXMCS(id, param))
+                    return Json(SResult.Success);
+                else return Json(SResult.Error("保存失败"));
+            }
+            else
+            { return Json(SResult.Error("竞品参数为空")); }
+
+        }
+        /// <summary>
+        /// 获取竞品项目
+        /// </summary>
+        /// <param name="baid"></param>
+        /// <returns></returns>
+        public JsonResult get_jpxm(int baid)
+        {
+            var T = Param_DataProvider.GET_JP_JPXM(baid);
+            return Json(T);
+        }
+
+        public JsonResult add_jpxm(int baid,int jzgjid)
+        {
+            if (Param_DataProvider.add_jp_jpxm(baid, jzgjid))
+                return Json(SResult.Success);
+            else return Json(SResult.Error("添加失败"));
+
         }
         #endregion
     }

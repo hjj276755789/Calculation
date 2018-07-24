@@ -8,10 +8,6 @@ using System.Threading.Tasks;
 
 namespace Calculation.Models.Models
 {
-    public class DataModels
-    {
-
-    }
 
     public class Data_JHSQXQ
     {
@@ -32,4 +28,29 @@ namespace Calculation.Models.Models
         public Int64 tdcj { get; set; }
         public Int64 rgsj { get; set; }
     }
+
+
+
+    public class Data_Cjba_Default : Data_Item<Data_Cjba_Default>
+    {
+        public int id {get; set; }
+        public string cjrq { get; set; }
+        public string qy { get; set; }
+        public string zt { get; set; }
+        public string kfs { get; set; }
+        public string lpmc { get; set; }
+        public string yt { get; set; }
+        public string xfyt { get; set; }
+        public string hx { get; set; }
+        public  double jzmj { get; set; }
+        public  double tnmj { get; set; }
+        public long cjje { get; set; } 
+        public int ts { get; set; }
+        public int nf { get; set; }
+        public int zc { get; set; }
+        public string zcmc { get; set; }
+    }
+
+
+    
 }

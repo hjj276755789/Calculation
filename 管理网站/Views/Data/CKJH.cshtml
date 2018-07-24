@@ -19,6 +19,7 @@
 
 @section scripts{
     <script>
+    var t = new Table_bs($('#rwxq'));
     function Table_bs($box) {
 
         var _init_bit = false;
@@ -77,6 +78,12 @@
             }
             _box.find('tbody').append($(html_tbody));
         }
+        this.reflush = function (option) {
+            _box.empty();
+            this.init();
+            //option.data = [];
+            //this.load(option);
+        }
     }
 
     function cleardata()
@@ -89,16 +96,17 @@
         colNames: ['选择', "任务年份", "任务周次","周次名称", "成交记录", "新增预售", "土地交易", "认购数据","上传数据"],
         data: []
     }
-
-    $(function () {
-        var t = new Table_bs($('#rwxq'));
-
+  
+    $(function () {       
+        init1();
+    });
+    function init1() {
         $.ajax({
             url: "/data/get_rwxq",
-            data: { "nf":2018 },
-            type:"post",
+            data: { "nf": 2018 },
+            type: "post",
             success: function (data) {
-                var d =[];
+                var d = [];
                 for (var i = 0; i < data.length; i++) {
                     d.push(['<input type="checkbox">',
                         data[i].nf, data[i].zc, data[i].zcmc,
@@ -112,15 +120,23 @@
                 t.load(option);
             }
         })
+    }
 
+    $('#custom-width-modal').on('hide.bs.modal', function () {
+        t.reflush(option);
+        init1();
     });
-    function Get_Data_CJJL(a)
-    {
+
+
+
+
+
+    function Get_Data_CJJL(a) {
         if (a != 0) {
             return a;
         }
         else {
-           return "<a href='#' class='btn btn-link red'>无数据</a>"
+            return "<a href='#' class='btn btn-link red'>无数据</a>"
         }
     }
     function Get_Data_XZYS(a) {

@@ -429,6 +429,7 @@
     <Content Include="Scripts\Moltran\moment.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\Moltran\MyTables.js" />
     <Content Include="Scripts\Moltran\sweetalert.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -527,6 +528,11 @@
     <Content Include="Views\Sys\add_yhxx.cshtml" />
     <Content Include="Views\Sys\jsgl.cshtml" />
     <Content Include="Views\yb\Index.cshtml" />
+    <Content Include="Views\jp_zb\Index.cshtml" />
+    <Content Include="Views\jp_zb\Bajzgj.cshtml" />
+    <Content Include="Views\jp_zb\Set_Jpjzgj_Param.cshtml" />
+    <Content Include="Views\jp_zb\Jzgjfw.cshtml" />
+    <Content Include="Views\jp_zb\Jpxm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

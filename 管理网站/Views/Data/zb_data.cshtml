@@ -87,7 +87,14 @@
                 type: "post",
                 
                 success: function (data) {
-                    alert(data);
+                    if(data.IsSuccessfull)
+                    {
+                        alert("上传成功");
+                    }
+                    else
+                    {
+                        alert("上传失败");
+                    }
                 }
             })
         }

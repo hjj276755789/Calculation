@@ -27,11 +27,11 @@ namespace Calculation.Dal
         /// <returns></returns>
         public static int SET_BBCJ(List<string> cjbh)
         {
-            string sql = "delete from calculation.xtgl_bbmbcj where mbbh = 1 ";
+            string sql = "delete from calculation.xtgl_bbmbcj where bmbh = 1 ";
             
             MySqlDbhelper.ExecuteNonQuery(sql);
 
-            StringBuilder sql1 = new StringBuilder(@"insert into calculation.xtgl_bbmbcj (mbbh,cjbh,px) values ");
+            StringBuilder sql1 = new StringBuilder(@"insert into calculation.xtgl_bbmbcj (bmbh,cjbh,px) values ");
 
             for (int i = 0; i < cjbh.Count; i++)
             {
@@ -46,13 +46,13 @@ namespace Calculation.Dal
         /// 通过报表编号获取插件列表
         /// </summary>
         /// <returns></returns>
-        public static DataTable GET_CJLB_BB(int bbbh)
+        public static DataTable GET_CJLB_BB(int mbid)
         {
             string sql = @"select a.mbmc,b.px,c.cjbh,c.cjmc,c.cjdz,c.cjps,c.cjclass,c.cjmethod,c.sfsx 
                             from calculation.xtgl_bbmb a, calculation.xtgl_bbmbcj b, calculation.xtgl_bbcjb c 
-                            where a.mbbh =b.mbbh and b.cjbh =c.cjbh and a.mbbh=@mbbh order by px
+                            where a.mbid =b.mbid and b.cjbh =c.cjbh and a.mbid=@mbid order by px
                                 ";
-            MySqlParameter[] p = { new MySqlParameter("mbbh", bbbh) };
+            MySqlParameter[] p = { new MySqlParameter("mbid", mbid) };
             return MySqlDbhelper.GetDataSet(sql,p).Tables[0];
         }
 

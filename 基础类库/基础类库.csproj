@@ -85,6 +85,7 @@
     <Compile Include="Base_Extends.cs" />
     <Compile Include="Base_IdHelper.cs" />
     <Compile Include="Base_Log.cs" />
+    <Compile Include="Data_Item.cs" />
     <Compile Include="Office_AsposeSlideCrack.cs" />
     <Compile Include="Office_Charts.cs" />
     <Compile Include="Office_ChartStyle.cs" />

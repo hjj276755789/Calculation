@@ -59,4 +59,55 @@ namespace Calculation.Models.Models
         public string csnr { get; set; }
 
     }
+
+    public class JP_ParamValueModel
+    {
+        public string[] zt { get; set; }
+        public string [] qy { get; set; }
+        public string[] lpmc { get; set; }
+        public string[] yt { get; set; }
+        public string[] xfyt { get; set; }
+        public string[] hx { get; set; }
+    }
+    /// <summary>
+    /// 竞品-本案
+    /// </summary>
+    public class JP_BA
+    {
+        public int rwid { get; set; }
+        public int id { get; set; }
+        public string bamc { get; set; }
+        public string ztcs { get; set; }
+        public string qycs { get; set; }
+        public string lpcs { get; set; }
+        public string ytcs { get; set; }
+        public string xfytcs { get; set; }
+        public string hxcs { get; set; }
+    }
+    /// <summary>
+    /// 竞品-竞品项目
+    /// </summary>
+    public class JP_JPXM
+    {
+        public int id { get; set; }
+        public int baid { get; set; }
+        public int jzgjid { get; set; }
+        public string jzgjmc { get; set; }
+        public string ztcs { get; set; }
+        public string qycs { get; set; }
+        public string lpcs { get; set; }
+        public string ytcs { get; set; }
+        public string xfytcs { get; set; }
+        public string hxcs { get; set; }
+    }
+
+    /// <summary>
+    /// 竞品-竞争格局
+    /// </summary>
+    public class JP_JZGJ
+    {
+        public int id { get; set; }
+        public string jzgjmc { get; set; }
+        public int px { get; set; }
+    }
 }

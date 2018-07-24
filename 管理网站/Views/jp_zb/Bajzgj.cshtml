@@ -1,0 +1,292 @@
+﻿
+@{
+    ViewBag.Title = "Bajzgj";
+}
+<style>
+    .param {
+        margin-top: 5px;
+    }
+
+    .param_value_item {
+        margin-left: 5px;
+        margin-right: 5px;
+        padding: 5px;
+        background-color: #272c35;
+        line-height: 35px;
+        color: white;
+        border-radius: 2px;
+    }
+
+        .param_value_item i {
+            margin-left: 5px;
+        }
+</style>
+
+
+<div class="row">
+    <div><h4>本案格局</h4></div>
+    <div>
+        <input type="button" class="btn btn-danger" value="保存本案格局" id="btn_sub" />
+        <a class="btn btn-primary waves-effect waves-light" onclick="javascript:history.back(-1);" >返回</a>
+    </div>
+</div>
+<DIV tabindex="-1" class="modal fade" id="jzgj" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+<div>
+    <div class="row param">
+        <div class="col-lg-3">
+            <input type="text" id="ztmc" class="form-control col-sm-9" placeholder="组团名称" /><input type="button" value="搜索" onclick="add('ztmc')" class="btn btn-danger" />
+        </div>
+        <div class="col-lg-9" id="ztmc_param">
+
+        </div>
+
+    </div>
+    <div class="row param">
+        <div class="col-lg-3">
+            <input type="text" id="qymc" class="form-control col-sm-9" placeholder="区域名称" /><input type="button" value="搜索" onclick="add('qymc')" class="btn btn-danger" />
+        </div>
+        <div class="col-lg-9" id="qymc_param">
+
+        </div>
+    </div>
+    <div class="row param">
+        <div class="col-lg-3">
+            <input type="text" id="lpmc" class="form-control col-sm-9" placeholder="楼盘名称" /><input type="button" value="搜索" onclick="add('lpmc')" class="btn btn-danger" />
+        </div>
+        <div class="col-lg-9" id="lpmc_param">
+
+        </div>
+    </div>
+    <div class="row param">
+        <div class="col-lg-3">
+            <input type="text" id="ytmc" class="form-control  col-sm-9" placeholder="业态" /><input type="button" value="搜索" onclick="add('ytmc')" class="btn btn-danger" />
+        </div>
+        <div class="col-lg-9" id="ytmc_param">
+        </div>
+    </div>
+
+    <div class="row param">
+        <div class="col-lg-3"><input type="text" id="xfyt" class="form-control  col-sm-9  col-lg-9" placeholder="细分业态" /><input type="button" value="搜索" onclick="add('xfyt')" class="btn btn-danger" /></div>
+        <div class="col-lg-9" id="xfyt_param"></div>
+    </div>
+
+    <div class="row param">
+        <div class="col-lg-3"><input type="text" id="hxmc" class="form-control  col-sm-9  col-lg-9" placeholder="户型" /><input type="button" value="搜索" onclick="add('hxmc')" class="btn btn-danger" /></div>
+        <div class="col-lg-9" id="hxmc_param"></div>
+    </div>
+
+</div>
+<div class="table row" id="cjsj">
+
+</div>
+
+
+@section scripts{
+    <script>
+        var zt = [];
+        var qy = [];
+        var lpmc = [];
+        var yt = [];
+        var xfyt = [];
+        var hx = [];
+        var nf= @this.ViewBag.nf;
+        var zc= @this.ViewBag.zc;
+        function add(a) {
+            var d = $("#" + a).val();
+            if (d!=null&d!=""&d!=undefined) {
+                $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + $("#" + a).val() + "<i class='md md-clear'></i></a>");
+                switch (a) {
+                    case 'ztmc': { zt.push($("#" + a).val()); }; break;
+                    case 'qymc': { qy.push($("#" + a).val()); }; break;
+                    case 'lpmc': { lpmc.push($("#" + a).val()); }; break;
+                    case 'ytmc': { yt.push($("#" + a).val()); }; break;
+                    case 'xfyt': { xfyt.push($("#" + a).val()); }; break;
+                    case 'hxmc': { hx.push($("#" + a).val()); }; break;
+                }
+                option.pagenow = 0;
+                init2();
+            }
+            else
+            {
+                alert("请填内容！")
+            }
+
+        }
+        function del(a, b) {
+            document.getElementById(a + "_param").removeChild(b);
+            switch (a) {
+                case 'ztmc': { zt.splice(zt.indexOf(b.value), 1); }; break;
+                case 'qymc': { qy.splice(zt.indexOf(b.value), 1); }; break;
+                case 'lpmc': { lpmc.splice(zt.indexOf(b.value), 1); }; break;
+                case 'ytmc': { yt.splice(zt.indexOf(b.value), 1); }; break;
+                case 'xfyt': { xfyt.splice(zt.indexOf(b.value), 1); }; break;
+                case 'hxmc': { hx.splice(zt.indexOf(b.value), 1); }; break;
+            }
+            option.pagenow = 0;
+            init2();
+        }
+
+
+        var table = new Table_bs($('#cjsj'));
+        function cleardata(a) {
+            $(a).on("hidden.bs.modal", function () {
+                $(this).removeData("bs.modal");
+            });
+
+        }
+        function Table_bs($box) {
+
+            var _init_bit = false;
+            var _box = $box;
+
+            this.init = function () {
+
+                _box.addClass('table-responsive');
+
+                var html = '';
+                html += '<table class="table table-bordered " style="text-align: center; ">';
+                html += '<thead style="font-weight: bold;">';
+                // html += '<tr>';
+                // html += '</tr>';
+                html += '</thead>';
+                html += '<tbody>';
+                // html += '<tr>';
+                // html += '</tr>';
+                html += '</tbody>';
+                html += '</table>';
+
+                _box.append($(html));
+
+                _init_bit = true;
+            }
+            this.load = function (option) {
+
+                if (!_init_bit) {
+                    this.init();
+                }
+
+                // 表头
+                var thead = option.colNames;
+
+                var html_thead = '';
+                html_thead += '<tr>';
+                for (var i = 0; i < thead.length; i++) {
+                    html_thead += '<td>' + thead[i] + '</td>';
+                }
+                html_thead += '</tr>';
+
+                _box.find('thead').append($(html_thead));
+
+                // 表身
+                var tbody = option.data;
+                var html_tbody = '';
+
+                for (var j1 = 0; j1 < tbody.length; j1++) {
+                    var buff = tbody[j1];
+
+                    html_tbody += '<tr>';
+                    for (var j2 = 0; j2 < buff.length; j2++) {
+                        html_tbody += '<td>' + buff[j2] + '</td>';
+                    }
+                    html_tbody += '</tr>';
+                }
+                _box.find('tbody').append($(html_tbody));
+                var html_page = "";
+                html_page += "<ul class='pagination'><li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>上一页</a></li>";
+                html_page += "<li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>" + option.datacount + "</a></li>";
+
+                html_page += "<li tabindex='0' class='paginate_button next' id='datatable-fixed-header_next' aria-controls='datatable-fixed-header'><a href='#'>下一页</a></li></ul>";
+                _box.find('tbody').append((html_page));
+            }
+            this.reflush = function (option) {
+                _box.empty();
+                this.init();
+                //option.data = [];
+                //this.load(option);
+            }
+        }
+
+
+
+        var option = {
+            colNames: ['成交日期', "区域", "组团", "开发商", "楼盘名称", "业态", "细分业态", "户型", "建筑面积", "套内面积", "成交金额", "套数"],
+            data: [
+
+            ],
+            pagenow :1,
+            pagesize: 50,
+            datacount :0,
+        }
+
+        $(function () {
+            init1();
+        });
+
+        function pre()
+        {
+            if(option.pagenow>1)
+            {
+                option.pagenow -= 1;
+                init2();
+            }
+        }
+        function next() {
+            if ((option.pagenow+1)*option.pagesize>option.datacount) {
+                option.pagenow -= 1;
+                init2();
+            }
+        }
+        function init2() {
+
+            var data = { 'nf':nf,'zc':zc,'zt': zt, 'qy': qy, 'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx ,'pagenow':option.pagenow,'pagesize':option.pagesize};
+            $.ajax({
+                url: "/jp_zb/cxjg",
+                data: data,
+                type: "post",
+                success: function (data) {
+                    var d = [];
+                    for (var i = 0; i < data.data.length; i++) {
+                        d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, ]);
+                    };
+                    option.data = d;
+                    option.datacount = data.datacount;
+                    option.pagenow = data.pagenow;
+                    table.reflush(option);
+                    table.load(option);
+                }
+            })
+        }
+        function init1() {
+            var data = {'nf':nf,'zc':zc, 'zt': zt, 'qy': qy, 'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx ,'pagenow':option.pagenow,'pagesize':option.pagesize};
+            $.ajax({
+                url: "/jp_zb/cxjg",
+                data: data,
+                type: "post",
+                success: function (data) {
+                    var d = [];
+                    for (var i = 0; i < data.data.length; i++) {
+                        d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, ]);
+                    };
+                    option.data = d;
+                    option.data = d;
+                    option.datacount = data.datacount;
+                    option.pagenow = data.pagenow;
+                    table.reflush(option);
+                    table.load(option);
+                }
+            })
+
+        }
+    </script>
+}

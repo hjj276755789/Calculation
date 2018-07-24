@@ -13,6 +13,9 @@ namespace Calculation.Models
         public string rwmc { get; set; }
         public int nf { get; set; }
         public int zc { get; set; }
+        /// <summary>
+        ///  下载地址
+        /// </summary>
         public string xzdz { get; set; }
     }
 

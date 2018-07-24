@@ -23,6 +23,10 @@ namespace Calculation.JS
             Cache_Result_zb.ini();
            // Cache_param_zb.ini_zb();
         }
+
+        #region 铭腾版插件
+
+        
         public ISlideCollection plus1(string str, int cjbh)
         {
             return new Presentation(str).Slides;
@@ -1085,6 +1089,23 @@ namespace Calculation.JS
         {
             return new Presentation(str).Slides;
         }
+        #endregion
+
+        #region 竞品插件
+        #region 复地
+        /// <summary>
+        /// 复地竞品插件
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="cjbh"></param>
+        /// <returns></returns>
+        public ISlideCollection _plus_jp_fudi(string str, int cjbh)
+        {
+            Cache_data_cjjl.bz.Select("");
+            return new Presentation(str).Slides;
+        }
+        #endregion
+        #endregion
 
     }
 }

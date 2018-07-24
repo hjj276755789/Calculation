@@ -1,0 +1,191 @@
+﻿
+@{
+    ViewBag.Title = "Jpjzgj";
+}
+<div class="row">
+    <a class="btn btn-danger waves-effect waves-light" href="/jp_zb/Jzgjfw?baid=@this.ViewBag.baid" data-toggle="modal" data-target="#add_jzxm" onclick="cleardata('#fbrw')">添加竞争项目 </a>
+    <a class="btn btn-primary waves-effect waves-light text-right" onclick="javascript:history.back(-1);">返回</a>
+</div>
+<div class="table row" id="jpxm">
+
+</div>
+<DIV tabindex="-1" class="modal fade" id="add_jzxm" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" >
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+@section scripts{
+    <script>
+        var baid=@this.ViewBag.baid;
+        var nf= @this.ViewBag.nf;
+        var zc= @this.ViewBag.zc;
+            
+        function add()
+        {
+            var bamc = $("#bamc").val();
+            if(bamc)
+            {
+                $.ajax({
+                    url: "/jp_zb/add_ba",
+                    data: {'rwid':rwid,'bamc':bamc},
+                    type: "post",
+                    success: function (data) {
+                        if (data.IsSuccessful) {
+                            alert("添加成功");
+                            table.reflush(option);
+                            init1();
+                        }
+                        else alert(data.ErrMsg);
+
+                    }
+                })
+            }
+            else alert("请填写本案项目名称");
+        }
+        function del(a)
+        {
+
+            $.ajax({
+                url: "/jp_zb/del_ba",
+                data: {'id':a},
+                type: "post",
+                success: function (data) {
+                    if (data.IsSuccessful) {
+                        alert("删除成功");
+                        table.reflush(option);
+                        init1();
+                    }
+                    else alert(data.ErrMsg);
+
+                }
+            })
+
+        }
+        var table = new Table_bs($('#jpxm'));
+        function cleardata(a) {
+            $(a).on("hidden.bs.modal", function () {
+                $(this).removeData("bs.modal");
+            });
+
+        }
+        function Table_bs($box) {
+
+            var _init_bit = false;
+            var _box = $box;
+
+            this.init = function () {
+
+                _box.addClass('table-responsive');
+
+                var html = '';
+                html += '<table class="table table-bordered " style="text-align: center; ">';
+                html += '<thead style="font-weight: bold;">';
+                // html += '<tr>';
+                // html += '</tr>';
+                html += '</thead>';
+                html += '<tbody>';
+                // html += '<tr>';
+                // html += '</tr>';
+                html += '</tbody>';
+                html += '</table>';
+
+                _box.append($(html));
+
+                _init_bit = true;
+            }
+            this.load = function (option) {
+
+                if (!_init_bit) {
+                    this.init();
+                }
+
+                // 表头
+                var thead = option.colNames;
+
+                var html_thead = '';
+                html_thead += '<tr>';
+                for (var i = 0; i < thead.length; i++) {
+                    html_thead += '<td>' + thead[i] + '</td>';
+                }
+                html_thead += '</tr>';
+
+                _box.find('thead').append($(html_thead));
+
+                // 表身
+                var tbody = option.data;
+                var html_tbody = '';
+
+                for (var j1 = 0; j1 < tbody.length; j1++) {
+                    var buff = tbody[j1];
+
+                    html_tbody += '<tr>';
+                    for (var j2 = 0; j2 < buff.length; j2++) {
+                        html_tbody += '<td>' + buff[j2] + '</td>';
+                    }
+                    html_tbody += '</tr>';
+                }
+                _box.find('tbody').append($(html_tbody));
+                if(option.hasPage){
+                    var html_page = "";
+                    html_page += "<ul class='pagination'><li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>上一页</a></li>";
+                    html_page += "<li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>" + option.datacount + "</a></li>";
+
+                    html_page += "<li tabindex='0' class='paginate_button next' id='datatable-fixed-header_next' aria-controls='datatable-fixed-header'><a href='#'>下一页</a></li></ul>";
+                    _box.find('tbody').append((html_page));
+                }
+            }
+            this.reflush = function (option) {
+                _box.empty();
+                this.init();
+                //option.data = [];
+                //this.load(option);
+            }
+        }
+
+
+
+        var option = {
+            colNames: ["编号", '竞品本案名称', '区域', '组团', '楼盘', '业态', '细分业态', '户型', '设置参数',"操作"],
+            data: [
+
+            ],
+            hasPage :false
+        }
+
+        $(function () {
+            init1();
+        });
+
+
+        function init1() {
+            var data = {'baid':baid};
+            $.ajax({
+                url: "/jp_zb/get_jpxm",
+                data: data,
+                type: "post",
+                success: function (data) {
+                    var d = [];
+                    for (var i = 0; i < data.length; i++) {
+                        d.push([data[i].id, data[i].jzgjmc, data[i].qycs, data[i].ztcs, data[i].lpcs, data[i].ytcs, data[i].xfytcs, data[i].hxcs,
+                            '<a class="btn btn-link" href="/jp_zb/Set_Jpjzgj_Param?id='+data[i].id+'&nf='+nf+'&zc='+zc+'">设置参数</a>', ' <a class="btn btn-link" onclick="del(' + data[i].id + ')">删除</a>']);
+                    };
+                    option.data = d;
+                    table.reflush(option);
+                    table.load(option);
+                }
+            })
+
+        }
+        $('#add_jzxm').on('hide.bs.modal', function () {
+            table.reflush(option);
+            init1();
+        });
+    </script>
+}

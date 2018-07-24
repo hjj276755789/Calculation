@@ -142,9 +142,9 @@ namespace 管理网站.Controllers
 
         #region 周报
 
-        public PartialViewResult zb_data(int nf,int zc)
+        public PartialViewResult zb_data(int rwid,int nf,int zc)
         {
-            this.ViewBag.rcd = rw.GET_RWZT(nf, zc);
+            this.ViewBag.rcd = rw.GET_RWZT(rwid,nf, zc);
             this.ViewBag.data = data.GET_JHXQ(nf,zc);
             return PartialView();
         }

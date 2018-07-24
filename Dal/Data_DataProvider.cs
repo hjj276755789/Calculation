@@ -31,7 +31,7 @@ case when t5.sl is not null then t5.sl else 0 end rgsj  from  calculation. xtgl_
 left join (select nf,zc,count(*) sl from calculation.xtgl_data_zb_cjba  group by nf,zc) t2 on t1.nf=t2.nf and t1.zc =t2.zc
 left join (select nf,zc,count(*) sl from calculation.xtgl_data_zb_xzys  group by nf,zc) t3 on t1.nf=t3.nf and t1.zc =t3.zc
 left join (select nf,zc,count(*) sl from calculation.xtgl_data_zb_tdcj  group by nf,zc) t4 on t1.nf=t4.nf and t1.zc =t4.zc
-left join (select nf,zc,count(*) sl from calculation.xtgl_data_zb_rgsj  group by nf,zc) t5 on t1.nf=t4.nf and t1.zc =t4.zc
+left join (select nf,zc,count(*) sl from calculation.xtgl_data_zb_rgsj  group by nf,zc) t5 on t1.nf=t5.nf and t1.zc =t5.zc
  where t1.nf = @nf
  order by t1.nf,t1.zc
 ";

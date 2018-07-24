@@ -26,6 +26,7 @@ namespace Calculation
         public Service()
         {
             InitializeComponent();
+            init();
         }
         private static bool islistening = false;
         private static HttpListener listerner;
@@ -124,12 +125,10 @@ namespace Calculation
                 //使用Writer输出http响应代码,UTF8格式
                 using (StreamWriter writer = new StreamWriter(ctx.Response.OutputStream, Encoding.UTF8))
                 {
-                    writer.Write(SResult.Success);
 
                     Thread th = new Thread(new ParameterizedThreadStart(tt));
                     th.Start(dt);
-
-                    writer.Write("任务已经启动！");
+                    writer.Write("{ isSucessfull: true,Msg=任务已经启动}");
                     writer.Close();
                     ctx.Response.Close();
 

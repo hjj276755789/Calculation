@@ -4,7 +4,7 @@
 }
 
 <div>
-    <input type="hidden" name="mbbh" class="form-control" value="@this.ViewBag.mbbh" id="mbbh" />
+    <input type="hidden" name="mbid" class="form-control" value="@this.ViewBag.mbid" id="mbid" />
     <input type="text" class="form-control" placeholder="任务名称" name="rwmc" id="rwmc" />
     <input type="text" class="form-control" placeholder="年份" name="nf" id="nf" />
     <input type="text" class="form-control" placeholder="周次" name="zc" id="zc" />
@@ -16,7 +16,7 @@
         $.ajax({
             url: "/zb/add_zbrw",
             type: "post",
-            data: { mbbh: $("#mbbh").val(), rwmc: $("#rwmc").val(), nf: $("#nf").val(), zc: $("#zc").val() },
+            data: { mbid: $("#mbid").val(), rwmc: $("#rwmc").val(), nf: $("#nf").val(), zc: $("#zc").val() },
             success: function (data) {
                 if (data.IsSuccessful) {
                     

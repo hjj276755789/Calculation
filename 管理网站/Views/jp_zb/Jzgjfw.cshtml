@@ -1,0 +1,53 @@
+﻿@using Calculation.Models.Models
+@{
+    ViewBag.Title = "Jzgjfw";
+}
+
+<div class="graphicdesign illustrator photography" >
+    <div class="gal-detail thumb">
+        <input type="hidden" value="@this.ViewBag.baid" name="baid" id="baid" />
+        <div class="row">
+            <select class="selectpicker form-control" multiple data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true" id="jzgjid">
+                <optgroup label="选择竞争格局">
+                    @{
+                        List<JP_JZGJ> list = this.ViewBag.jzgjlb as List<JP_JZGJ>;
+                        foreach (var item in list)
+                        {
+                            <option value="@item.id">@item.jzgjmc</option>
+                        }
+                    }
+                </optgroup>
+            </select>
+        </div>
+        <div class="row">
+            <button onclick="sub()" class="btn btn-primary ">确定</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function sub()
+    {
+        var o = $("#jzgjid").val();
+        if (o)
+        {
+            $.ajax({
+                url: "/jp_zb/add_jpxm",
+                type: "post",
+                data: { baid:$("#baid").val() , jzgjid: o },
+                success: function (data) {
+                    if (data.IsSuccessful) {
+
+                        $('#add_jzxm').modal('hide');
+                    }
+                    else {
+                        alert(data.ErrMsg);
+                    }
+                }
+            })
+        }
+        else
+            alert("请选择竞争格局");
+    }
+</script>

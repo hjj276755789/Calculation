@@ -3,10 +3,24 @@
     ViewBag.Title = "Index";
 
 }
-<div id="zblb" style="width: 90%; margin: 20px;"></div>
+
+    <div class="row" style="width: 90%; margin: 20px;">
+            <input type="text" id="mbmc" class="form-control" /><input type="button" value="收索" onclick="search()" class="btn btn-danger" />
+    </div>
+
+<div id="zblb" style="width: 90%; margin: 20px;">
+
+</div>
+
 
 @section scripts{
 <script>
+    function search()
+    {
+        alert($('#mbmc').val());
+    }
+
+
     function Table_bs($box) {
 
         var _init_bit = false;
@@ -67,14 +81,12 @@
         }
     }
 
-
-    // ['<input type="checkbox">', '168', '强化数学1下', '纯视频（16:9）', '50', '在线2016-07-05', '收费', '<div class="btn-group btn-group-xs"><button type="button" class="btn btn-info" data-event="edit"><span class="glyphicon glyphicon-edit"></span></button></div>', '<a href="#" data-event="add_child">学员听课</a>/<a href="#" data-event="add_child">管理员听课</a>'],
-
     var option = {
         colNames: ['选择',"模板编号","模板名称","操作"],
         data: [
            
         ]
+        
     }
 
     $(function () {
@@ -87,7 +99,7 @@
             success: function (data) {
                 var d =[];
                 for (var i = 0; i < data.length; i++) {
-                    d.push(['<input type="checkbox">', data[i].mbbh, data[i].mbmc, '<a class="btn btn-primary waves-effect waves-light" href="/zb/zb_rwlb?mbbh=' + data[i].mbbh + '&mbmc=' + data[i].mbmc + '">发起任务</a>']);
+                    d.push(['<input type="checkbox">', data[i].mbid, data[i].mbmc, '<a class="btn btn-primary waves-effect waves-light" href="/zb/zb_rwlb?mbid=' + data[i].mbid + '&mbmc=' + data[i].mbmc + '&xflx=' + data[i].xflx + '">发起任务</a>']);
                 }
                 option.data = d;
                 t.load(option);

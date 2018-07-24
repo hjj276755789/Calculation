@@ -49,4 +49,12 @@ namespace Calculation.Models.Enums
         默认账号=1,
         普通账号=2
     }
+    /// <summary>
+    /// 模板细分类型
+    /// </summary>
+    public enum MB_XFLX
+    {
+        主模板=1,
+        竞品模板=2
+    }
 }
