@@ -12,6 +12,7 @@ namespace Calculation.Dal
     {
         public int ADD_JH(int nf,List<int> zc)
         {
+            
             StringBuilder sb = new StringBuilder("insert into  calculation. xtgl_sjrwjhb (nf,zc) values ");
             string sql = "";
             foreach (int item in zc)
@@ -19,7 +20,7 @@ namespace Calculation.Dal
                 sb.Append(string.Format(@"('{0}','{1}'),", nf, item));
             }
             sql = sb.ToString();
-             return MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
+            return MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
         }
         public List<Data_JHSQXQ> GET_JHXQ(int nf)
         {

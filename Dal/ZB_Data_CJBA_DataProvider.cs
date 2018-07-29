@@ -36,10 +36,26 @@ namespace Calculation.Dal
                 index++;
             }
             sql = sb.ToString();
-            return MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
+            if (remove("xtgl_data_zb_cjba", nf, zc) != -1)
+                return MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
+            else return 0;
         }
 
+        public static int remove(string bm ,int nf,int zc)
+        {
+            try
+            {
+                string sql = "delete from " + bm + " where nf=@nf and zc=@zc";
+                MySqlParameter[] p = { new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
+                return MySqlDbhelper.ExecuteNonQuery(sql, p);
+            }
+            catch (Exception)
+            {
 
+                return -1;
+            }
+            
+        }
 
         public static int index = 0;
         public static int count = 0;

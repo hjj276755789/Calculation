@@ -251,9 +251,15 @@ namespace Calculation.Base
             ////设置第二个系列表
             IChartSeries series2 = t1.ChartData.Series[2];
             series2.PlotOnSecondAxis = true;
+            series2.Type = ChartType.LineWithMarkers;
             series2.Type = ChartType.StackedLineWithMarkers;
             series2.Labels.DefaultDataLabelFormat.ShowValue = true;
             series2.Labels.DefaultDataLabelFormat.Position = LegendDataLabelPosition.Top;
+
+            series2.Labels.DefaultDataLabelFormat.Format.Fill.FillType = FillType.Solid;
+            series2.Labels.DefaultDataLabelFormat.Format.Fill.SolidFillColor.Color = System.Drawing.Color.White;
+            series2.Labels.DefaultDataLabelFormat.TextFormat.PortionFormat.FillFormat.FillType = FillType.Solid;
+            series2.Labels.DefaultDataLabelFormat.TextFormat.PortionFormat.FillFormat.SolidFillColor.Color = Color.Black;
         }
 
 

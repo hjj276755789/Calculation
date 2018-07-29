@@ -96,23 +96,27 @@ namespace Calculation.Base
         /// <returns></returns>
         public static double je_yy(this long target)
         {
-            var t = target / 10000 / 10000;
-            return Math.Round(t.doubls(), 2);
+            double temp = target / 100000000.00;
+            return Math.Round(temp, 2);
         }
-
+        public static double je_y(this long target)
+        {
+            double temp = target / 1.0;
+            return Math.Round(temp, 0);
+        }
 
         public static double je_w_to_y(this double target)
         {
-            return Math.Round(target * 10000 , 2);
+            return Math.Round(target * 10000.00, 2);
         }
         public static double je_w_to_yy(this double target)
         {
-            return Math.Round(target / 10000, 2);
+            return Math.Round(target / 10000.00, 2);
         }
 
         public static double je_w_to_yy(this long target)
         {
-            return Math.Round(target.doubls() / 10000, 2);
+            return Math.Round(target/ 10000.00, 2);
         }
         /// <summary>
         /// 金额_元

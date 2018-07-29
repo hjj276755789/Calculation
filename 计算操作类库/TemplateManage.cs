@@ -21,6 +21,7 @@ namespace Calculation.JS
             Aspose_Crack.SlideCrack();
             DataTable dt=  Dal.CJGL_DataProvider.GET_CJLB_BB(mbid);
             Presentation p1 = SlideFactory.GetInstance().ppt;
+            p1.Slides.RemoveAt(0);
             Base_date.init_zb(year, zc);
             Cache_param_zb.ini_zb(mbid, year, zc);
             Base_Log.Log("开始任务");

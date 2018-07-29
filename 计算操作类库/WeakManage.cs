@@ -20,6 +20,7 @@ namespace Calculation.JS
             Cache_data_cjjl.ini_zb();
             Cache_data_tdjyjl.ini_zb();
             Cache_data_xzys.ini_zb();
+            Cache_data_rgsj.ini_zb();
             Cache_Result_zb.ini();
            // Cache_param_zb.ini_zb();
         }
@@ -29,7 +30,16 @@ namespace Calculation.JS
         
         public ISlideCollection plus1(string str, int cjbh)
         {
-            return new Presentation(str).Slides;
+            var t = new Presentation(str).Slides;
+            IAutoShape text1 = (IAutoShape)t[0].Shapes[2];
+            IAutoShape text2 = (IAutoShape)t[0].Shapes[0];
+            string str1 =
+                string.Format("[{0}]",
+                Base_date.GET_NFZCMC(Base_date.bn,Base_date.bz)
+                );
+            text1.TextFrame.Text = str1;
+            text2.TextFrame.Text = Base_date.dateToUpper(Base_date.bz_Last);
+            return t;
         }
         #region 插件2
         public ISlideCollection plus2(string str, int cjbh)
@@ -55,7 +65,7 @@ namespace Calculation.JS
             var bz_cj_sw = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["yt"].ToString() == "商务");
 
             string str3 = string.Format("本周新增供应{0}万方，成交面积{1}万方，均价{2}元/㎡，[总结]",
-               bz_gy_sw.Sum(m =>m["jzmj"].doubls()).mj_wf(),
+               bz_gy_sw.Sum(m =>m["jzmj"].doubls() +m["fzzmj"].doubls()).mj_wf(),
                 bz_cj_sw.Sum(m =>m["jzmj"].doubls()).mj_wf(),
                 (bz_cj_sw.Sum(m => m["cjje"].longs()) / bz_cj_sw.Sum(m =>m["jzmj"].doubls())).je_y()
                 );
@@ -64,7 +74,7 @@ namespace Calculation.JS
             var bz_cj_sy = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["yt"].ToString() == "商铺");
 
             string str4 = string.Format("本周供应{0}万方，成交面积{1}万方，均价{2}元/㎡，[总结]",
-               bz_gy_sy.Sum(m =>m["jzmj"].doubls()).mj_wf(),
+               (bz_gy_sy.Sum(m =>m["jzmj"].doubls() + m["fzzmj"].doubls())+ bz_gy_czf.Sum(m=>m["fzzmj"].doubls())).mj_wf(),
                 bz_cj_sy.Sum(m =>m["jzmj"].doubls()).mj_wf(),
                 (bz_cj_sy.Sum(m => m["cjje"].longs()) / bz_cj_sy.Sum(m =>m["jzmj"].doubls())).je_y()
                 );
@@ -96,9 +106,9 @@ namespace Calculation.JS
         public ISlideCollection plus3(string str, int cjbh)
         {
             var t = new Presentation(str).Slides;
-            string str1 = string.Format(@"本周（{0}）土地成交{1}宗 [总结]",Base_date.bzwz,Cache_Result_zb.td_bz_cjsl);
+            string str1 = string.Format(@"本周（{0}）土地成交{1}宗 [总结]", Base_date.GET_ZCMC(Base_date.bn, Base_date.bz), Cache_Result_zb.td_bz_cjsl);
             string str2 = string.Format(@"本周（{0}），成交{1}宗，土地面积{2}亩，可建体量{3}万方，成交总金额{4}亿元。 [总结]",
-                Base_date.bzwz,
+                Base_date.GET_ZCMC(Base_date.bn,Base_date.bz),
                 Cache_Result_zb.td_bz_cjsl,
                 Cache_Result_zb.td_bz_zyd.mj_m(),
                 Cache_Result_zb.td_bz_kjtl.mj(),
@@ -116,6 +126,8 @@ namespace Calculation.JS
             Office_Charts.DoubleAxexchart(t[2], Cache_Result_zb.jsjg_xkpzs, 5,1,2);
 
             var cjts = from a in Cache_data_cjjl.bz.AsEnumerable()
+                       where (a["yt"].ToString() == "别墅" || a["yt"].ToString() == "高层" || a["yt"].ToString() == "小高层" || a["yt"].ToString() == "洋房" || a["yt"].ToString() == "洋楼") && a["hx"].ToString() != "经济适用房"
+
                        group a by new { xmmc = a.Field<string>("lpmc"), zt = a.Field<string>("zt") } into m
                        select new
                        {
@@ -124,6 +136,8 @@ namespace Calculation.JS
                            cjts = m.Count()
                        };
             var cjmj = from a in Cache_data_cjjl.bz.AsEnumerable()
+                       where (a["yt"].ToString() == "别墅" || a["yt"].ToString() == "高层" || a["yt"].ToString() == "小高层" || a["yt"].ToString() == "洋房" || a["yt"].ToString() == "洋楼") && a["hx"].ToString() != "经济适用房"
+
                        group a by new { xmmc = a.Field<string>("lpmc"), zt = a.Field<string>("zt") } into m
                        select new
                        {
@@ -132,6 +146,8 @@ namespace Calculation.JS
                            cjmj = m.Sum(n=> double.Parse(n["jzmj"].ToString()))
                        };
             var cjje = from a in Cache_data_cjjl.bz.AsEnumerable()
+                       where (a["yt"].ToString() == "别墅" || a["yt"].ToString() == "高层" || a["yt"].ToString() == "小高层" || a["yt"].ToString() == "洋房" || a["yt"].ToString() == "洋楼") && a["hx"].ToString() != "经济适用房"
+
                        group a by new { xmmc = a.Field<string>("lpmc"), zt = a.Field<string>("zt") } into m
                        select new
                        {
@@ -171,8 +187,10 @@ namespace Calculation.JS
                 dt.Rows.Add(dr);
             }
 
-            IAutoShape test = (IAutoShape)t[3].Shapes[2];
-            test.TextFrame.Text = string.Format("本周成交排名（{0}", Base_date.bzwz);
+            IAutoShape test1 = (IAutoShape)t[3].Shapes[2];
+            test1.TextFrame.Text = string.Format("本周成交排名（{0}）", Base_date.GET_ZCMC(Base_date.bn,Base_date.bz));
+            IAutoShape test2 = (IAutoShape)t[3].Shapes[0];
+            test2.TextFrame.Text = string.Format("本周成交排名（{0}）", Base_date.GET_ZCMC(Base_date.bn, Base_date.bz));
             Office_Tables.SetChart(t[3], dt, 4, null,10);
             return t;
         }
@@ -242,24 +260,25 @@ namespace Calculation.JS
             var s2 = t[2];
             IChart c2 = (IChart)s2.Shapes[6];
             var dt2_1 = from a in Cache_data_cjjl.jbz.AsEnumerable()
-                    group a by new { zc = a["zc"]} into s
+                    group a by new { zc = a["zc"],zcmc=a["zcmc"]} into s
                     select new
                     {
                         zc = s.Key.zc,
+                        zcmc=s.Key.zcmc,
                         cjje = s.Sum(a=>a["cjje"].longs()),
                         jzmj = s.Sum(a => double.Parse(a["jzmj"].ToString())),
                     };
             System.Data.DataTable ljgx_dt = new System.Data.DataTable();
             ljgx_dt.Columns.Add("时间");
-            ljgx_dt.Columns.Add("成交金额（亿元）", typeof(long));
+            ljgx_dt.Columns.Add("成交金额（亿元）", typeof(double));
             ljgx_dt.Columns.Add("成交建面（万㎡）", typeof(double));
-            ljgx_dt.Columns.Add("建面均价", typeof(string));
+            ljgx_dt.Columns.Add("建面均价（元/㎡）", typeof(long));
             ///量价关系
             var ljgx_gx = dt2_1.OrderBy(m => int.Parse(m.zc.ToString())).ToList();
             for (int i1 = 0; i1 < ljgx_gx.Count(); i1++)
             {
                 DataRow dr = ljgx_dt.NewRow();
-                dr[0] = ljgx_gx[i1].zc;
+                dr[0] = ljgx_gx[i1].zcmc;
                 dr[1] = ljgx_gx[i1].cjje.je_yy();
                 dr[2] = ljgx_gx[i1].jzmj.mj_wf();
                 dr[3] = (ljgx_gx[i1].cjje / ljgx_gx[i1].jzmj).je_y();
@@ -307,7 +326,7 @@ namespace Calculation.JS
             System.Data.DataTable dt = new System.Data.DataTable();
             dt.Columns.Add("qymc");
             dt.Columns.Add("成交面积",typeof(double));
-            dt.Columns.Add("成交金额",typeof(long));
+            dt.Columns.Add("成交金额",typeof(double));
             dt.Columns.Add("建面均价",typeof(double));
             dt.Columns.Add("市场均价",typeof(double));
             var cjqy1 = cjqy.OrderByDescending(m=>m.jzmj).ToList();
@@ -407,10 +426,10 @@ namespace Calculation.JS
                        };
             System.Data.DataTable zz_dt = new System.Data.DataTable();
             zz_dt.Columns.Add("qymc");
-            zz_dt.Columns.Add("成交面积", typeof(double));
-            zz_dt.Columns.Add("成交金额", typeof(double));
-            zz_dt.Columns.Add("建面均价", typeof(double));
-            zz_dt.Columns.Add("市场均价", typeof(double));
+            zz_dt.Columns.Add("成交面积（万方）", typeof(double));
+            zz_dt.Columns.Add("成交金额（亿元）", typeof(double));
+            zz_dt.Columns.Add("建面均价（元/㎡）", typeof(double));
+            zz_dt.Columns.Add("市场均价（元/㎡）", typeof(double));
             var zz_cjqy1 = zz_cjqy.OrderByDescending(m => m.jzmj).ToList();
             for (int i1 = 0; i1 < zz_cjqy1.Count(); i1++)
             {
@@ -419,7 +438,7 @@ namespace Calculation.JS
                 dr[1] = zz_cjqy1[i1].jzmj.mj_wf();
                 dr[2] = zz_cjqy1[i1].cjje.je_yy();
                 dr[3] = zz_cjqy1[i1].jmjj.je_y();
-                dr[4] = (Cache_Result_zb.bz_cj_cjje / Cache_Result_zb.bz_cj_jzmj).je_y();
+                dr[4] = (zz_cjqy1.Sum(m=>m.cjje) / zz_cjqy1.Sum(m=>m.jzmj)).je_y();
                 zz_dt.Rows.Add(dr);
             }
             Office_Charts.ThreeWchart(s5, zz_dt, 0);
@@ -548,7 +567,7 @@ namespace Calculation.JS
             sysc_dt.Columns.Add("时间");
             sysc_dt.Columns.Add("预售新增供应量（万㎡）", typeof(double));
             sysc_dt.Columns.Add("成交建面（万㎡）", typeof(double));
-            sysc_dt.Columns.Add("建面均价", typeof(double));
+            sysc_dt.Columns.Add("建面均价（元/㎡）", typeof(double));
 
             var sysc_gy_1 = dt7_1_1.OrderBy(m => m.zc.ints()).ToList();
             var sysc_gy_2 = dt7_1_2.OrderBy(m => m.zc.ints()).ToList();
@@ -557,7 +576,8 @@ namespace Calculation.JS
             {
                 DataRow dr = sysc_dt.NewRow();
                 dr[0] = sysc_gy_1[i1].zcmc;
-                dr[1] = (sysc_gy_1[i1].xzgyl + sysc_gy_2[i1].xzgyl).mj_wf();
+                double tttt= sysc_gy_2.Count > i1 ? sysc_gy_2[i1].xzgyl : 0;
+                dr[1] = (sysc_gy_1[i1].xzgyl + tttt).mj_wf();
                 dr[2] = sysc_cj[i1].cjmj.mj_wf();
                 dr[3] = (sysc_cj[i1].cjje / sysc_cj[i1].cjmj).je_y();
                 sysc_dt.Rows.Add(dr);
@@ -607,25 +627,43 @@ namespace Calculation.JS
 
         public ISlideCollection plus5(string str, int cjbh)
         {
-            var p = from a in Cache_param_zb.value
-                    where a.cjid == cjbh
-                    select new { a.csnr };
-            var path = p.FirstOrDefault();
-            if (path != null && !string.IsNullOrEmpty(path.csnr))
-                return new Presentation(path.csnr).Slides;
-            else
+            try
+            {
+                var p = from a in Cache_param_zb.value
+                        where a.cjid == cjbh
+                        select new { a.csnr };
+                var path = p.FirstOrDefault();
+                if (path != null && !string.IsNullOrEmpty(path.csnr))
+                    return new Presentation(path.csnr).Slides;
+                else
+                    return null;
+            }
+            catch (Exception)
+            {
+
                 return null;
+            }
+
+           
         }
         public ISlideCollection plus6(string str, int cjbh)
         {
-            var p = from a in Cache_param_zb.value
-                    where a.cjid == cjbh
-                    select new { a.csnr };
-            var path = p.FirstOrDefault();
-            if (path != null && !string.IsNullOrEmpty(path.csnr))
-                return new Presentation(path.csnr).Slides;
-            else
+            try
+            {
+                var p = from a in Cache_param_zb.value
+                        where a.cjid == cjbh
+                        select new { a.csnr };
+                var path = p.FirstOrDefault();
+                if (path != null && !string.IsNullOrEmpty(path.csnr))
+                    return new Presentation(path.csnr).Slides;
+                else
+                    return null;
+            }
+            catch (Exception)
+            {
                 return null;
+            }
+           
         }
        
         /// <summary>

@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aspose_Crack.cs" />
+    <Compile Include="Cache_data_rgsj.cs" />
     <Compile Include="Cache_data_tdjyjl.cs" />
     <Compile Include="Cache_data_xzys.cs" />
     <Compile Include="Cache_param_zb.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="TemplateManage.cs" />
     <Compile Include="WeakManage.cs" />
     <Compile Include="weak_jp\plus_jp_fd.cs" />
+    <Compile Include="weak_jp\plus_jp_gm.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dal\Dal.csproj">

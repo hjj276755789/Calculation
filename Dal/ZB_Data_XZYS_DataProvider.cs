@@ -32,42 +32,28 @@ namespace Calculation.Dal
             return MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
         }
 
-        public static int Insert(DataTable dt,int nf,int zc)
-        {
-            StringBuilder sb = new StringBuilder("insert into xtgl_xzysb (qx1,qx2,ztmc,xmmc,wylx,tyyt,bh,fzsj,jzmj,fzzmj,yf,nf,zc) values ");
-            string sql = "";
-            foreach (DataRow item in dt.Rows)
-            {
-                if (index != 0 && index % 10000 == 0)
-                {
-                    sql = sb.ToString();
-                    count += MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
-                    sb = new StringBuilder("insert into xtgl_xzysb (qx1,qx2,ztmc,xmmc,wylx,tyyt,bh,fzsj,jzmj,fzzmj,yf,nf,zc) values ");
-                }
-                sb.Append(string.Format(@"('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}'),", item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9], item[10],nf,zc));
-                index++;
-            }
-            sql = sb.ToString();
-            return MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
-        }
 
-        public static int Insert(DataTable dt, int nf, int zc,string zcmc)
+        public static int Insert(DataTable dt, int nf, int zc, string zcmc)
         {
-            StringBuilder sb = new StringBuilder("insert into xtgl_data_zb_xzys (qx1,qx2,zt,xmmc,wylx,tyyt,zjbh,fzsj,jzmj,fzzmj,nf,zc,zcmc) values ");
-            string sql = "";
-            foreach (DataRow item in dt.Rows)
+            if (remove("xtgl_data_zb_xzys", nf, zc) != -1)
             {
-                if (index != 0 && index % 10000 == 0)
+                StringBuilder sb = new StringBuilder("insert into xtgl_data_zb_xzys (qx1,qx2,zt,xmmc,wylx,tyyt,zjbh,fzsj,jzmj,fzzmj,nf,zc,zcmc) values ");
+                string sql = "";
+                foreach (DataRow item in dt.Rows)
                 {
-                    sql = sb.ToString();
-                    count += MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
-                    sb = new StringBuilder("insert into xtgl_data_zb_xzys (qx1,qx2,zt,xmmc,wylx,tyyt,zjbh,fzsj,jzmj,fzzmj,nf,zc,zcmc) values ");
+                    if (index != 0 && index % 10000 == 0)
+                    {
+                        sql = sb.ToString();
+                        count += MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
+                        sb = new StringBuilder("insert into xtgl_data_zb_xzys (qx1,qx2,zt,xmmc,wylx,tyyt,zjbh,fzsj,jzmj,fzzmj,nf,zc,zcmc) values ");
+                    }
+                    sb.Append(string.Format(@"('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}'),", item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9], nf, zc, zcmc));
+                    index++;
                 }
-                sb.Append(string.Format(@"('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}'),", item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9], nf, zc,zcmc));
-                index++;
+                sql = sb.ToString();
+                return MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
             }
-            sql = sb.ToString();
-            return MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
+            else return 0;
         }
         public static int index = 0;
         public static int count = 0;
@@ -95,6 +81,22 @@ between unix_timestamp('" + first.ToString("yyyy/MM/dd") + "') and unix_timestam
             string sql = "select * from calculation.xtgl_data_zb_xzys where zc between @qsz and @dqz";
             MySqlParameter[] p = { new MySqlParameter("qsz", dqz - 7),new MySqlParameter("dqz", dqz) };
             return MySqlDbhelper.GetDataSet(sql,p).Tables[0];
+        }
+
+        public static int remove(string bm, int nf, int zc)
+        {
+            try
+            {
+                string sql = "delete from " + bm + " where nf=@nf and zc=@zc";
+                MySqlParameter[] p = { new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
+                return MySqlDbhelper.ExecuteNonQuery(sql, p);
+            }
+            catch (Exception)
+            {
+
+                return -1;
+            }
+
         }
     }
 }

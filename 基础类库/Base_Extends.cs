@@ -87,5 +87,13 @@ namespace Calculation.Base
                 return 0;
             }
         }
-    }
+
+        public static string timeUpper(this DateTime target)
+        {
+            return Base_date.dateToUpper(target);
+        }
+
+
+
+}
 }
