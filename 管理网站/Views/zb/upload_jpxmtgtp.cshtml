@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "upload_jpxmtgtp";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <label><h3 class="panel-title">上传竞品项目推广图片</h3></label>
+    <form id="jpxmtgtp">
+        <input type="text" class="form-control" placeholder="年份" name="nf" id="nf" />
+        <input type="text" class="form-control" placeholder="周次" name="zc" id="zc" />
+        <input class="upload" type="file" id="tgtp" name="tgtp">
+        <input type="button" value="确认添加" class="btn btn-primary " id="sub_btn" />
+     </form>
+</div>
+
+
+    <script>
+        
+        var uploading = false;
+        $("#sub_btn").on("click", function () {
+            //if ($("#nf").val() == null || ("#nf").val() == undefined || $("#zc").val() == null || ("#zc").val() == undefined) {
+            //    alert("必须填写年份周次");
+            //    return false;
+            //};
+            if (uploading) {
+                alert("文件正在上传中，请稍候");
+                return false;
+            };
+            var formData = new FormData($("#jpxmtgtp")[0]);
+            $.ajax({
+                url: "/zb/add_tgtp",
+                type: 'POST',
+                data: formData,
+                /**
+                *必须false才会自动加上正确的Content-Type
+                */
+                contentType: false,
+                /**
+                * 必须false才会避开jQuery对 formdata 的默认处理
+                * XMLHttpRequest会对 formdata 进行正确的处理
+                */
+                processData: false,
+                dataType: "json",
+                beforeSend: function () {
+                    uploading = true;
+                },
+                success: function (data) {
+                    if (data.IsSuccessful) {
+                        uploading = false;
+                        alert('文件上传成');
+                    }
+                },
+                error: function (data) {
+
+                    uploading = false;
+                    alert("上传失败" + data);
+                }
+            });
+
+        });
+    //$("#sub_btn").on("change", function () {
+       
+    //    if (uploading) {
+    //        alert("文件正在上传中，请稍候");
+    //        return false;
+    //    }
+    //    var formData = new FormData($("#rgsjform")[0]);
+    //    $.ajax({
+    //        url: "/zb/add_tgtp",
+    //        type: 'POST',
+    //        data: formData,
+    //        /**
+    //        *必须false才会自动加上正确的Content-Type
+    //        */
+    //        contentType: false,
+    //        /**
+    //        * 必须false才会避开jQuery对 formdata 的默认处理
+    //        * XMLHttpRequest会对 formdata 进行正确的处理
+    //        */
+    //        processData: false,
+    //        dataType: "json",
+    //        beforeSend: function () {
+    //            uploading = true;
+    //        },
+    //        success: function (data) {
+    //            if (data.IsSuccessful) {
+    //                uploading = false;
+    //                alert('文件上传成');
+    //            }
+    //        },
+    //        error: function (data) {
+
+    //            uploading = false;
+    //            alert("上传失败" + data);
+    //        }
+    //    });
+    //});
+    </script>

@@ -27,7 +27,8 @@ namespace Calculation.Base
         public static void SetJP_FD_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
         {
             ITable table = (ITable)sld.Shapes[index];
-
+            table.Rows[0][7].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 1);
+            table.Rows[0][11].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz );
             foreach (System.Data.DataRow item in dt.Rows)
             {
                 IRow row = table.Rows[3];

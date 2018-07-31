@@ -87,6 +87,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -308,6 +310,7 @@
     <Content Include="Content\fonts\ionicons.eot">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\fonts\o-0IIpQlx3QUlC5A4PNr5TRG.woff" />
     <None Include="Properties\PublishProfiles\铭腾报表.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -533,6 +536,8 @@
     <Content Include="Views\jp_zb\Set_Jpjzgj_Param.cshtml" />
     <Content Include="Views\jp_zb\Jzgjfw.cshtml" />
     <Content Include="Views\jp_zb\Jpxm.cshtml" />
+    <Content Include="Views\zb\add_mbdg.cshtml" />
+    <Content Include="Views\zb\upload_jpxmtgtp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,6 +17,10 @@ namespace Calculation.Models
         ///  下载地址
         /// </summary>
         public string xzdz { get; set; }
+        /// <summary>
+        /// 定稿下载地址
+        /// </summary>
+        public string xzdz2 { get; set; }
     }
 
     public class Rw_List
@@ -27,6 +31,10 @@ namespace Calculation.Models
         public int nf { get; set; }
         public int  zc { get; set; }
         public RW_ZT zt { get; set; }
+        /// <summary>
+        /// 定稿下载地址
+        /// </summary>
+        public string xzdz2 { get; set; }
     }
 
 

@@ -1,4 +1,4 @@
-﻿using Calculation.Models.Models;
+﻿using Calculation.Models;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -70,6 +70,19 @@ where c.rwid = @rwid and a.csid =@csid";
         {
             DEL_RWCJCS(rwid, csid);
             return SET_RWCJCS(rwid, csid, csnr);
+        }
+
+        /// <summary>
+        /// 任务定稿文件
+        /// </summary>
+        /// <param name="rwid"></param>
+        /// <param name="wjdz"></param>
+        /// <returns></returns>
+        public static bool SET_RWDGWJ(int rwid, string wjdz)
+        {
+            string sql = "update calculation.xtgl_bbrw set xzdz2 =@xzdz2 where rwid=@rwid";
+            MySqlParameter[] p = { new MySqlParameter("rwid", rwid), new MySqlParameter("xzdz2", wjdz) };
+            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
         public static bool DEL_RWCJCS(int rwid, int csid)
         {
@@ -187,7 +200,7 @@ where c.rwid = @rwid and a.csid =@csid";
         }
         public static JP_JPXM GET_JP_JPXM_XQ(int id)
         {
-            string sql = "select * from  calculation.xtgl_param_jpba t1  where id=@id";
+            string sql = "select * from  calculation.xtgl_param_jpgj t1  where id=@id";
             MySqlParameter[] p = { new MySqlParameter("id", id) };
             return Models.Modelhelper.类对象赋值<JP_JPXM>(new JP_JPXM(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
@@ -219,7 +232,7 @@ where c.rwid = @rwid and a.csid =@csid";
         }
         public static DataTable GET_JP_JPXMXX(int mbid, int nf, int zc)
         {
-            string sql = @"select t3.* ,t4.jzgjmc from calculation.xtgl_bbrw  t1 ,calculation.xtgl_param_jpba t2 ,calculation.xtgl_param_jpgj t3 ,calculation.dmb_jzgj t4
+            string sql = @"select t3.* ,t4.jzgjmc,t4.px from calculation.xtgl_bbrw  t1 ,calculation.xtgl_param_jpba t2 ,calculation.xtgl_param_jpgj t3 ,calculation.dmb_jzgj t4
                     where t1.rwid=t2.rwid and t2.id =t3.baid and t3.jzgjid =t4.id order by t3.baid,t4.px
                     and t1.mbid=@mbid and nf=@nf and zc=@zc
                 ";

@@ -2,7 +2,7 @@
 using Calculation.Base;
 using Calculation.Dal;
 using Calculation.Models.Enums;
-using Calculation.Models.Models;
+using Calculation.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;

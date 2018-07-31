@@ -1,7 +1,7 @@
 ﻿using Calculation.Base;
 using Calculation.JS;
 using Calculation.Models.Enums;
-using Calculation.Models.Models;
+using Calculation.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -267,6 +267,18 @@ namespace Calculation
             {
                 MessageBox.Show("线程还没关"); 
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string startPath = @"d:\zb\2";
+            string zipPath = @"d:\zb\result.zip";
+            string extractPath = @"d:\zb\extract";
+
+            System.IO.Compression.ZipFile.CreateFromDirectory(startPath, zipPath);
+
+            System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, extractPath);
+
         }
     }
 }

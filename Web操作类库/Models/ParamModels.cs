@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calculation.Models.Models
+namespace Calculation.Models
 {
     public class ParamModels
     {
@@ -133,6 +133,7 @@ namespace Calculation.Models.Models
         public int baid { get; set; }
         public int jzgjid { get; set; }
         public string jzgjmc { get; set; }
+        public int px { get; set; }
         public string[] qycs { get; set; }
         public string[] ztcs { get; set; }
         public string[] lpcs { get; set; }

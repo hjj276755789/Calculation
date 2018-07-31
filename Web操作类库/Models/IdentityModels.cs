@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calculation.Models.Models
+namespace Calculation.Models
 {
     public class YHXX
     {

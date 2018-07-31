@@ -5,21 +5,38 @@
 }
 
     <div class="row" style="width: 90%; margin: 20px;">
-            <input type="text" id="mbmc" class="form-control" /><input type="button" value="收索" onclick="search()" class="btn btn-danger" />
+            <input type="text" id="mbmc" class="form-control" /><input type="button" value="收索" onclick="search()" class="btn btn-danger" /><a class="btn btn-primary waves-effect waves-light" href="/zb/upload_jpxmtgtp" data-toggle="modal" data-target="#tgtp" onclick="cleardata('#tgtp')">推广图片 </a>
+
     </div>
 
 <div id="zblb" style="width: 90%; margin: 20px;">
 
 </div>
 
+<DIV tabindex="-1" class="modal fade" id="tgtp" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
 
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
 @section scripts{
 <script>
     function search()
     {
         alert($('#mbmc').val());
     }
+    function cleardata(a) {
+        $(a).on("hidden.bs.modal", function () {
+            $(this).removeData("bs.modal");
+        });
 
+    }
 
     function Table_bs($box) {
 
