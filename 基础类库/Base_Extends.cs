@@ -53,10 +53,10 @@ namespace Calculation.Base
             {
                 return Int32.Parse(target.ToString());
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                return 0;
+                
+                return (int)target;
             }
         }
         public static long longs(this object target)

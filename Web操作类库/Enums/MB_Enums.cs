@@ -57,4 +57,10 @@ namespace Calculation.Models.Enums
         主模板=1,
         竞品模板=2
     }
+    public enum TP_LX
+    {
+        窄图=1,
+        方图=2,
+        宽图=3
+    }
 }
