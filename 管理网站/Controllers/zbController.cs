@@ -333,10 +333,11 @@ namespace 管理网站.Controllers
     /// </summary>
     public class jp_zbController : BaseController {
         #region 页面
-        public ActionResult Index(int rwid)
+        public ActionResult Index(int rwid,int mbid)
         {
             RWGL_DataProvider rw = new RWGL_DataProvider();
             this.ViewBag.rwxq = rw.GET_RWXQ(rwid);
+            this.ViewBag.mbid = mbid;
             return View();
         }
         /// <summary>
@@ -522,6 +523,22 @@ namespace 管理网站.Controllers
         {
             var T = Param_DataProvider.GET_JP_JPXM_XQ(id);
             return Json(T);
+        }
+
+        /// <summary>
+        /// 继承上周设置
+        /// </summary>
+        /// <param name="mbid"></param>
+        /// <param name="nf"></param>
+        /// <param name="zc"></param>
+        /// <returns></returns>
+        public JsonResult jcszsz(int mbid,int rwid,int nf,int zc)
+        {
+            if (Param_DataProvider.jcszsz(rwid, mbid, nf, zc))
+
+                return Json(SResult.Success);
+            else return Json(SResult.Error("设置失败"));
+            
         }
 
         

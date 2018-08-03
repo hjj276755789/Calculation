@@ -44,7 +44,7 @@ namespace Calculation.JS
                         }                        // 调用方法，参数为空
                     }
                 }
-                string path = "d:\\zb\\" + mbid + "\\" + year + "\\" + zc + "\\";
+                string path = "E:\\zb\\" + mbid + "\\" + year + "\\" + zc + "\\";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -56,9 +56,7 @@ namespace Calculation.JS
             catch (Exception e)
             {
                 Base_Log.Log("插件生成报错:" + e.Message);
-              
             }
-
             return null;
          
         }

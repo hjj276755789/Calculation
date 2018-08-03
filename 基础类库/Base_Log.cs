@@ -11,7 +11,7 @@ namespace Calculation.Base
     {
         public static void Log(string message)
         {
-            string path = @"D:\log.txt";
+            string path = @"E:\log.txt";
             
             FileStream fs = new FileStream(path, FileMode.Append);//文本加入不覆盖
 

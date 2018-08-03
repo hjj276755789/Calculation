@@ -30,8 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Slides, Version=18.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Aspose.Slides">
       <HintPath>..\packages\Aspose.Slides.17.9.1\Aspose.Slides.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -59,8 +58,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateManage.cs" />
     <Compile Include="WeakManage.cs" />
-    <Compile Include="weak_jp\plus_jp_fd.cs" />
-    <Compile Include="weak_jp\plus_jp_gm.cs" />
+    <Compile Include="weak_jp\plus_jp_base.cs" />
+    <Compile Include="weak_jp\plus_jp_fudi.cs" />
+    <Compile Include="weak_jp\plus_jp_guomei.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dal\Dal.csproj">
@@ -75,9 +75,6 @@
       <Project>{3E2D9137-C437-43A2-81A4-9A7C3D9411AC}</Project>
       <Name>基础类库</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\Aspose.Slides.NET.18.4.0\lib\net4.0-client\Aspose.Slides.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
