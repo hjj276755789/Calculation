@@ -18,7 +18,7 @@ namespace Calculation.JS
         /// <param name="str"></param>
         /// <param name="cjbh"></param>
         /// <returns></returns> 
-        public ISlideCollection _plus_jp_guomei_1(string str, int cjbh)
+        public ISlideCollection _plus_jp_guomei_1(string  str, int cjbh)
         {
             try
             {
