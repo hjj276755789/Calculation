@@ -75,11 +75,11 @@ namespace Calculation.JS
                     dr[2] = item.ytcs[0];
                     #region 数据准备
                     //本周当前业态认购数据
-                    var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                    var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
                     //本周当前业态备案数据
                     var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
                     //上周当前野田认购数据
-                    var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                    var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
                     //上周当前业态备案数据
                     var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
                     //上周本案认购数据
@@ -166,10 +166,10 @@ namespace Calculation.JS
                             //竞品业态
                             string jpyt = item_jp.ytcs == null ? item.ytcs[0] : item_jp.ytcs[0];
 
-                            var temp_rgsj_bz1 = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == jpyt);
+                            var temp_rgsj_bz1 = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == jpyt);
                             var temp_cjba_bz1 = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == jpyt);
 
-                            var temp_rgsj_sz1 = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == jpyt);
+                            var temp_rgsj_sz1 = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == jpyt);
                             var temp_cjba_sz1 = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == jpyt);
 
                             //上周本案认购数据
@@ -341,11 +341,11 @@ namespace Calculation.JS
                                 dr2[2] = item.xfytcs[i];
                                 #region 数据准备
                                 //本周当前业态认购数据
-                                var temp_rgsj_bz2 = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                                var temp_rgsj_bz2 = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
                                 //本周当前业态备案数据
                                 var temp_cjba_bz2 = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
                                 //上周当前野田认购数据
-                                var temp_rgsj_sz2 = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                                var temp_rgsj_sz2 = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
                                 //上周当前业态备案数据
                                 var temp_cjba_sz2 = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
                                 //上周本案认购数据
@@ -438,11 +438,11 @@ namespace Calculation.JS
                                             //string jpyt = item_jp.xfytcs == null ? item.xfytcs[0] : item_jp.xfytcs[i];
 
                                             //本周当前业态认购数据
-                                            var temp_rgsj_bz3 = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                                            var temp_rgsj_bz3 = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
                                             //本周当前业态备案数据
                                             var temp_cjba_bz3 = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
                                             //上周当前野田认购数据
-                                            var temp_rgsj_sz3 = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                                            var temp_rgsj_sz3 = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
                                             //上周当前业态备案数据
                                             var temp_cjba_sz3 = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
                                             //上周本案认购数据
