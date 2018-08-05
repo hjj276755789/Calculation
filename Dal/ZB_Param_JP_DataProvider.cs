@@ -11,7 +11,7 @@ namespace Calculation.Dal
     {
         public static List<JP_JZGJ> GET_JPGJ()
         {
-            string sql = "select * from calculation. dmb_jzgj order by px";
+            string sql = "select * from calculation.dmb_jzgj order by px";
             return Models.Modelhelper.类列表赋值<JP_JZGJ>(new JP_JZGJ(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
         }
     }

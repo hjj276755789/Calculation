@@ -538,10 +538,13 @@ namespace 管理网站.Controllers
 
                 return Json(SResult.Success);
             else return Json(SResult.Error("设置失败"));
-            
+
         }
 
         
         #endregion
-    }
+
+                                                                             
+
+    }       
 }

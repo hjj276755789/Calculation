@@ -63,4 +63,13 @@ namespace Calculation.Models.Enums
         方图=2,
         宽图=3
     }
+    /// <summary>
+    /// 执行生成PPT 状态
+    /// </summary>
+    public enum ZX_ZT
+    {
+        未开始=0,
+        生成中=1,
+        生成完毕=2
+    }
 }

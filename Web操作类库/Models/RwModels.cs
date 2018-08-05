@@ -49,4 +49,19 @@ namespace Calculation.Models
         public DATA_ZT tdcj_zt { get; set; }
         public DATA_ZT rgsj_zt { get; set; }
     }
+
+    /// <summary>
+    /// 执行任务
+    /// </summary>
+    public class Rw_Zxrw_ITEM
+    {
+        public int mbid { get; set; }
+        public int nf { get; set; }
+
+        public int zc
+        {
+            get; set;
+        }
+        public ZX_ZT zt { get; set; }
+    }
 }

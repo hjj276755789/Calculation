@@ -24,6 +24,7 @@ namespace Calculation.Base
             //关闭流
             sw.Close();
             fs.Close();
+           
 
 
         }
