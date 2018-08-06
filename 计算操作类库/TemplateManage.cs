@@ -19,9 +19,9 @@ namespace Calculation.JS
     {
         private static TemplateManage uniqueInstance;
 
-        public List<Rw_Zxrw_ITEM> rwlb { get; set; }
+        public  List<Rw_Zxrw_ITEM> rwlb { get; set; }
 
-        public Rw_Zxrw_ITEM dqrw { get; set; }
+        public static Rw_Zxrw_ITEM dqrw { get; set; }
 
         public static TemplateManage ini()
         {
@@ -120,28 +120,35 @@ namespace Calculation.JS
                 dqrw.zt = Models.Enums.ZX_ZT.生成完毕;
             }
         }
-        public  void tt()
+        public void tt()
         {
-            if(dqrw == null)
+            try
             {
-                dqrw =rwlb.FirstOrDefault();
-            }
-            if(dqrw!=null&&dqrw.zt== Models.Enums.ZX_ZT.未开始)
-            {
-                try
+                if (dqrw == null)
                 {
-                    dqrw.zt = Models.Enums.ZX_ZT.生成中;
-                    Thread th = new Thread(new ThreadStart(Create_zb1));
-                    th.Start();
-                    
+                    dqrw = rwlb.FirstOrDefault();
                 }
-                catch (Exception)
+                if (dqrw != null && dqrw.zt == Models.Enums.ZX_ZT.未开始)
                 {
+                    try
+                    {
+                        dqrw.zt = Models.Enums.ZX_ZT.生成中;
+                        Thread th = new Thread(new ThreadStart(Create_zb1));
+                        th.Start();
+                    }
+                    catch (Exception)
+                    {
+                        dqrw.zt = Models.Enums.ZX_ZT.生成完毕;
+                    }
 
-                    dqrw.zt = Models.Enums.ZX_ZT.生成完毕;
                 }
-                
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+          
 
         }
 

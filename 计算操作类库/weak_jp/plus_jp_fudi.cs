@@ -427,8 +427,6 @@ namespace Calculation.JS
                                     {
                                         for (int j = 0; j < item_jp.xfytcs.Length; j++)
                                         {
-                                            if (item_jp.xfytcs[j] != item.xfytcs[i])
-                                                continue;
                                             DataRow dr3 = dt2.NewRow();
                                             dr3[0] = item_jp.jzgjmc;
                                             dr3[1] = item_jp.lpcs[0];

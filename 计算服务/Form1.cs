@@ -185,8 +185,7 @@ namespace Calculation
 
         private void button10_Click(object sender, EventArgs e)
         {
-            周报 z = new 周报();
-            z.Show();
+            
         }
 
         private void button9_Click(object sender, EventArgs e)

@@ -31,13 +31,14 @@ namespace Calculation
         }
         private static bool islistening = false;
         private static HttpListener listerner;
-        private static int yxsc = 0;
         private static int jsqq = 0;
         private static Thread th;
+        private static TemplateManage tm;
 
 
         void init()
         {
+            tm = TemplateManage.ini();
             if (listerner == null)
                 listerner = new HttpListener();
             islistening = true;
@@ -153,8 +154,7 @@ namespace Calculation
             try
             {
                 dateTask dt = zc as dateTask;
-                TemplateManage m = new TemplateManage();
-                string xzdz= m.Create_zb(dt.mbid,dt.nf, dt.zc);
+                string xzdz= tm.Create_zb(dt.mbid,dt.nf, dt.zc);
                 if (!string.IsNullOrEmpty(xzdz))
                 {
                     if (!new Dal.RWGL_DataProvider().SET_RWZT(dt.mbid, dt.nf, dt.zc, RW_ZT.完成可下载, xzdz))
@@ -205,6 +205,9 @@ namespace Calculation
         {
             this.label1.Text = "运行时长：" + sj();
             this.label2.Text = "接受请求：" + jsqq +"次";
+            
+            //this.label3.Text = "任务队列：" + tm.rwlb.Count + "";
+            //tm.tt();
         }
         /// <summary>
         /// 年
@@ -269,16 +272,6 @@ namespace Calculation
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            string startPath = @"d:\zb\2";
-            string zipPath = @"d:\zb\result.zip";
-            string extractPath = @"d:\zb\extract";
 
-            System.IO.Compression.ZipFile.CreateFromDirectory(startPath, zipPath);
-
-            System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, extractPath);
-
-        }
     }
 }

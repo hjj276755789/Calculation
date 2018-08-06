@@ -61,9 +61,6 @@ namespace Calculation.JS
                     dt.Columns.Add("bzbajmjj");
                     dt.Columns.Add("bzrgts");
                     dt.Columns.Add("bzrgjmjj");
-
-                    dt.Columns.Add("thb");
-                    dt.Columns.Add("jghb");
                     dt.Columns.Add("bhyy");
                     DataRow dr = dt.NewRow();
                     dr[0] = "本案";
@@ -106,8 +103,7 @@ namespace Calculation.JS
                         dr[5] = temp_ba_bz["kpjmjj"];//新开建面均价
                         dr[12] = temp_ba_bz["rgts"].ints();
                         dr[13] = temp_ba_bz["rgjmjj"].ints();
-                        dr[14] = temp_ba_bz["cjtshb"];
-                        dr[15] = temp_ba_bz["tnjjhb"];
+
                         dr[16] = temp_ba_bz["bhyy"].ToString();
                     }
                     else
@@ -117,9 +113,8 @@ namespace Calculation.JS
                         dr[5] = "";//新开建面均价       
                         dr[12] = 0;
                         dr[13] = 0;
+
                         dr[14] = "-";
-                        dr[15] = "-";
-                        dr[16] = "-";
                     }
                     #endregion
 
@@ -196,9 +191,8 @@ namespace Calculation.JS
                                 dr1[5] = temp_ba_bz1["kpjmjj"];//新开建面均价
                                 dr1[12] = temp_ba_bz1["rgts"].ints();
                                 dr1[13] = temp_ba_bz1["rgjmjj"].ints();
-                                dr1[14] = temp_ba_bz1["cjtshb"];
-                                dr1[15] = temp_ba_bz1["tnjjhb"];
-                                dr1[16] = temp_ba_bz1["bhyy"].ToString();
+
+                                dr1[14] = temp_ba_bz1["bhyy"].ToString();
                             }
                             else
                             {
@@ -207,9 +201,8 @@ namespace Calculation.JS
                                 dr1[5] = "";//新开建面均价       
                                 dr1[12] = 0;
                                 dr1[13] = 0;
+
                                 dr1[14] = "-";
-                                dr1[15] = "-";
-                                dr1[16] = "-";
                             }
                             #endregion
 
@@ -328,8 +321,6 @@ namespace Calculation.JS
                                 dt2.Columns.Add("bzrgts");
                                 dt2.Columns.Add("bzrgjmjj");
 
-                                dt2.Columns.Add("thb");
-                                dt2.Columns.Add("jghb");
                                 dt2.Columns.Add("bhyy");
                                 DataRow dr2 = dt2.NewRow();
                                 dr2[0] = "本案";
@@ -372,9 +363,8 @@ namespace Calculation.JS
                                     dr2[5] = temp_ba_bz2["kpjmjj"];//新开建面均价
                                     dr2[12] = temp_ba_bz2["rgts"].ints();
                                     dr2[13] = temp_ba_bz2["rgjmjj"].ints();
-                                    dr2[14] = temp_ba_bz2["cjtshb"];
-                                    dr2[15] = temp_ba_bz2["tnjjhb"];
-                                    dr2[16] = temp_ba_bz2["bhyy"].ToString();
+
+                                    dr2[14] = temp_ba_bz2["bhyy"].ToString();
                                 }
                                 else
                                 {
@@ -469,9 +459,7 @@ namespace Calculation.JS
                                                 dr3[5] = temp_ba_bz3["kpjmjj"];//新开建面均价
                                                 dr3[12] = temp_ba_bz3["rgts"].ints();
                                                 dr3[13] = temp_ba_bz3["rgjmjj"].ints();
-                                                dr3[14] = temp_ba_bz3["cjtshb"];
-                                                dr3[15] = temp_ba_bz3["tnjjhb"];
-                                                dr3[16] = temp_ba_bz3["bhyy"].ToString();
+                                                dr3[14] = temp_ba_bz3["bhyy"].ToString();
                                             }
                                             else
                                             {

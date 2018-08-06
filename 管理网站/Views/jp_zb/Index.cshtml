@@ -92,6 +92,8 @@
                 success: function (data) {
                     if (data.IsSuccessful) {
                         alert("继承成功");
+                        table.reflush(option);
+                        init1();
                     }
                     else alert(data.ErrMsg);
 
