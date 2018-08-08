@@ -211,12 +211,12 @@
 
                             case 3: {
                                 d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "可生成PTT",
-                                    '<a class="btn btn-primary waves-effect waves-light" onclick="sc(' + data[i].mbid + ',' + data[i].nf + ',' + data[i].zc + ')">开始任务</a>',
+                                    '<a class="btn btn-primary waves-effect waves-light" href="/jp_zb/index?mbid=@this.ViewBag.mbid&rwid=' + data[i].rwid + '" target="block">重填参数</a><a class="btn btn-primary waves-effect waves-light" onclick="sc(' + data[i].mbid + ',' + data[i].nf + ',' + data[i].zc + ')">开始任务</a>',
                                 ]);
                             }; break;
                             case 4: {
                                 d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "可下载",
-                                    '<a class="btn btn-link" onclick="sc(' + data[i].mbid + ',' + data[i].nf + ',' + data[i].zc + ')">重新生成</a><a class="btn btn-link " href="/zb/export?rwid=' + data[i].rwid + '">下载文件</a>',
+                                    '<a class="btn btn-primary waves-effect waves-light" href="/jp_zb/index?mbid=@this.ViewBag.mbid&rwid=' + data[i].rwid + '" target="block">重填参数</a><a class="btn btn-link" onclick="sc(' + data[i].mbid + ',' + data[i].nf + ',' + data[i].zc + ')">重新生成</a><a class="btn btn-link " href="/zb/export?rwid=' + data[i].rwid + '">下载文件</a>',
                                 ]);
                             }; break;
                         }

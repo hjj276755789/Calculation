@@ -58,7 +58,7 @@ namespace Calculation.JS
                     DataRow dr = jzgjt.NewRow();
                     dr[0] = item.lpcs[0] + item.ytcs[0];
                     dr[1] = bacjxx.Sum(m => m["ts"].ints());
-                    dr[2] = bacjxx.Sum(m => m["cjje"].ints()) / bacjxx.Sum(m => m["jzmj"].doubls());
+                    dr[2] = (bacjxx.Sum(m => m["cjje"].ints()) / bacjxx.Sum(m => m["jzmj"].doubls())).je_y();
                     jzgjt.Rows.Add(dr);
                     #endregion
                     #region 竞争项目
@@ -73,7 +73,7 @@ namespace Calculation.JS
                         {
 
                             dr1[1] = jpcjxx.Sum(m => m["ts"].ints());
-                            dr1[2] = jpcjxx.Sum(m => m["cjje"].ints()) / jpcjxx.Sum(m => m["jzmj"].doubls());
+                            dr1[2] = (jpcjxx.Sum(m => m["cjje"].ints()) / jpcjxx.Sum(m => m["jzmj"].doubls())).je_y();
                         }
                         else
                         {
@@ -356,5 +356,75 @@ namespace Calculation.JS
             }
             return t;
         }
+
+
+
+
+//                       #region 商务
+
+
+//                    if (item.ytcs[0] == "商务")
+//                    {
+//                        if (item.hxcs != null && item.hxcs.Length > 0)
+//                        {
+//                            for (int i = 0; i<item.hxcs.Length; i++)
+//                            { }
+//                        }
+//}
+
+//                    if (item.jpxmlb != null && item.jpxmlb.Count > 0)
+//                    {
+//                        foreach (var item_jp in item.jpxmlb)
+//                        {
+//                            if (item_jp.hxcs != null && item_jp.hxcs.Length > 0)
+//                            {
+//                                for (int i = 0; i<item_jp.hxcs.Length; i++)
+//                                { }
+//                            }
+//                            else
+//                            {
+
+//                            }
+
+//                        }
+//                    }
+//                    #endregion
+//                    #region 其他
+//                    else
+//                    {
+//                        //若有细分业态
+//                        if (item.xfytcs != null && item.xfytcs.Length > 0)
+//                        {
+//                            for (int i = 0; i<item.xfytcs.Length; i++)
+//                            { }
+//                        }
+//                        else
+//                        {
+//                        }
+//                        if (item.jpxmlb != null && item.jpxmlb.Count > 0)
+//                        {
+//                            foreach (var item_jp in item.jpxmlb)
+//                            {
+//                                if (item_jp.xfytcs != null && item_jp.xfytcs.Length > 0)
+//                                {
+//                                    for (int i = 0; i<item_jp.xfytcs.Length; i++)
+//                                    {
+//                                    }
+//                                }
+//                                else
+//                                {
+//                                    if (item_jp.ytcs != null && item_jp.ytcs.Length > 0)
+//                                    { }
+//                                    else
+//                                    {
+//                                        Base_Log.Log("没有输入业态参数");
+//                                        continue;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                    #endregion
+
     }
 }
