@@ -52,6 +52,16 @@ namespace Calculation.JS
                     jzgjt.Columns.Add("建面均价", typeof(double));
                     //图表
                     IChart chart = (IChart)page.Shapes[3];
+
+                    if (item.ytcs[0] == "商务")
+                    {
+                        
+                    }
+                    else if (item.ytcs[0] == "别墅")
+                    { }
+                    else { }
+
+
                     #region 本案
                     var bacjxx = Cache_data_cjjl.bz.AsEnumerable().Where(a => a["lpmc"].ToString() == item.lpcs[0] && a["yt"].ToString() == item.ytcs[0]);
 
@@ -83,7 +93,8 @@ namespace Calculation.JS
                         jzgjt.Rows.Add(dr1);
 
                     }
-                    #endregion
+                        #endregion
+                  
                     Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
                     t.AddClone(page);
                 }
