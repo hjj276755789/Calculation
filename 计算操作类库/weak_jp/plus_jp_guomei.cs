@@ -131,7 +131,7 @@ namespace Calculation.JS
                                 if (temp_cjba_sz != null && temp_cjba_sz.Count() > 0)
                                 {
                                     dr[6] = temp_cjba_sz.Sum(m => m["ts"].ints());
-                                    dr[7] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(m => m["jzmj"].doubls())).je_y();
+                                    dr[7] = temp_cjba_sz.Sum(m => m["tnmj"].doubls())!=0?(temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(m => m["tnmj"].doubls())).je_y():0;
                                 }
                                 else
                                 {
@@ -144,7 +144,7 @@ namespace Calculation.JS
                                 if (temp_cjba_bz != null && temp_cjba_bz.Count() > 0)
                                 {
                                     dr[10] = temp_cjba_bz.Sum(m => m["ts"].ints());
-                                    dr[11] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(m => m["jzmj"].doubls())).je_y();
+                                    dr[11] = temp_cjba_bz.Sum(m => m["tnmj"].doubls())!=0?(temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(m => m["tnmj"].doubls())).je_y():0;
                                 }
                                 else
                                 {
@@ -329,7 +329,7 @@ namespace Calculation.JS
                                 if (temp_cjba_sz != null && temp_cjba_sz.Count() > 0)
                                 {
                                     dr[6] = temp_cjba_sz.Sum(m => m["ts"].ints());
-                                    dr[7] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(m => m["jzmj"].doubls())).je_y();
+                                    dr[7] = temp_cjba_sz.Sum(m => m["tnmj"].doubls())!=0? (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(m => m["tnmj"].doubls())).je_y():0;
                                 }
                                 else
                                 {
@@ -342,7 +342,7 @@ namespace Calculation.JS
                                 if (temp_cjba_bz != null && temp_cjba_bz.Count() > 0)
                                 {
                                     dr[10] = temp_cjba_bz.Sum(m => m["ts"].ints());
-                                    dr[11] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(m => m["jzmj"].doubls())).je_y();
+                                    dr[11] = temp_cjba_bz.Sum(m => m["tnmj"].doubls())!=0?(temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(m => m["tnmj"].doubls())).je_y():0;
                                 }
                                 else
                                 {
@@ -418,7 +418,7 @@ namespace Calculation.JS
                             if (temp_cjba_sz != null && temp_cjba_sz.Count() > 0)
                             {
                                 dr[6] = temp_cjba_sz.Sum(m => m["ts"].ints());
-                                dr[7] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(m => m["jzmj"].doubls())).je_y();
+                                dr[7] = temp_cjba_sz.Sum(m => m["tnmj"].doubls())!=0?(temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(m => m["tnmj"].doubls())).je_y():0;
                             }
                             else
                             {
@@ -431,7 +431,7 @@ namespace Calculation.JS
                             if (temp_cjba_bz != null && temp_cjba_bz.Count() > 0)
                             {
                                 dr[10] = temp_cjba_bz.Sum(m => m["ts"].ints());
-                                dr[11] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(m => m["jzmj"].doubls())).je_y();
+                                dr[11] = temp_cjba_bz.Sum(m => m["tnmj"].doubls())!=0?(temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(m => m["tnmj"].doubls())).je_y():0;
                             }
                             else
                             {
@@ -511,7 +511,7 @@ namespace Calculation.JS
                                         if (temp_cjba_sz1 != null && temp_cjba_sz1.Count() > 0)
                                         {
                                             dr1[6] = temp_cjba_sz1.Sum(m => m["ts"].ints());
-                                            dr1[7] = (temp_cjba_sz1.Sum(m => m["cjje"].longs()) / temp_cjba_sz1.Sum(m => m["jzmj"].doubls())).je_y();
+                                            dr1[7] = temp_cjba_sz1.Sum(m => m["tnmj"].doubls())!=0?(temp_cjba_sz1.Sum(m => m["cjje"].longs()) / temp_cjba_sz1.Sum(m => m["tnmj"].doubls())).je_y():0;
                                         }
                                         else
                                         {
@@ -524,7 +524,7 @@ namespace Calculation.JS
                                         if (temp_cjba_bz1 != null && temp_cjba_bz1.Count() > 0)
                                         {
                                             dr1[10] = temp_cjba_bz1.Sum(m => m["ts"].ints());
-                                            dr1[11] = (temp_cjba_bz1.Sum(m => m["cjje"].longs()) / temp_cjba_bz1.Sum(m => m["jzmj"].doubls())).je_y();
+                                            dr1[11] = temp_cjba_bz1.Sum(m => m["tnmj"].doubls())!=0?(temp_cjba_bz1.Sum(m => m["cjje"].longs()) / temp_cjba_bz1.Sum(m => m["tnmj"].doubls())).je_y():0;
                                         }
                                         else
                                         {
@@ -550,10 +550,10 @@ namespace Calculation.JS
                                         string jpyt = item_jp.ytcs == null ? item.ytcs[0] : item_jp.ytcs[0];
 
                                         var temp_rgsj_bz1 = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == jpyt);
-                                        var temp_cjba_bz1 = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["xfyt"].ToString() == jpyt);
+                                        var temp_cjba_bz1 = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == jpyt);
 
                                         var temp_rgsj_sz1 = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == jpyt);
-                                        var temp_cjba_sz1 = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["xfyt"].ToString() == jpyt);
+                                        var temp_cjba_sz1 = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item_jp.lpcs[0] && m["yt"].ToString() == jpyt);
 
                                         //上周本案认购数据
                                         var temp_ba_sz1 = temp_rgsj_sz1.FirstOrDefault();
@@ -602,7 +602,7 @@ namespace Calculation.JS
                                         if (temp_cjba_sz1 != null && temp_cjba_sz1.Count() > 0)
                                         {
                                             dr1[6] = temp_cjba_sz1.Sum(m => m["ts"].ints());
-                                            dr1[7] = (temp_cjba_sz1.Sum(m => m["cjje"].longs()) / temp_cjba_sz1.Sum(m => m["jzmj"].doubls())).je_y();
+                                            dr1[7] = temp_cjba_sz1.Sum(m => m["tnmj"].doubls())!=0?(temp_cjba_sz1.Sum(m => m["cjje"].longs()) / temp_cjba_sz1.Sum(m => m["tnmj"].doubls())).je_y():0;
                                         }
                                         else
                                         {
@@ -615,7 +615,7 @@ namespace Calculation.JS
                                         if (temp_cjba_bz1 != null && temp_cjba_bz1.Count() > 0)
                                         {
                                             dr1[10] = temp_cjba_bz1.Sum(m => m["ts"].ints());
-                                            dr1[11] = (temp_cjba_bz1.Sum(m => m["cjje"].longs()) / temp_cjba_bz1.Sum(m => m["jzmj"].doubls())).je_y();
+                                            dr1[11] = temp_cjba_bz1.Sum(m => m["tnmj"].doubls())!=0?(temp_cjba_bz1.Sum(m => m["cjje"].longs()) / temp_cjba_bz1.Sum(m => m["tnmj"].doubls())).je_y():0;
                                         }
                                         else
                                         {

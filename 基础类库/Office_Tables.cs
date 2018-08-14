@@ -40,6 +40,75 @@ namespace Calculation.Base
                 table.Rows.AddClone(row, false);
             }
             table.Rows.RemoveAt(3,false);
+        }
+        public static void SetJP_RUIAN_JPBX_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[0][7].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 1);
+            table.Rows[0][11].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[3];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(3, false);
+        }
+        public static void SetJP_RUIAN_JQHD_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+            ITable table = (ITable)sld.Shapes[index];
+         
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[1];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(1, false);
+        }
+
+
+        public static void SetJP_JUNFENG_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[0][6].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 1);
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[2];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(2, false);
+        }
+
+        public static void SetJP_HuaQiaoCheng_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[0][6].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 1);
+            table.Rows[0][10].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[2];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(2, false);
             //for (int i = 0; i < chart.Columns.Count; i++)
             //{
             //    if (dt != null && dt.Rows.Count > 0)

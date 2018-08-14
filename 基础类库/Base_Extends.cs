@@ -51,12 +51,15 @@ namespace Calculation.Base
                 return 0;
             try
             {
-                return Int32.Parse(target.ToString());
+
+                return Convert.ToInt32(target);
             }
             catch (Exception e)
             {
-                
-                return (int)target;
+                Base_Log.Log(e.Message);
+                if (target != null)
+                    return (int)target;
+                else return 0;
             }
         }
         public static long longs(this object target)

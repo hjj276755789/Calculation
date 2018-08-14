@@ -25,7 +25,11 @@ namespace Calculation.JS
         /// </summary>
         public static double kd = 1.2;
         /// <summary>
-        /// 大业态竞争格局
+        /// 竞争格局
+        /// 别墅按细分业态参数分页
+        /// 商务按户型查参数业态
+        /// 其他按业态查参数
+        /// 数据源是认购数据
         /// </summary>
         /// <param name="str"></param>
         /// <param name="cjbh"></param>
@@ -42,61 +46,149 @@ namespace Calculation.JS
                 #region P1 
                 foreach (var item in param)
                 {
-                    var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
-                    IAutoShape text1 = (IAutoShape)page.Shapes[2];
-                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.ytcs[0]);
-                    //数据
-                    System.Data.DataTable jzgjt = new System.Data.DataTable();
-                    jzgjt.Columns.Add("");
-                    jzgjt.Columns.Add("成交套数", typeof(int));
-                    jzgjt.Columns.Add("建面均价", typeof(double));
-                    //图表
-                    IChart chart = (IChart)page.Shapes[3];
 
+                    #region 商务
+
+                    
                     if (item.ytcs[0] == "商务")
                     {
-                        
-                    }
-                    else if (item.ytcs[0] == "别墅")
-                    { }
-                    else { }
-
-
-                    #region 本案
-                    var bacjxx = Cache_data_cjjl.bz.AsEnumerable().Where(a => a["lpmc"].ToString() == item.lpcs[0] && a["yt"].ToString() == item.ytcs[0]);
-
-                    DataRow dr = jzgjt.NewRow();
-                    dr[0] = item.lpcs[0] + item.ytcs[0];
-                    dr[1] = bacjxx.Sum(m => m["ts"].ints());
-                    dr[2] = (bacjxx.Sum(m => m["cjje"].ints()) / bacjxx.Sum(m => m["jzmj"].doubls())).je_y();
-                    jzgjt.Rows.Add(dr);
-                    #endregion
-                    #region 竞争项目
-                    foreach (var item_jp in item.jpxmlb)
-                    {
-                        string jpyt = item_jp.ytcs == null ? item.ytcs[0] : item_jp.ytcs[0];
-                        var jpcjxx = Cache_data_cjjl.bz.AsEnumerable().Where(a => a["lpmc"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == jpyt);
-
-                        DataRow dr1 = jzgjt.NewRow();
-                        dr1[0] = item_jp.lpcs[0] + "(" + item.ytcs[0] + ")";
-                        if (jpcjxx != null)
+                        var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
+                        IAutoShape text1 = (IAutoShape)page.Shapes[2];
+                        text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.hxcs[0]);
+                        //数据
+                        System.Data.DataTable jzgjt = new System.Data.DataTable();
+                        jzgjt.Columns.Add("");
+                        jzgjt.Columns.Add("成交套数", typeof(int));
+                        jzgjt.Columns.Add("建面均价", typeof(double));
+                        //图表
+                        IChart chart = (IChart)page.Shapes[3];
+                        foreach (var item_jp in item.jpxmlb)
                         {
 
-                            dr1[1] = jpcjxx.Sum(m => m["ts"].ints());
-                            dr1[2] = (jpcjxx.Sum(m => m["cjje"].ints()) / jpcjxx.Sum(m => m["jzmj"].doubls())).je_y();
+
+                            string jpyt = item_jp.hxcs == null ? item.hxcs[0] : item_jp.hxcs[0];
+                            var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == jpyt).FirstOrDefault();
+
+                            DataRow dr1 = jzgjt.NewRow();
+                            dr1[0] = item_jp.lpcs[0] + "(" + item.ytcs[0] + ")";
+                            if (jpcjxx != null)
+                            {
+
+                                dr1[1] = jpcjxx["xkts"].ints();
+                                dr1[2] = jpcjxx["xkjmjj"].ints();
+                            }
+                            else
+                            {
+                                dr1[1] = 0;
+                                dr1[2] = 0;
+                            }
+                            jzgjt.Rows.Add(dr1);
+
+                        }
+                        Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
+                        t.AddClone(page);
+
+                    }
+                    #endregion
+
+                    #region 别墅
+                   
+
+                    else if (item.ytcs[0] == "别墅")
+                    {
+                        if(item.xfytcs!=null&&item.xfytcs.Length>0)
+                        {
+                            for (int i = 0; i < item.xfytcs.Length; i++)
+                            {
+                                var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
+                                IAutoShape text1 = (IAutoShape)page.Shapes[2];
+                                text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.xfytcs[i]);
+                                System.Data.DataTable jzgjt = new System.Data.DataTable();
+                                jzgjt.Columns.Add("");
+                                jzgjt.Columns.Add("成交套数", typeof(int));
+                                jzgjt.Columns.Add("建面均价", typeof(double));
+
+                                IChart chart = (IChart)page.Shapes[3];
+                                foreach (var item_jp in item.jpxmlb)
+                                {
+
+                                    
+                                    var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item.xfytcs[i]).FirstOrDefault();
+
+                                    DataRow dr1 = jzgjt.NewRow();
+                                    dr1[0] = item_jp.lpcs[0] + "(" + item.ytcs[0] + ")";
+                                    if (jpcjxx != null)
+                                    {
+
+                                        dr1[1] = jpcjxx["xkts"].ints();
+                                        dr1[2] = jpcjxx["xkjmjj"].ints();
+                                        jzgjt.Rows.Add(dr1);
+                                    }
+                                    else
+                                    {
+                                        if (item_jp.xfytcs.Contains(item.xfytcs[i]))
+                                        {
+                                            dr1[1] = 0;
+                                            dr1[2] = 0;
+                                            jzgjt.Rows.Add(dr1);
+                                        }
+                                        else
+                                            continue;
+                                    }
+                                }
+                                Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
+                                t.AddClone(page);
+                            }
+                           
                         }
                         else
                         {
-                            dr1[1] = 0;
-                            dr1[2] = 0;
+                            continue;
                         }
-                        jzgjt.Rows.Add(dr1);
-
                     }
-                        #endregion
+
+                    #endregion
+
+                    #region 大业态
+
                   
-                    Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
-                    t.AddClone(page);
+                    else {
+                        var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
+                        IAutoShape text1 = (IAutoShape)page.Shapes[2];
+                        text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.ytcs[0]);
+                        //数据
+                        System.Data.DataTable jzgjt = new System.Data.DataTable();
+                        jzgjt.Columns.Add("");
+                        jzgjt.Columns.Add("成交套数", typeof(int));
+                        jzgjt.Columns.Add("建面均价", typeof(double));
+                        foreach (var item_jp in item.jpxmlb)
+                        {
+                            string jpyt = item_jp.ytcs == null ? item.ytcs[0] : item_jp.ytcs[0];
+                            var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == jpyt).FirstOrDefault();
+
+                            DataRow dr1 = jzgjt.NewRow();
+                            dr1[0] = item_jp.lpcs[0] + "(" + item.ytcs[0] + ")";
+                            if (jpcjxx != null)
+                            {
+
+                                dr1[1] = jpcjxx["xkts"].ints();
+                                dr1[2] = jpcjxx["xkjmjj"].ints();
+                            }
+                            else
+                            {
+                                dr1[1] = 0;
+                                dr1[2] = 0;
+                            }
+                            jzgjt.Rows.Add(dr1);
+
+                          
+                        }
+                        Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
+                        t.AddClone(page);
+                    }
+
+                    #endregion
+
                 }
                 #endregion
                 return t;
@@ -230,7 +322,7 @@ namespace Calculation.JS
                 }
                 catch
                 {
-                    Base_Log.Log(Path.Combine(path, item.lpcs[0] + ".jpg") + "文件不存在");
+                    Base_Log.Log(Path.Combine(path, item.bamc + ".jpg") + "文件不存在");
                 }
                 foreach (var item_jp in item.jpxmlb)
                 {
@@ -264,7 +356,7 @@ namespace Calculation.JS
                     }
                     catch
                     {
-                        Base_Log.Log(Path.Combine(path, item.lpcs[0] + ".jpg") + "文件不存在");
+                        Base_Log.Log(Path.Combine(path, item_jp.lpcs[0] + ".jpg") + "文件不存在");
                     }
                 }
                 if (tgtplb.Count > 0)
