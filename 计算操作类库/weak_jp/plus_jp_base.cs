@@ -460,74 +460,75 @@ namespace Calculation.JS
             return t;
         }
 
+        /// <summary>
+        /// 周度业态排名（全局数据、通用）
+        /// </summary>
+        /// <returns></returns>
+        public virtual ISlideCollection _plus_jp_zdpm(string bamc,string [] yt)
+        {
+            #region 准备数据
+            
+            var data_zd = (from a in Cache_data_cjjl.bz.AsEnumerable()
+                          where yt.Contains(a["yt"])
+                          group a by new
+                          {
+                              lpmc = a["lpmc"], zt = a["zt"]
+                          } into g
+                          select new
+                          {
+                              lpmc = g.Key.lpmc,
+                              zt = g.Key.zt,
+                              cjts = g.Sum(m => m["ts"].ints()),
+                              cjje = g.Sum(m => m["cjje"].longs()).je_y(),
+                              jzmj = g.Sum(m => m["jzmj"].doubls()).mj(),
+                              tnmj = g.Sum(m => m["tnmj"].doubls()).mj(),
+                          }
+                          into b orderby b.cjts descending select b ).Take(5).ToList();
 
 
+            #endregion
 
-//                       #region 商务
+            #region 生成页面
 
+            if(data_zd!=null&data_zd.Count>0)
+            {
+                System.Data.DataTable dt = new System.Data.DataTable();
+                dt.Columns.Add("pm");
+                dt.Columns.Add("lpmc");
+                dt.Columns.Add("zt");
+                dt.Columns.Add("cjts");
+                dt.Columns.Add("cjmj");
+                dt.Columns.Add("cjje");
+                dt.Columns.Add("jmjj");
+                dt.Columns.Add("tnjj");
+                for (int i = 0; i < data_zd.Count; i++)
+                {
+                    DataRow dr = dt.NewRow();
+                    dr["pm"] = i;
+                    dr["lpmc"] = data_zd[i].lpmc;
+                    dr["zt"] = data_zd[i].zt;
+                    dr["cjts"] = data_zd[i].cjts;
+                    dr["cjmj"] = data_zd[i].jzmj;
+                    dr["cjje"] = data_zd[i].cjje;
+                    dr["jmjj"] = data_zd[i].cjje/ data_zd[i].jzmj;
+                    dr["tnjj"] = data_zd[i].cjje/ data_zd[i].tnmj;
+                    dt.Rows.Add(dr);
+                }
+                var tp = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_ZDPM"]);
+                var temp = tp.Slides;
+                var page = temp[0];
+                IAutoShape text1 = (IAutoShape)page.Shapes[1];
+                text1.TextFrame.Text = string.Format(text1.TextFrame.Text, bamc, string.Join(",",yt));
+                Office_Tables.SetJP_BASE_ZDYTPM_Table(page, dt, 2, null, null);
 
-//                    if (item.ytcs[0] == "商务")
-//                    {
-//                        if (item.hxcs != null && item.hxcs.Length > 0)
-//                        {
-//                            for (int i = 0; i<item.hxcs.Length; i++)
-//                            { }
-//                        }
-//}
+                IAutoShape text2 = (IAutoShape)page.Shapes[3];
+                text2.TextFrame.Text = string.Format(text2.TextFrame.Text,  string.Join(",", yt),Base_date.GET_ZCMC(Base_date.bn,Base_date.bz));
 
-//                    if (item.jpxmlb != null && item.jpxmlb.Count > 0)
-//                    {
-//                        foreach (var item_jp in item.jpxmlb)
-//                        {
-//                            if (item_jp.hxcs != null && item_jp.hxcs.Length > 0)
-//                            {
-//                                for (int i = 0; i<item_jp.hxcs.Length; i++)
-//                                { }
-//                            }
-//                            else
-//                            {
-
-//                            }
-
-//                        }
-//                    }
-//                    #endregion
-//                    #region 其他
-//                    else
-//                    {
-//                        //若有细分业态
-//                        if (item.xfytcs != null && item.xfytcs.Length > 0)
-//                        {
-//                            for (int i = 0; i<item.xfytcs.Length; i++)
-//                            { }
-//                        }
-//                        else
-//                        {
-//                        }
-//                        if (item.jpxmlb != null && item.jpxmlb.Count > 0)
-//                        {
-//                            foreach (var item_jp in item.jpxmlb)
-//                            {
-//                                if (item_jp.xfytcs != null && item_jp.xfytcs.Length > 0)
-//                                {
-//                                    for (int i = 0; i<item_jp.xfytcs.Length; i++)
-//                                    {
-//                                    }
-//                                }
-//                                else
-//                                {
-//                                    if (item_jp.ytcs != null && item_jp.ytcs.Length > 0)
-//                                    { }
-//                                    else
-//                                    {
-//                                        Base_Log.Log("没有输入业态参数");
-//                                        continue;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                    #endregion
+                return temp;
+            }
+            #endregion
+            return null;
+        }
 
     }
 }

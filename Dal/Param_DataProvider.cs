@@ -150,7 +150,7 @@ where c.rwid = @rwid and a.csid =@csid";
 
         public static List<JP_BA> GET_JP_BA(int rwid)
         {
-            string sql = "select * from calculation.xtgl_param_jpba where rwid=@rwid";
+            string sql = "select * from calculation.xtgl_param_jpba where rwid=@rwid order by id ";
             MySqlParameter[] p = { new MySqlParameter("rwid", rwid) };
             return Models.Modelhelper.类列表赋值<JP_BA>(new JP_BA(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
@@ -194,7 +194,7 @@ where c.rwid = @rwid and a.csid =@csid";
 
         public static List<JP_JPXM> GET_JP_JPXM(int baid)
         {
-            string sql = "select t1.*,t2.jzgjmc,t2.px from calculation.xtgl_param_jpgj t1 , calculation. dmb_jzgj t2   where t1.jzgjid=t2.id  and t1.baid = @baid order by px";
+            string sql = "select t1.*,t2.jzgjmc,t2.px from calculation.xtgl_param_jpgj t1 , calculation. dmb_jzgj t2   where t1.jzgjid=t2.id  and t1.baid = @baid order by px,t1.id";
             MySqlParameter[] p = { new MySqlParameter("baid", baid) };
             return Models.Modelhelper.类列表赋值<JP_JPXM>(new JP_JPXM(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }

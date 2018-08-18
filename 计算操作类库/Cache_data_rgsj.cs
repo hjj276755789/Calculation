@@ -42,7 +42,7 @@ namespace Calculation.JS
             }
             else
             {
-                if (nowdatetask != null && (nowdatetask.nf != Base_date.bn && nowdatetask.zc != Base_date.bz))
+                if (nowdatetask != null && (nowdatetask.nf != Base_date.bn || nowdatetask.zc != Base_date.bz))
                 {
                     uniqueInstance = new Cache_data_cjjl();
                     jbz = ZB_Data_RGSJ_DataProvider.GET_JBZ(Base_date.bz);

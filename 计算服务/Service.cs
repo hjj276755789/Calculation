@@ -65,7 +65,7 @@ namespace Calculation
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("服务启动失败...");
+                    Console.WriteLine("服务启动失败..."+ex.Message);
                     break;
                 }
                 Console.WriteLine("服务器启动成功.......");
@@ -88,7 +88,6 @@ namespace Calculation
                         //等待请求连接
                         //没有请求则GetContext处于阻塞状态
                         HttpListenerContext ctx = listerner.GetContext();
-
                         ThreadPool.QueueUserWorkItem(new WaitCallback(TaskProc), ctx);
                     }
                     catch (Exception e)
@@ -154,18 +153,20 @@ namespace Calculation
             try
             {
                 dateTask dt = zc as dateTask;
-                string xzdz= tm.Create_zb(dt.mbid,dt.nf, dt.zc);
-                if (!string.IsNullOrEmpty(xzdz))
-                {
-                    if (!new Dal.RWGL_DataProvider().SET_RWZT(dt.mbid, dt.nf, dt.zc, RW_ZT.完成可下载, xzdz))
-                        Base_Log.Log("创建文件成功，插入数据失败");
-                    }
-                else
-                {
-                    Base_Log.Log("生成失败：下载地址并未生成并返回！");
-                    return;
-                }
-                Base_Log.Log("生成成功\n");
+                TemplateManage.add_rw(dt.mbid, dt.nf, dt.zc);
+                Base_Log.Log("任务已经加入队列");
+                //string xzdz= tm.Create_zb(dt.mbid,dt.nf, dt.zc);
+                //if (!string.IsNullOrEmpty(xzdz))
+                //{
+                //    if (!new Dal.RWGL_DataProvider().SET_RWZT(dt.mbid, dt.nf, dt.zc, RW_ZT.完成可下载, xzdz))
+                //        Base_Log.Log("创建文件成功，插入数据失败");
+                //    }
+                //else
+                //{
+                //    Base_Log.Log("生成失败：下载地址并未生成并返回！");
+                //    return;
+                //}
+                //Base_Log.Log("生成成功\n");
             }
             catch (Exception e)
             {
@@ -204,31 +205,43 @@ namespace Calculation
         private void timer1_Tick(object sender, EventArgs e)
         {
             this.label1.Text = "运行时长：" + sj();
-            this.label2.Text = "接受请求：" + jsqq +"次";
-            
-            //this.label3.Text = "任务队列：" + tm.rwlb.Count + "";
+            this.label2.Text = "接受请求：" + jsqq + "次";
+            tm.execute_rw();
+            if(TemplateManage.rwlb!=null&&TemplateManage.rwlb.Count>0)
+            { 
+                if(TemplateManage.dqrw!=null)
+                    this.label3.Text = "任务队列：" + TemplateManage.rwlb.Count + "****当前任务："+TemplateManage.dqrw.mbid+"***任务状态："+TemplateManage.dqrw.zt;
+            }
+            else
+            {
+                this.label3.Text = "任务队列：0";
+            }
             //tm.tt();
         }
+
+        #region 时间显示
+
+     
         /// <summary>
         /// 年
         /// </summary>
-        public static int n = 0;
+        private static int n = 0;
         /// <summary>
         /// 日
         /// </summary>
-        public static int r = 0;
+        private static int r = 0;
         /// <summary>
         /// 时
         /// </summary>
-        public static int s = 0;
+        private static int s = 0;
         /// <summary>
         /// 分
         /// </summary>
-        public static int f = 0;
+        private static int f = 0;
         /// <summary>
         /// 秒
         /// </summary>
-        public static int m = 0;
+        private static int m = 0;
 
         public static string sj()
         {
@@ -268,10 +281,10 @@ namespace Calculation
            
             if(th!=null&&th.IsAlive)
             {
-                MessageBox.Show("线程还没关"); 
+                th.DisableComObjectEagerCleanup();
             }
         }
-
+        #endregion
 
     }
 }

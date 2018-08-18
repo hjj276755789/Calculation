@@ -72,4 +72,9 @@ namespace Calculation.Models.Enums
         生成中=1,
         生成完毕=2
     }
+
+    public enum DYT
+    {
+        
+    }
 }

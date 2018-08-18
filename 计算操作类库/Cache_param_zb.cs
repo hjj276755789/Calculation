@@ -11,6 +11,7 @@ namespace Calculation.JS
 {
     public class Cache_param_zb
     {
+        private static dateTask nowdatetask;
         private static Cache_param_zb uniqueInstance;
         public static Cache_param_zb ini_zb(int mbid,int nf,int zc)
         {
@@ -19,6 +20,16 @@ namespace Calculation.JS
                 uniqueInstance = new Cache_param_zb();
                 value = Dal.Param_DataProvider.GET_MBCJCSNR(mbid,nf,zc);
                 _param_jp = _param_jp_helper(mbid, nf, zc);
+                nowdatetask = new dateTask(null, Base_date.bn, null, Base_date.bz);
+            }
+            else
+            {
+                if (nowdatetask != null && (nowdatetask.nf != Base_date.bn || nowdatetask.zc != Base_date.bz))
+                {
+                    value = Dal.Param_DataProvider.GET_MBCJCSNR(mbid, nf, zc);
+                    _param_jp = _param_jp_helper(mbid, nf, zc);
+                    nowdatetask = new dateTask(null, Base_date.bn, null, Base_date.bz);
+                }
             }
             return uniqueInstance;
         }

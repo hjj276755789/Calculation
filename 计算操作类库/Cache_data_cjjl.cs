@@ -46,9 +46,8 @@ namespace Calculation.JS
             }
             else
             {
-                if (nowdatetask != null && (nowdatetask.nf != Base_date.bn && nowdatetask.zc !=Base_date.bz))
+                if (nowdatetask != null && (nowdatetask.nf != Base_date.bn || nowdatetask.zc !=Base_date.bz))
                 {
-                    uniqueInstance = new Cache_data_cjjl();
                     jbz = ZB_Data_CJBA_DataProvider.GET_JBZ(Base_date.bz);
                     var bztemp = jbz.Select("zc=" + Base_date.bz);
                     bz = bztemp.Count() != 0 ? bztemp.CopyToDataTable() : new DataTable();
@@ -57,6 +56,7 @@ namespace Calculation.JS
                     tz = ZB_Data_CJBA_DataProvider.GET_ZB(Base_date.tz_first, Base_date.tz_Last);
                     nowdatetask = new dateTask(null,Base_date.bn, null, Base_date.bz);
                 }
+
             }
             return uniqueInstance;
         }

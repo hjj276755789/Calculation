@@ -69,6 +69,7 @@
     <Compile Include="weak_jp\plus_jp_langshi.cs" />
     <Compile Include="weak_jp\plus_jp_rongchuang.cs" />
     <Compile Include="weak_jp\plus_jp_ruian.cs" />
+    <Compile Include="weak_jp\plus_jp_yangguang100ximalaya.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dal\Dal.csproj">

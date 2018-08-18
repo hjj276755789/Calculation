@@ -101,7 +101,6 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "Service";
-            this.Text = "计算服务端";
             this.ResumeLayout(false);
             this.PerformLayout();
 
