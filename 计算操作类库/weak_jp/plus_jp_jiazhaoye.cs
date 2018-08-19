@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Calculation.JS
 {
-    class plus_jp_jiazhaoye:plus_jp_base
+    public class plus_jp_jiazhaoye:plus_jp_base
     {
         /// <summary>
         ///  大业态循环
@@ -18,7 +18,7 @@ namespace Calculation.JS
         /// <param name="str"></param>
         /// <param name="cjbh"></param>
         /// <returns></returns> 
-        public ISlideCollection _plus_jp_huaqiaocheng_1(string str, int cjbh)
+        public ISlideCollection _plus_jp_jiazhaoye_1(string str, int cjbh)
         {
             try
             {
@@ -34,11 +34,11 @@ namespace Calculation.JS
                 {
                     var tp = new Presentation(str);
                     var temp = tp.Slides;
-                    var page = temp[1];
-                    IAutoShape text1 = (IAutoShape)page.Shapes[4];
-                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.ytcs[0]);
+                    var page = temp[0];
+                    IAutoShape text1 = (IAutoShape)page.Shapes[0];
+                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc);
                     System.Data.DataTable dt = new System.Data.DataTable();
-                    dt.Columns.Add("jzgj");
+                    dt.Columns.Add("jzgjmc");
                     dt.Columns.Add("lpmc");
                     dt.Columns.Add("yt");
                     dt.Columns.Add("xkts");
@@ -56,23 +56,23 @@ namespace Calculation.JS
 
                     dt.Columns.Add("bzcjts");   //本周成交套数
                     dt.Columns.Add("bzcjtnjj"); //本周成交套内均价
-                    dt.Columns.Add("szcjjmjj"); //本周成交建面均价
+                    dt.Columns.Add("bzcjjmjj"); //本周成交建面均价
 
                     dt.Columns.Add("bzrgts"); //本周认购数据
                     dt.Columns.Add("bzrgtnjj"); //本周认购套内均价
                     dt.Columns.Add("bzrgjmjj"); //本周建面均价
 
-                    dt.Columns.Add("tshb");  //认购环比
-                    dt.Columns.Add("jghb");  //价格环比
+                    dt.Columns.Add("cjtshb");  //认购环比
+                    dt.Columns.Add("tnjjhb");  //价格环比
                     dt.Columns.Add("bhyy");  //变化原因
-                    dt.Columns.Add("bz");    //下周加推预计
+                    dt.Columns.Add("xzjtyj");    //下周加推预计
 
                     if(item.jpxmlb!=null&&item.jpxmlb.Count>0)
                     {
                         dt = GET_JPXM_ROW(dt, item.jpxmlb);
                     }
                   
-                    Office_Tables.SetJP_FD_Table(page, dt, 2, null, null);
+                    Office_Tables.SetJP_JiaZhaoYe_Table(page, dt, 3, null, null);
                     t.AddClone(page);
                 }
 
@@ -109,84 +109,87 @@ namespace Calculation.JS
                 {
                     for (int i = 0; i < item.xfytcs.Length; i++)
                     {
-                      
-                                DataRow dr1 = dt.NewRow();
-                                dr1[1] = item.lpcs[0];//竞争楼盘名称
-                                dr1[2] = item.xfytcs[i];//竞争业态
-                                #region 数据准备
-                                //竞品业态
-                          
-                                var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
-                                var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
 
-                                var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
-                                var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+                        DataRow dr1 = dt.NewRow();
+                        dr1["jzgjmc"] = item.jzgjmc;
+                        dr1["lpmc"] = item.lpcs[0];//竞争楼盘名称
+                        dr1["yt"] = item.xfytcs[i];//竞争业态
+                        #region 数据准备
+                        //竞品业态
 
-                                //上周本案认购数据
-                                var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
-                                //本周本案认购数据
-                                var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
-                                #endregion
+                        var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                        var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+
+                        var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                        var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+
+                        //上周本案认购数据
+                        var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
+                        //本周本案认购数据
+                        var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                        #endregion
 
 
 
-                                #region 本周认购数据
-                                if (temp_ba_bz != null)
-                                {
-                                    dr1["xkts"] = temp_ba_bz["xkts"];
-                                    dr1["xkxsts"] = temp_ba_bz["xkxsts"];
-                                    dr1["xktnjj"] = temp_ba_bz["xktnjj"];
-                                    dr1["hd"] = temp_ba_bz["hd"];
+                        #region 本周认购数据
+                        if (temp_ba_bz != null)
+                        {
+                            dr1["xkts"] = temp_ba_bz["xkts"];
+                            dr1["xkxsts"] = temp_ba_bz["xkxsts"];
+                            dr1["xktnjj"] = temp_ba_bz["xktnjj"];
+                            dr1["cjtshb"] = temp_ba_bz["cjtshb"];
+                            dr1["tnjjhb"] = temp_ba_bz["tnjjhb"];
+                            dr1["bhyy"] = temp_ba_bz["bhyy"];
+                            dr1["xzjtyj"] = temp_ba_bz["xzjtyj"];
 
-                                }
-                                else
-                                {
-                                    dr1["xkts"] = "";
-                                    dr1["xkxsts"] = "";
-                                    dr1["xktnjj"] = "";
-                                    dr1["hd"] = "-";
-                                }
+                        }
+                        else
+                        {
+                            dr1["xkts"] = "";
+                            dr1["xkxsts"] = "";
+                            dr1["xktnjj"] = "";
+                            dr1["cjtshb"] = "";
+                            dr1["tnjjhb"] = "";
+                            dr1["bhyy"] = "";
+                            dr1["xzjtyj"] = "";
+                        }
 
-                                #endregion
+                        #endregion
 
-                                #region  上周成交数据
-                                if (temp_cjba_sz != null && temp_cjba_sz.Count() > 0)
-                                {
+                        #region  上周成交数据
+                        if (temp_cjba_sz != null && temp_cjba_sz.Count() > 0)
+                        {
 
-                                    dr1["szcjts"] = temp_cjba_sz.Sum(m => m["ts"].ints());
-                                    dr1["szcjmj"] = temp_cjba_sz.Sum(m => m["jzmj"].ints());
-                                    dr1["szcjje"] = temp_cjba_sz.Sum(m => m["cjje"].longs());
-                                    dr1["sztnjj"] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(n => n["tnmj"].ints())).je_y();
-                                }
-                                else
-                                {
-                                    dr1["szcjts"] = 0;
-                                    dr1["szcjmj"] = 0;
-                                    dr1["szcjje"] = 0;
-                                    dr1["sztnjj"] = 0;
-                                }
-                                #endregion
+                            dr1["szcjts"] = temp_cjba_sz.Sum(m => m["ts"].ints());
+                            dr1["szcjtnjj"] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(n => n["tnmj"].doubls())).je_y();
+                            dr1["szcjjmjj"] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(n => n["jzmj"].doubls())).je_y();
+                        }
+                        else
+                        {
+                            dr1["szcjts"] = 0;
+                            dr1["szcjtnjj"] = 0;
+                            dr1["szcjjmjj"] = 0;
+                        }
+                        #endregion
 
-                                #region 本周成交数据
-                                if (temp_ba_bz != null)
-                                {
-                                    dr1["bzcjts"] = temp_cjba_bz.Sum(m => m["ts"].ints());
-                                    dr1["bzcjmj"] = temp_cjba_bz.Sum(m => m["jzmj"].ints());
-                                    dr1["bzcjje"] = temp_cjba_bz.Sum(m => m["cjje"].longs());
-                                    dr1["bztnjj"] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(n => n["tnmj"].ints())).je_y();
+                        #region 本周成交数据
+                        if (temp_ba_bz != null)
+                        {
+                            dr1["bzcjts"] = temp_cjba_bz.Sum(m => m["ts"].ints());
+                            dr1["bzcjtnjj"] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(n => n["tnmj"].doubls())).je_y();
+                            dr1["bzcjjmjj"] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(n => n["jzmj"].doubls())).je_y();
+                        }
+                        else
+                        {
+                            dr1["bzcjts"] = 0;
+                            dr1["bzcjtnjj"] = 0;
+                            dr1["bzcjjmjj"] = 0;
+                        }
+                        #endregion
 
-                                }
-                                else
-                                {
-                                    dr1["bzcjts"] = 0;
-                                    dr1["bzcjmj"] = 0;
-                                    dr1["bzcjje"] = 0;
-                                    dr1["bztnjj"] = 0;
-                                }
-                                #endregion
 
-                                dt.Rows.Add(dr1);
-                      
+                        dt.Rows.Add(dr1);
+
                     }
                 }
                 else if (item.ytcs[0] == "商务")
@@ -194,8 +197,9 @@ namespace Calculation.JS
                     for (int i = 0; i < item.hxcs.Length; i++)
                     {
                         DataRow dr1 = dt.NewRow();
-                        dr1[1] = item.lpcs[0];//竞争楼盘名称
-                        dr1[2] = item.hxcs[i];//竞争业态
+                        dr1["jzgjmc"] = item.jzgjmc;
+                        dr1["lpmc"] = item.lpcs[0];//竞争楼盘名称
+                        dr1["yt"] = item.hxcs[i];//竞争业态
                         #region 数据准备
                         //竞品业态
 
@@ -219,7 +223,10 @@ namespace Calculation.JS
                             dr1["xkts"] = temp_ba_bz["xkts"];
                             dr1["xkxsts"] = temp_ba_bz["xkxsts"];
                             dr1["xktnjj"] = temp_ba_bz["xktnjj"];
-                            dr1["hd"] = temp_ba_bz["hd"];
+                            dr1["cjtshb"] = temp_ba_bz["cjtshb"];
+                            dr1["tnjjhb"] = temp_ba_bz["tnjjhb"];
+                            dr1["bhyy"] = temp_ba_bz["bhyy"];
+                            dr1["xzjtyj"] = temp_ba_bz["xzjtyj"];
 
                         }
                         else
@@ -227,7 +234,10 @@ namespace Calculation.JS
                             dr1["xkts"] = "";
                             dr1["xkxsts"] = "";
                             dr1["xktnjj"] = "";
-                            dr1["hd"] = "-";
+                            dr1["cjtshb"] = "";
+                            dr1["tnjjhb"] = "";
+                            dr1["bhyy"] = "";
+                            dr1["xzjtyj"] = "";
                         }
 
                         #endregion
@@ -237,16 +247,14 @@ namespace Calculation.JS
                         {
 
                             dr1["szcjts"] = temp_cjba_sz.Sum(m => m["ts"].ints());
-                            dr1["szcjmj"] = temp_cjba_sz.Sum(m => m["jzmj"].ints());
-                            dr1["szcjje"] = temp_cjba_sz.Sum(m => m["cjje"].longs());
-                            dr1["sztnjj"] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(n => n["tnmj"].ints())).je_y();
+                            dr1["szcjtnjj"] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(n => n["tnmj"].doubls())).je_y();
+                            dr1["szcjjmjj"] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(n => n["jzmj"].doubls())).je_y();
                         }
                         else
                         {
                             dr1["szcjts"] = 0;
-                            dr1["szcjmj"] = 0;
-                            dr1["szcjje"] = 0;
-                            dr1["sztnjj"] = 0;
+                            dr1["szcjtnjj"] = 0;
+                            dr1["szcjjmjj"] = 0;
                         }
                         #endregion
 
@@ -254,19 +262,17 @@ namespace Calculation.JS
                         if (temp_ba_bz != null)
                         {
                             dr1["bzcjts"] = temp_cjba_bz.Sum(m => m["ts"].ints());
-                            dr1["bzcjmj"] = temp_cjba_bz.Sum(m => m["jzmj"].ints());
-                            dr1["bzcjje"] = temp_cjba_bz.Sum(m => m["cjje"].longs());
-                            dr1["bztnjj"] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(n => n["tnmj"].ints())).je_y();
-
+                            dr1["bzcjtnjj"] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(n => n["tnmj"].doubls())).je_y();
+                            dr1["bzcjjmjj"] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(n => n["jzmj"].doubls())).je_y();
                         }
                         else
                         {
                             dr1["bzcjts"] = 0;
-                            dr1["bzcjmj"] = 0;
-                            dr1["bzcjje"] = 0;
-                            dr1["bztnjj"] = 0;
+                            dr1["bzcjtnjj"] = 0;
+                            dr1["bzcjjmjj"] = 0;
                         }
                         #endregion
+
 
                         dt.Rows.Add(dr1);
                     }
@@ -274,8 +280,9 @@ namespace Calculation.JS
                 else
                 {
                     DataRow dr1 = dt.NewRow();
-                    dr1[1] = item.lpcs[0];//竞争楼盘名称
-                    dr1[2] = item.ytcs[0];//竞争业态
+                    dr1["jzgjmc"] = item.jzgjmc;
+                    dr1["lpmc"] = item.lpcs[0];//竞争楼盘名称
+                    dr1["yt"] = item.ytcs[0];//竞争业态
                     #region 数据准备
                     //竞品业态
 
@@ -299,7 +306,10 @@ namespace Calculation.JS
                         dr1["xkts"] = temp_ba_bz["xkts"];
                         dr1["xkxsts"] = temp_ba_bz["xkxsts"];
                         dr1["xktnjj"] = temp_ba_bz["xktnjj"];
-                        dr1["hd"] = temp_ba_bz["hd"];
+                        dr1["cjtshb"] = temp_ba_bz["cjtshb"];
+                        dr1["tnjjhb"] = temp_ba_bz["tnjjhb"];
+                        dr1["bhyy"] = temp_ba_bz["bhyy"];
+                        dr1["xzjtyj"] = temp_ba_bz["xzjtyj"];
 
                     }
                     else
@@ -307,7 +317,10 @@ namespace Calculation.JS
                         dr1["xkts"] = "";
                         dr1["xkxsts"] = "";
                         dr1["xktnjj"] = "";
-                        dr1["hd"] = "-";
+                        dr1["cjtshb"] = "";
+                        dr1["tnjjhb"] = "";
+                        dr1["bhyy"] = "";
+                        dr1["xzjtyj"] = "";
                     }
 
                     #endregion
@@ -317,16 +330,14 @@ namespace Calculation.JS
                     {
 
                         dr1["szcjts"] = temp_cjba_sz.Sum(m => m["ts"].ints());
-                        dr1["szcjmj"] = temp_cjba_sz.Sum(m => m["jzmj"].ints());
-                        dr1["szcjje"] = temp_cjba_sz.Sum(m => m["cjje"].longs());
-                        dr1["sztnjj"] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(n => n["tnmj"].ints())).je_y();
+                        dr1["szcjtnjj"] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(n => n["tnmj"].doubls())).je_y();
+                        dr1["szcjjmjj"] = (temp_cjba_sz.Sum(m => m["cjje"].longs()) / temp_cjba_sz.Sum(n => n["jzmj"].doubls())).je_y();
                     }
                     else
                     {
                         dr1["szcjts"] = 0;
-                        dr1["szcjmj"] = 0;
-                        dr1["szcjje"] = 0;
-                        dr1["sztnjj"] = 0;
+                        dr1["szcjtnjj"] = 0;
+                        dr1["szcjjmjj"] = 0;
                     }
                     #endregion
 
@@ -334,17 +345,14 @@ namespace Calculation.JS
                     if (temp_ba_bz != null)
                     {
                         dr1["bzcjts"] = temp_cjba_bz.Sum(m => m["ts"].ints());
-                        dr1["bzcjmj"] = temp_cjba_bz.Sum(m => m["jzmj"].ints());
-                        dr1["bzcjje"] = temp_cjba_bz.Sum(m => m["cjje"].longs());
-                        dr1["bztnjj"] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(n => n["tnmj"].ints())).je_y();
-
+                        dr1["bzcjtnjj"] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(n => n["tnmj"].doubls())).je_y();
+                        dr1["bzcjjmjj"] = (temp_cjba_bz.Sum(m => m["cjje"].longs()) / temp_cjba_bz.Sum(n => n["jzmj"].doubls())).je_y();
                     }
                     else
                     {
                         dr1["bzcjts"] = 0;
-                        dr1["bzcjmj"] = 0;
-                        dr1["bzcjje"] = 0;
-                        dr1["bztnjj"] = 0;
+                        dr1["bzcjtnjj"] = 0;
+                        dr1["bzcjjmjj"] = 0;
                     }
                     #endregion
 
