@@ -20,11 +20,11 @@ namespace Calculation.JS
                 uniqueInstance = new Cache_param_zb();
                 value = Dal.Param_DataProvider.GET_MBCJCSNR(mbid,nf,zc);
                 _param_jp = _param_jp_helper(mbid, nf, zc);
-                nowdatetask = new dateTask(null, Base_date.bn, null, Base_date.bz);
+                nowdatetask = new dateTask(mbid, Base_date.bn, null, Base_date.bz);
             }
             else
             {
-                if (nowdatetask != null && (nowdatetask.nf != Base_date.bn || nowdatetask.zc != Base_date.bz))
+                if (nowdatetask != null && (nowdatetask.mbid !=mbid|| nowdatetask.nf != Base_date.bn || nowdatetask.zc != Base_date.bz))
                 {
                     value = Dal.Param_DataProvider.GET_MBCJCSNR(mbid, nf, zc);
                     _param_jp = _param_jp_helper(mbid, nf, zc);
@@ -59,6 +59,7 @@ namespace Calculation.JS
                 jp.ytcs = item["ytcs"] == null || string.IsNullOrEmpty(item["ytcs"].ToString()) ? null : item["ytcs"].ToString().Split(',');
                 jp.xfytcs = item["xfytcs"] == null || string.IsNullOrEmpty(item["xfytcs"].ToString()) ? null : item["xfytcs"].ToString().Split(',');
                 jp.hxcs = item["hxcs"] == null || string.IsNullOrEmpty(item["hxcs"].ToString()) ? null : item["hxcs"].ToString().Split(',');
+                jp.zlmjqj = item["zlmjqj"].ToString() ;
                 jp.jpxmlb = new List<JP_JPXM_INFO>();
                 var xmlist = jptable.AsEnumerable().Where(m => m["baid"].ints() == item["id"].ints()).OrderBy(m => m["px"]) ;
                 foreach (var xm in xmlist)
@@ -73,8 +74,9 @@ namespace Calculation.JS
                     jpxm.ztcs = xm["ztcs"] == null || string.IsNullOrEmpty(xm["ztcs"].ToString()) ? null : xm["ztcs"].ToString().Split(',');
                     jpxm.lpcs = xm["lpcs"] == null || string.IsNullOrEmpty(xm["lpcs"].ToString()) ? null : xm["lpcs"].ToString().Split(',');
                     jpxm.ytcs = xm["ytcs"] == null || string.IsNullOrEmpty(xm["ytcs"].ToString()) ? null : xm["ytcs"].ToString().Split(',');
-                    jpxm.xfytcs = xm["xfytcs"] == null || string.IsNullOrEmpty(item["xfytcs"].ToString()) ? null : xm["xfytcs"].ToString().Split(',');
+                    jpxm.xfytcs = xm["xfytcs"] == null || string.IsNullOrEmpty(xm["xfytcs"].ToString()) ? null : xm["xfytcs"].ToString().Split(',');
                     jpxm.hxcs = xm["hxcs"] == null || string.IsNullOrEmpty(xm["hxcs"].ToString()) ? null : xm["hxcs"].ToString().Split(',');
+                    jpxm.zlmjqj = xm["zlmjqj"].ToString();
                     jp.jpxmlb.Add(jpxm);
                 }
                 list.Add(jp);

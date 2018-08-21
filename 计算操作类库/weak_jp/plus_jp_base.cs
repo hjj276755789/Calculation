@@ -49,7 +49,7 @@ namespace Calculation.JS
 
                     #region 商务
 
-                    
+
                     if (item.ytcs[0] == "商务")
                     {
                         var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
@@ -64,26 +64,29 @@ namespace Calculation.JS
                         IChart chart = (IChart)page.Shapes[3];
                         foreach (var item_jp in item.jpxmlb)
                         {
-
-
-                            string jpyt = item_jp.hxcs == null ? item.hxcs[0] : item_jp.hxcs[0];
-                            var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == jpyt).FirstOrDefault();
-
-                            DataRow dr1 = jzgjt.NewRow();
-                            dr1[0] = item_jp.lpcs[0] + "(" + item.ytcs[0] + ")";
-                            if (jpcjxx != null)
+                            if (item_jp.hxcs != null)
                             {
+                                for (int i = 0; i < item_jp.hxcs.Length; i++)
+                                {
+                                    var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item_jp.hxcs[i]).FirstOrDefault();
 
-                                dr1[1] = jpcjxx["xkts"].ints();
-                                dr1[2] = jpcjxx["xkjmjj"].ints();
-                            }
-                            else
-                            {
-                                dr1[1] = 0;
-                                dr1[2] = 0;
-                            }
-                            jzgjt.Rows.Add(dr1);
+                                    DataRow dr1 = jzgjt.NewRow();
+                                    dr1[0] = item_jp.lpcs[0] + "(" + item.hxcs[i] + ")";
+                                    if (jpcjxx != null)
+                                    {
 
+                                        dr1[1] = jpcjxx["xkts"].ints();
+                                        dr1[2] = jpcjxx["xkjmjj"].ints();
+                                    }
+                                    else
+                                    {
+                                        dr1[1] = 0;
+                                        dr1[2] = 0;
+                                    }
+                                    jzgjt.Rows.Add(dr1);
+                                }
+                              
+                            }
                         }
                         Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
                         t.AddClone(page);
@@ -92,36 +95,32 @@ namespace Calculation.JS
                     #endregion
 
                     #region 别墅
-                   
+
 
                     else if (item.ytcs[0] == "别墅")
                     {
-                        if(item.xfytcs!=null&&item.xfytcs.Length>0)
+                        var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
+                        IAutoShape text1 = (IAutoShape)page.Shapes[2];
+                        text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.ytcs[0]);
+                        System.Data.DataTable jzgjt = new System.Data.DataTable();
+                        jzgjt.Columns.Add("");
+                        jzgjt.Columns.Add("成交套数", typeof(int));
+                        jzgjt.Columns.Add("建面均价", typeof(double));
+                        foreach (var item_jp in item.jpxmlb)
                         {
-                            for (int i = 0; i < item.xfytcs.Length; i++)
-                            {
-                                var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
-                                IAutoShape text1 = (IAutoShape)page.Shapes[2];
-                                text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.xfytcs[i]);
-                                System.Data.DataTable jzgjt = new System.Data.DataTable();
-                                jzgjt.Columns.Add("");
-                                jzgjt.Columns.Add("成交套数", typeof(int));
-                                jzgjt.Columns.Add("建面均价", typeof(double));
-
-                                IChart chart = (IChart)page.Shapes[3];
-                                foreach (var item_jp in item.jpxmlb)
+                            if (item_jp.xfytcs != null) { 
+                                for (int i = 0; i < item_jp.xfytcs.Length; i++)
                                 {
 
-                                    
-                                    var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item.xfytcs[i]).FirstOrDefault();
+                                    var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item_jp.xfytcs[i]).FirstOrDefault();
 
                                     DataRow dr1 = jzgjt.NewRow();
-                                    dr1[0] = item_jp.lpcs[0] + "(" + item.ytcs[0] + ")";
+                                    dr1[0] = item_jp.lpcs[0] + "(" + item.xfytcs[i] + ")";
                                     if (jpcjxx != null)
                                     {
 
-                                        dr1[1] = jpcjxx["xkts"].ints();
-                                        dr1[2] = jpcjxx["xkjmjj"].ints();
+                                        dr1[1] = jpcjxx["rgts"].ints();
+                                        dr1[2] = jpcjxx["rgjmjj"].ints();
                                         jzgjt.Rows.Add(dr1);
                                     }
                                     else
@@ -136,16 +135,15 @@ namespace Calculation.JS
                                             continue;
                                     }
                                 }
-                                Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
-                                t.AddClone(page);
+                                
                             }
-                           
                         }
-                        else
-                        {
-                            continue;
-                        }
+                            Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
+                            t.AddClone(page);
+                        
+
                     }
+                    
 
                     #endregion
 

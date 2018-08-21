@@ -72,6 +72,10 @@
         <div class="col-lg-3"><input type="text" id="hxmc" class="form-control  col-sm-9  col-lg-9" placeholder="户型" /><input type="button" value="搜索" onclick="add('hxmc')" class="btn btn-danger" /></div>
         <div class="col-lg-9" id="hxmc_param"></div>
     </div>
+    <div class="row param">
+        <div class="col-lg-3"><input type="text" id="zlmjqj" class="form-control  col-sm-9  col-lg-9" placeholder="主力面积区间" /><input type="button" value="设置" onclick="add('zlmjqj')" class="btn btn-danger" /></div>
+        <div class="col-lg-9" id="zlmjqj_param"></div>
+    </div>
 </div>
 <div class="table row" id="cjsj">
 
@@ -86,20 +90,28 @@
         var yt = [];
         var xfyt = [];
         var hx = [];
+        var zlmjqj="";
         var nf= @this.ViewBag.nf;
         var zc= @this.ViewBag.zc;
 
         function add(a) {
             var d = $("#" + a).val();
             if (d!=null&d!=""&d!=undefined) {
-                $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + $("#" + a).val() + "<i class='md md-clear'></i></a>");
-                switch (a) {
-                    case 'ztmc': { zt.push($("#" + a).val().trim()); }; break;
-                    case 'qymc': { qy.push($("#" + a).val().trim()); }; break;
-                    case 'lpmc': { lpmc.push($("#" + a).val().trim()); }; break;
-                    case 'ytmc': { yt.push($("#" + a).val().trim()); }; break;
-                    case 'xfyt': { xfyt.push($("#" + a).val().trim()); }; break;
-                    case 'hxmc': { hx.push($("#" + a).val().trim()); }; break;
+                if(a!="zlmjqj"){
+                    $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + $("#" + a).val() + "<i class='md md-clear'></i></a>");
+                    switch (a) {
+                        case 'ztmc': { zt.push($("#" + a).val().trim()); }; break;
+                        case 'qymc': { qy.push($("#" + a).val().trim()); }; break;
+                        case 'lpmc': { lpmc.push($("#" + a).val().trim()); }; break;
+                        case 'ytmc': { yt.push($("#" + a).val().trim()); }; break;
+                        case 'xfyt': { xfyt.push($("#" + a).val().trim()); }; break;
+                        case 'hxmc': { hx.push($("#" + a).val().trim()); }; break;
+                    }
+                }
+                else{
+                    $("#" + a + "_param").empty();
+                    $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + $("#" + a).val() + "<i class='md md-clear'></i></a>");
+                    zlmjqj = $("#" + a).val();
                 }
                 option.pagenow = 1;
                 init2();
@@ -118,12 +130,13 @@
                 case 'ytmc': { yt.splice(yt.indexOf(b.text.trim()), 1); }; break;
                 case 'xfyt': { xfyt.splice(xfyt.indexOf(b.text.trim()), 1); }; break;
                 case 'hxmc': { hx.splice(hx.indexOf(b.text.trim()), 1); }; break;
+                case 'zlmjqj': { zlmjqj=""; }; break;
             }
             option.pagenow = 1;
             init2();
         }
         function add_default(a,b) {
-       
+            if(a!="zlmjqj"){
             $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + b+ "<i class='md md-clear'></i></a>");
             switch (a) {
                 case 'ztmc': { zt.push(b); }; break;
@@ -132,6 +145,13 @@
                 case 'ytmc': { yt.push(b); }; break;
                 case 'xfyt': { xfyt.push(b); }; break;
                 case 'hxmc': { hx.push(b); }; break;
+                
+            }
+            }
+            else{
+                $("#" + a + "_param").empty()
+                $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + b+ "<i class='md md-clear'></i></a>");
+                zlmjqj=b;
             }
             option.pagenow = 1;
             init2();
@@ -220,7 +240,7 @@
 
 
         var option = {
-            colNames: ['成交日期', "区域", "组团", "开发商", "楼盘名称", "业态", "细分业态", "户型", "建筑面积", "套内面积", "成交金额", "套数"],
+            colNames: ['成交日期', "区域", "组团", "开发商", "楼盘名称", "业态", "细分业态", "户型", "建筑面积", "套内面积", "成交金额", "套数","主力面积区间"],
             data: [
 
             ],
@@ -258,7 +278,7 @@
                 success: function (data) {
                     var d = [];
                     for (var i = 0; i < data.data.length; i++) {
-                        d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, ]);
+                        d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, data.data[i].zlmjqj ]);
                     };
                     option.data = d;
                     option.datacount = data.datacount;
@@ -277,7 +297,7 @@
                 success: function (data) {
                     var d = [];
                     for (var i = 0; i < data.data.length; i++) {
-                        d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, ]);
+                        d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, data.data[i].zlmjqj ]);
                     };
                     option.data = d;
                     option.datacount = data.datacount;
@@ -339,6 +359,10 @@
                                 add_default("hxmc",hxlb[i]);
                             }
                         }
+                        if(data.zlmjqj)
+                        {
+                            add_default("zlmjqj",data.zlmjqj);
+                        }
                     }
                 }
             })
@@ -346,7 +370,7 @@
 
         function save()
         {
-            var data = { 'zt': zt, 'qy': qy, 'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx, 'id': @ViewBag.id };
+            var data = { 'zt': zt, 'qy': qy, 'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx,'zlmjqj':zlmjqj, 'id': @ViewBag.id };
             $.ajax({
                 url: "/jp_zb/save_jpxmcs",
                 data: data,

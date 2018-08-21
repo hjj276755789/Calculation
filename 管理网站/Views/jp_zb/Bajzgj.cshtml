@@ -85,7 +85,10 @@
         <div class="col-lg-3"><input type="text" id="hxmc" class="form-control  col-sm-9  col-lg-9" placeholder="户型" /><input type="button" value="搜索" onclick="add('hxmc')" class="btn btn-danger" /></div>
         <div class="col-lg-9" id="hxmc_param"></div>
     </div>
-
+    <div class="row param">
+        <div class="col-lg-3"><input type="text" id="zlmjqj" class="form-control  col-sm-9  col-lg-9" placeholder="主力面积区间" /><input type="button" value="设置" onclick="add('zlmjqj')" class="btn btn-danger" /></div>
+        <div class="col-lg-9" id="zlmjqj_param"></div>
+    </div>
 </div>
 <div class="table row" id="cjsj">
 
@@ -100,19 +103,29 @@
         var yt = [];
         var xfyt = [];
         var hx = [];
+        var zlmjqj ="";
         var nf= @this.ViewBag.nf;
         var zc= @this.ViewBag.zc;
         function add(a) {
             var d = $("#" + a).val();
             if (d!=null&d!=""&d!=undefined) {
-                $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + $("#" + a).val() + "<i class='md md-clear'></i></a>");
-                switch (a) {
-                    case 'ztmc': { zt.push($("#" + a).val()); }; break;
-                    case 'qymc': { qy.push($("#" + a).val()); }; break;
-                    case 'lpmc': { lpmc.push($("#" + a).val()); }; break;
-                    case 'ytmc': { yt.push($("#" + a).val()); }; break;
-                    case 'xfyt': { xfyt.push($("#" + a).val()); }; break;
-                    case 'hxmc': { hx.push($("#" + a).val()); }; break;
+                if(a!="zlmjqj"){
+                    $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + $("#" + a).val() + "<i class='md md-clear'></i></a>");
+                    switch (a) {
+                        case 'ztmc': { zt.push($("#" + a).val()); }; break;
+                        case 'qymc': { qy.push($("#" + a).val()); }; break;
+                        case 'lpmc': { lpmc.push($("#" + a).val()); }; break;
+                        case 'ytmc': { yt.push($("#" + a).val()); }; break;
+                        case 'xfyt': { xfyt.push($("#" + a).val()); }; break;
+                        case 'hxmc': { hx.push($("#" + a).val()); }; break;
+                        case 'zlmjqj': {zlmjqj = $("#" + a).val(); }; break;
+                    }
+                }
+                else
+                {
+                    $("#" + a + "_param").empty();
+                    $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + $("#" + a).val() + "<i class='md md-clear'></i></a>");
+                    zlmjqj = $("#" + a).val();
                 }
                 option.pagenow = 1;
                 init2();
@@ -132,13 +145,14 @@
                 case 'ytmc': { yt.splice(zt.indexOf(b.value), 1); }; break;
                 case 'xfyt': { xfyt.splice(zt.indexOf(b.value), 1); }; break;
                 case 'hxmc': { hx.splice(zt.indexOf(b.value), 1); }; break;
+                case 'zlmjqj': {zlmjqj = ""; }; break;
             }
             option.pagenow = 1;
             init2();
         }
 
         function save(){
-            var data = { 'zt': zt, 'qy': qy, 'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx, 'id': @ViewBag.id };
+            var data = { 'zt': zt, 'qy': qy, 'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx,'zlmjqj': zlmjqj,'id': @ViewBag.id };
             $.ajax({
                 url: "/jp_zb/save_baxmcs",
                 data: data,
@@ -154,15 +168,22 @@
             })
         }
         function add_default(a,b) {
-
-            $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + b+ "<i class='md md-clear'></i></a>");
-            switch (a) {
-                case 'ztmc': { zt.push(b); }; break;
-                case 'qymc': { qy.push(b); }; break;
-                case 'lpmc': { lpmc.push(b); }; break;
-                case 'ytmc': { yt.push(b); }; break;
-                case 'xfyt': { xfyt.push(b); }; break;
-                case 'hxmc': { hx.push(b); }; break;
+            if(a!="zlmjqj"){
+                $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + b+ "<i class='md md-clear'></i></a>");
+                switch (a) {
+                    case 'ztmc': { zt.push(b); }; break;
+                    case 'qymc': { qy.push(b); }; break;
+                    case 'lpmc': { lpmc.push(b); }; break;
+                    case 'ytmc': { yt.push(b); }; break;
+                    case 'xfyt': { xfyt.push(b); }; break;
+                    case 'hxmc': { hx.push(b); }; break;
+                }
+            }
+            else
+            {
+                $("#" + a + "_param").empty();
+                $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + b + "<i class='md md-clear'></i></a>");
+                zlmjqj = b;
             }
             option.pagenow = 1;
             init2();
@@ -253,7 +274,7 @@
 
 
         var option = {
-            colNames: ['成交日期', "区域", "组团", "开发商", "楼盘名称", "业态", "细分业态", "户型", "建筑面积", "套内面积", "成交金额", "套数"],
+            colNames: ['成交日期', "区域", "组团", "开发商", "楼盘名称", "业态", "细分业态", "户型", "建筑面积", "套内面积", "成交金额", "套数","主力面积区间"],
             data: [
 
             ],
@@ -291,7 +312,7 @@
                 success: function (data) {
                     var d = [];
                     for (var i = 0; i < data.data.length; i++) {
-                        d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, ]);
+                        d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts,data.data[i].zlmjqj ]);
                     };
                     option.data = d;
                     option.datacount = data.datacount;
@@ -310,7 +331,7 @@
                 success: function (data) {
                     var d = [];
                     for (var i = 0; i < data.data.length; i++) {
-                        d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, ]);
+                        d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, data.data[i].zlmjqj ]);
                     };
                     option.data = d;
                     option.data = d;
@@ -334,7 +355,7 @@
                         if(data.ztcs)
                         {
                             var ztlb =data.ztcs.split(",");
-                            for (var i = 0; i < ztlb; i++) {
+                            for (var i = 0; i < ztlb.length; i++) {
                                 add_default("ztmc",ztlb[i]);
                             }
                         }
@@ -372,6 +393,10 @@
                             for (var i = 0; i < hxlb.length; i++) {
                                 add_default("hxmc",hxlb[i]);
                             }
+                        }
+                        if(data.zlmjqj)
+                        {
+                            add_default("zlmjqj",data.zlmjqj);
                         }
                     }
                 }

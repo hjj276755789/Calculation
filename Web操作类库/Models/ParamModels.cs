@@ -69,6 +69,10 @@ namespace Calculation.Models
         public string[] yt { get; set; }
         public string[] xfyt { get; set; }
         public string[] hx { get; set; }
+        /// <summary>
+        /// 主力面积区间，不参与筛选
+        /// </summary>
+        public string zlmjqj { get; set; }
     }
     /// <summary>
     /// 竞品-本案
@@ -84,6 +88,8 @@ namespace Calculation.Models
         public string ytcs { get; set; }
         public string xfytcs { get; set; }
         public string hxcs { get; set; }
+        public string zlmjqj { get; set; }
+
     }
     /// <summary>
     /// 竞品-竞品项目
@@ -100,6 +106,7 @@ namespace Calculation.Models
         public string ytcs { get; set; }
         public string xfytcs { get; set; }
         public string hxcs { get; set; }
+        public string zlmjqj { get; set; }
     }
 
     /// <summary>
@@ -124,7 +131,7 @@ namespace Calculation.Models
         public string [] ytcs { get; set; }
         public string [] xfytcs { get; set; }
         public string [] hxcs { get; set; }
-
+        public string zlmjqj { get; set; }
         public List<JP_JPXM_INFO> jpxmlb { get; set; }
     }
     public class JP_JPXM_INFO
@@ -140,6 +147,7 @@ namespace Calculation.Models
         public string[] ytcs { get; set; }
         public string[] xfytcs { get; set; }
         public string[] hxcs { get; set; }
+        public string zlmjqj { get; set; }
 
     }
 }

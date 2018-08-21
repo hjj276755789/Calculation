@@ -46,6 +46,7 @@ namespace Calculation.Models
         public  double tnmj { get; set; }
         public long cjje { get; set; } 
         public int ts { get; set; }
+        public string zlmjqj { get; set; }
         public int nf { get; set; }
         public int zc { get; set; }
         public string zcmc { get; set; }

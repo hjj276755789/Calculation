@@ -450,7 +450,7 @@ namespace 管理网站.Controllers
                 return Json(SResult.Success);
             else return Json(SResult.Error("删除失败"));
         }
-        public JsonResult save_baxmcs(string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx, int id)
+        public JsonResult save_baxmcs(string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx, string zlmjqj,int id)
         {
             if (zt != null || qy != null || lpmc != null || yt != null || xfyt != null || hx != null)
             {
@@ -461,7 +461,7 @@ namespace 管理网站.Controllers
                 param.yt = yt;
                 param.xfyt = xfyt;
                 param.hx = hx;
-
+                param.zlmjqj = zlmjqj;
                 if (Param_DataProvider.SAVE_JP_BAXMCS(id, param))
                     return Json(SResult.Success);
                 else return Json(SResult.Error("保存失败"));
@@ -499,7 +499,7 @@ namespace 管理网站.Controllers
             return Json(SResult.Success);
             else return Json(SResult.Error("删除失败"));
         }
-        public JsonResult save_jpxmcs(string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx, int id)
+        public JsonResult save_jpxmcs(string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx,string zlmjqj, int id)
         {
             if (zt != null || qy != null || lpmc != null || yt != null || xfyt != null || hx != null)
             {
@@ -510,7 +510,7 @@ namespace 管理网站.Controllers
                 param.yt = yt;
                 param.xfyt = xfyt;
                 param.hx = hx;
-
+                param.zlmjqj = zlmjqj;
                 if (Param_DataProvider.SAVE_JP_JPXMCS(id, param))
                     return Json(SResult.Success);
                 else return Json(SResult.Error("保存失败"));

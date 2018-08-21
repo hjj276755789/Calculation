@@ -98,9 +98,6 @@ namespace Calculation.JS
             }
         }
 
-
-
-
         public DataTable GET_JPXM_ROW(DataTable dt, List<JP_JPXM_INFO> jpxm)
         {
             foreach (var item in jpxm)
@@ -187,7 +184,6 @@ namespace Calculation.JS
                         }
                         #endregion
 
-
                         dt.Rows.Add(dr1);
 
                     }
@@ -272,7 +268,6 @@ namespace Calculation.JS
                             dr1["bzcjjmjj"] = 0;
                         }
                         #endregion
-
 
                         dt.Rows.Add(dr1);
                     }

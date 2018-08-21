@@ -169,26 +169,28 @@ where c.rwid = @rwid and a.csid =@csid";
 
         public static bool SAVE_JP_JPXMCS(int id, JP_ParamValueModel p)
         {
-            string sql = @"update calculation.xtgl_param_jpgj set ztcs=@ztcs,qycs=@qycs,lpcs=@lpcs,ytcs=@ytcs,xfytcs=@xfytcs,hxcs=@hxcs where id=@id";
+            string sql = @"update calculation.xtgl_param_jpgj set ztcs=@ztcs,qycs=@qycs,lpcs=@lpcs,ytcs=@ytcs,xfytcs=@xfytcs,hxcs=@hxcs,zlmjqj=@zlmjqj where id=@id";
             MySqlParameter[] par = { new MySqlParameter("id", id),
                 new MySqlParameter("ztcs",p.zt==null||p.zt.Count()==0?"": string.Join("," ,p.zt)),
                 new MySqlParameter("qycs",p.qy==null||p.qy.Count()==0?"": string.Join("," ,p.qy)),
                 new MySqlParameter("lpcs",p.lpmc==null||p.lpmc.Count()==0?"": string.Join("," ,p.lpmc)),
                 new MySqlParameter("ytcs",p.yt==null||p.yt.Count()==0?"": string.Join("," ,p.yt)),
                 new MySqlParameter("xfytcs",p.xfyt==null||p.xfyt.Count()==0?"": string.Join("," ,p.xfyt)),
-                new MySqlParameter("hxcs",p.hx==null||p.hx.Count()==0?"": string.Join("," ,p.hx)),};
+                new MySqlParameter("hxcs",p.hx==null||p.hx.Count()==0?"": string.Join("," ,p.hx)),
+                new MySqlParameter("zlmjqj",p.zlmjqj)};
             return MySqlDbhelper.ExecuteNonQuery(sql, par) > 0;
         }
         public static bool SAVE_JP_BAXMCS(int id, JP_ParamValueModel p)
         {
-            string sql = @"update calculation.xtgl_param_jpba set ztcs=@ztcs,qycs=@qycs,lpcs=@lpcs,ytcs=@ytcs,xfytcs=@xfytcs,hxcs=@hxcs where id=@id";
+            string sql = @"update calculation.xtgl_param_jpba set ztcs=@ztcs,qycs=@qycs,lpcs=@lpcs,ytcs=@ytcs,xfytcs=@xfytcs,hxcs=@hxcs,zlmjqj=@zlmjqj where id=@id";
             MySqlParameter[] par = { new MySqlParameter("id", id),
                 new MySqlParameter("ztcs",p.zt==null||p.zt.Count()==0?"": string.Join("," ,p.zt)),
                 new MySqlParameter("qycs",p.qy==null||p.qy.Count()==0?"": string.Join("," ,p.qy)),
                 new MySqlParameter("lpcs",p.lpmc==null||p.lpmc.Count()==0?"": string.Join("," ,p.lpmc)),
                 new MySqlParameter("ytcs",p.yt==null||p.yt.Count()==0?"": string.Join("," ,p.yt)),
                 new MySqlParameter("xfytcs",p.xfyt==null||p.xfyt.Count()==0?"": string.Join("," ,p.xfyt)),
-                new MySqlParameter("hxcs",p.hx==null||p.hx.Count()==0?"": string.Join("," ,p.hx)),};
+                new MySqlParameter("hxcs",p.hx==null||p.hx.Count()==0?"": string.Join("," ,p.hx)),
+                new MySqlParameter("zlmjqj",p.zlmjqj) };
             return MySqlDbhelper.ExecuteNonQuery(sql, par) > 0;
         }
 
@@ -247,6 +249,7 @@ where c.rwid = @rwid and a.csid =@csid";
                 jp.ytcs = item["ytcs"] == null || string.IsNullOrEmpty(item["ytcs"].ToString()) ? null : item["ytcs"].ToString().Split(',');
                 jp.xfytcs = item["xfytcs"] == null || string.IsNullOrEmpty(item["xfytcs"].ToString()) ? null : item["xfytcs"].ToString().Split(',');
                 jp.hxcs = item["hxcs"] == null || string.IsNullOrEmpty(item["hxcs"].ToString()) ? null : item["hxcs"].ToString().Split(',');
+                jp.zlmjqj = item["zlmjqj"].ToString();
                 jp.jpxmlb = new List<JP_JPXM_INFO>();
                 var xmlist = jptable.AsEnumerable().Where(m => m["baid"].ints() == item["id"].ints());
                 foreach (var xm in xmlist)
@@ -261,6 +264,7 @@ where c.rwid = @rwid and a.csid =@csid";
                     jpxm.ytcs = xm["ytcs"] == null || string.IsNullOrEmpty(xm["ytcs"].ToString()) ? null : xm["ytcs"].ToString().Split(',');
                     jpxm.xfytcs = xm["xfytcs"] == null || string.IsNullOrEmpty(item["xfytcs"].ToString()) ? null : xm["xfytcs"].ToString().Split(',');
                     jpxm.hxcs = xm["hxcs"] == null || string.IsNullOrEmpty(xm["hxcs"].ToString()) ? null : xm["hxcs"].ToString().Split(',');
+                    jpxm.zlmjqj = xm["zlmjqj"].ToString();
                     jp.jpxmlb.Add(jpxm);
                 }
                 list.Add(jp);

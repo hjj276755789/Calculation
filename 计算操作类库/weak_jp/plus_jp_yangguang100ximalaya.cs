@@ -71,6 +71,7 @@ namespace Calculation.JS
                         t.AddClone(page);
                     }
                     #endregion
+
                     #region 竞争格局
                     var page1 = temp[2];
                     IAutoShape text1 = (IAutoShape)page1.Shapes[1];
@@ -102,7 +103,6 @@ namespace Calculation.JS
 
                 }
                 #endregion
-
 
 
                 #region 推广图片    

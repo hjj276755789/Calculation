@@ -49,6 +49,7 @@
     <Compile Include="FW_QXGL_DataProvider.cs" />
     <Compile Include="Jsjg_yb_DataProvider.cs" />
     <Compile Include="Jsjg_zb_DataProvider.cs" />
+    <Compile Include="MBGL_DataProvider.cs" />
     <Compile Include="ZB_Data_CJBA_DataProvider.cs" />
     <Compile Include="MySqlDbhelper.cs" />
     <Compile Include="Param_DataProvider.cs" />

@@ -189,7 +189,7 @@
 
 
             var option = {
-                colNames: [ "编号",'竞品本案名称', '区域', '组团', '楼盘', '业态', '细分业态', '户型','','',"操作"],
+                colNames: [ "编号",'竞品本案名称', '区域', '组团', '楼盘', '业态', '细分业态', '户型','主力面积区间','','',"操作"],
                 data: [
 
                 ],
@@ -210,9 +210,9 @@
                     success: function (data) {
                         var d = [];
                         for (var i = 0; i < data.length; i++) {
-                            d.push([data[i].id, data[i].bamc,data[i].qycs,data[i].ztcs,data[i].lpcs,data[i].ytcs,data[i].xfytcs,data[i].hxcs,
-                                '<a class="btn btn-link" href="/jp_zb/bajzgj?id='+ data[i].id + '&nf='+nf+'&zc='+zc+'">设置本案参数</a>',
-                                '<a class="btn btn-link" href="/jp_zb/jpxm?baid='+ data[i].id + '&nf='+nf+'&zc='+zc+'">管理竞品项目</a>',
+                            d.push([data[i].id, data[i].bamc,data[i].qycs,data[i].ztcs,data[i].lpcs,data[i].ytcs,data[i].xfytcs,data[i].hxcs,data[i].zlmjqj,
+                                '<a class="btn btn-link" href="/jp_zb/bajzgj?id='+ data[i].id + '&nf='+nf+'&zc='+zc+'">本案参数</a>',
+                                '<a class="btn btn-link" href="/jp_zb/jpxm?baid='+ data[i].id + '&nf='+nf+'&zc='+zc+'">竞品项目</a>',
                                 '<a class="btn btn-link" onclick="del(' + data[i].id + ')">删除</a>']);
                         };
                         option.data = d;

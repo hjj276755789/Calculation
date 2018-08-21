@@ -1,4 +1,4 @@
-﻿
+﻿using System.Data;
 using Aspose.Cells;
 using Aspose.Slides;
 using Aspose.Slides.Charts;
@@ -356,6 +356,7 @@ namespace Calculation.Base
         public static void Chart_jp_fudi_chart1(ISlide sld, System.Data.DataTable dt, int index)
         {
             IChart t1 = (IChart)sld.Shapes[index];
+            dt = dt.AsEnumerable().OrderByDescending(m => m["成交套数"]).CopyToDataTable();
             string range = "Sheet1!$A$1:$" + Base_ColumnsHelper.GET_INDEX(dt.Columns.Count) + "$" + (dt.Rows.Count + 1);
 
             //实例化图表数据表
