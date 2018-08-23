@@ -67,10 +67,14 @@
     <Compile Include="weak_jp\plus_jp_jiazhaoye.cs" />
     <Compile Include="weak_jp\plus_jp_jinmao.cs" />
     <Compile Include="weak_jp\plus_jp_junfeng.cs" />
-    <Compile Include="weak_jp\plus_jp_langshi.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_langshi.cs" />
     <Compile Include="weak_jp\plus_jp_rongchuang.cs" />
     <Compile Include="weak_jp\plus_jp_ruian.cs" />
     <Compile Include="weak_jp\plus_jp_yangguang100ximalaya.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_jiangbeizuizhiye.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_shouchuang.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_zb_1.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_zhongjiaozhoubao.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dal\Dal.csproj">
