@@ -95,8 +95,48 @@ namespace Calculation.Base
         {
             return Base_date.dateToUpper(target);
         }
+        /// <summary>
+        /// 获取成交备案名称
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static string _ConfigCjbaMc(this string target)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(target)) {
+                    var s = target.Substring(3, target.Length - 3);
+                    return s;
+                }
+                else return target;
+            }
+            catch (Exception)
+            {
 
+                return "";
+            }
 
+        }
+        /// <summary>
+        /// 获取认购数据名称
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static string _ConfigRgsjMc(this string target)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(target))
+                    return target.Substring(3, target.Length - 3);
+                else return target;
+            }
+            catch (Exception)
+            {
 
-}
+                return "";
+            }
+
+        }
+
+    }
 }

@@ -60,6 +60,8 @@
     <Compile Include="WeakManage.cs" />
     <Compile Include="weak_jp\plus_jp_baoyi.cs" />
     <Compile Include="weak_jp\plus_jp_base.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_beijingchengjian.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_biguiyuan.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_dongyuandichan.cs" />
     <Compile Include="weak_jp\plus_jp_fudi.cs" />
     <Compile Include="weak_jp\plus_jp_guomei.cs" />
@@ -72,9 +74,16 @@
     <Compile Include="weak_jp\plus_jp_ruian.cs" />
     <Compile Include="weak_jp\plus_jp_yangguang100ximalaya.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_jiangbeizuizhiye.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_lifanfeichuifu.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_luneng.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_shouchuang.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_wanhua.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_xianggangzhidi.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_zb_1.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_zeke.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_zhaoshang.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_zhongjiaozhoubao.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_zhongtietouzi.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dal\Dal.csproj">

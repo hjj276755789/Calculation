@@ -18,9 +18,12 @@ namespace Calculation.Dal
         public static int Insert(DataTable data, int nf, int zc, string zcmc)
         {
             StringBuilder sb = new StringBuilder(@"insert into calculation.xtgl_data_zb_rgsj
-(qymc,qy,zt,xm,yt,
-zx,xkts,xkxsts,zljmqj,zltnqj,
-xktnjj,xkjmjj,rgts,rgtnjj,rgjmjj,rgtntl,rgjmtl,rgje,cjtshb,tnjjhb,bhyy,bzkc,bzld,bzdfl,yh,yxdz,hd,xzjtyj,nf,zc,zcmc) values ");
+(qymc,qy,zt,xm,yt,zx,
+xkts,xkxsts,zljmqj,zltnqj,xktnjj,xkjmjj,
+rgts,rgtnjj,rgjmjj,rgtntl,rgjmtl,rgje,
+cjtshb,tnjjhb,bhyy,bzkc,bzld,bzdfl,
+yh,yxdz, hd,xzjtyj,nf,zc,zcmc
+) values ");
             string sql = "";
             int index = 0;
             int count = 0;
@@ -33,16 +36,18 @@ xktnjj,xkjmjj,rgts,rgtnjj,rgjmjj,rgtntl,rgjmtl,rgje,cjtshb,tnjjhb,bhyy,bzkc,bzld
                         sql = sb.ToString();
                         count += MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
                         sb = new StringBuilder(@"insert into calculation.xtgl_data_zb_rgsj 
-(qymc,qy,zt,xm,yt,
-zx,xkts,xkxsts,zljmqj,zltnqj,
-xktnjj,xkjmjj,rgts,rgtnjj,rgjmjj,rgtntl,rgjmtl,rgje,cjtshb,tnjjhb,bhyy,bzkc,bzld,bzdfl,yh,yxdz,hd,xzjtyj,nf,zc,zcmc) values ");
+(qymc,qy,zt,xm,yt,zx,
+xkts,xkxsts,zljmqj,zltnqj,xktnjj,xkjmjj,
+rgts,rgtnjj,rgjmjj,rgtntl,rgjmtl,rgje,
+cjtshb,tnjjhb,bhyy,bzkc,bzld,bzdfl,
+yh,yxdz, hd,xzjtyj,nf,zc,zcmc) values ");
                     }
                     sb.Append(string.Format(@"('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}','{28}','{29}','{30}'),",
                          item[0], item[1], item[2], item[3], item[4], item[5],
-                         item[6].ToString().dw_zs(), item[7].ToString().dw_zs(), item[8].ToString(), item[9].ToString(), item[10].ToString().dw_xs(),
-                         item[11].ToString().dw_zs(), item[12].ToString().dw_xs(), item[13].ToString().dw_xs(), item[14].ToString().dw_xs(), item[15].ToString().dw_xs(), item[16].ToString().dw_zs(), item[17], item[18],
-                         item[19].ToString().dw_zs(), item[20].ToString().dw_zs(), item[21].ToString().dw_zs(),
-                         item[22], item[23], item[24], item[25], item[26], item[27], nf, zc, zcmc));
+                         item[6].ToString().dw_zs(), item[7].ToString().dw_zs(), item[8].ToString(), item[9].ToString(), item[10].ToString().dw_xs(),item[11].ToString().dw_zs(),
+                         item[12].ToString().dw_xs(), item[13].ToString().dw_xs(), item[14].ToString().dw_xs(), item[15].ToString().dw_xs(), item[16].ToString().dw_zs(),item[17].ToString().dw_zs(),
+                         item[18],item[19].ToString(), item[20].ToString(), item[21].ToString().dw_zs(),
+                         item[22].ToString().dw_zs(), item[23].ToString().dw_zs(), item[24], item[25], item[26], item[27], nf, zc, zcmc));
                     index++;
                 }
                 sql = sb.ToString();

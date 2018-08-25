@@ -237,7 +237,8 @@ namespace Calculation.Base
             t1.ChartData.WriteWorkbookStream(mem);
 
             t1.ChartData.SetRange(range);
-
+            
+            
             ///第一列
             IChartSeries series = t1.ChartData.Series[0];
             series.Type = ChartType.ClusteredColumn;
@@ -387,6 +388,51 @@ namespace Calculation.Base
             series1.Type = ChartType.StackedLineWithMarkers;
             series1.Labels.DefaultDataLabelFormat.ShowValue = true;
             series1.Labels.DefaultDataLabelFormat.Position = LegendDataLabelPosition.Top;
+
+        }
+
+        public static void Chart_jp_langshi_chart1(ISlide sld, System.Data.DataTable dt, int index)
+        {
+            IChart t1 = (IChart)sld.Shapes[index];
+            string range = "Sheet1!$A$1:$" + Base_ColumnsHelper.GET_INDEX(dt.Columns.Count) + "$" + (dt.Rows.Count + 1);
+
+            //实例化图表数据表
+            IChartDataWorkbook fact = t1.ChartData.ChartDataWorkbook;
+            //t1.Axes.SecondaryVerticalAxis.IsAutomaticMajorUnit = true;
+            //t1.Axes.SecondaryVerticalAxis.IsAutomaticMaxValue = true;
+            //t1.Axes.SecondaryVerticalAxis.IsAutomaticMinorUnit = true;
+            //t1.Axes.SecondaryVerticalAxis.IsAutomaticMinValue = true;
+
+            t1.ChartData.ChartDataWorkbook.Clear(0);
+
+            Workbook workbook = Office_TableToWork.GetWorkBooxFromDataTable(dt);
+            MemoryStream mem = new MemoryStream();
+            workbook.Save(mem, Aspose.Cells.SaveFormat.Xlsx);
+
+            t1.ChartData.WriteWorkbookStream(mem);
+
+            t1.ChartData.SetRange(range);
+            //交换横纵坐标
+            t1.ChartData.SwitchRowColumn();
+            //t1.ChartData.SwitchRowColumn();
+            ///第一列
+            IChartSeries series = t1.ChartData.Series[0];
+            series.Type = ChartType.ClusteredColumn;
+            series.Labels.DefaultDataLabelFormat.ShowValue = true;
+            series.Labels.DefaultDataLabelFormat.Position = LegendDataLabelPosition.InsideBase;
+            series.Labels.DefaultDataLabelFormat.TextFormat.TextBlockFormat.TextVerticalType = TextVerticalType.Vertical270;
+            ///第二列
+            IChartSeries series1 = t1.ChartData.Series[1];
+            series1.Type = ChartType.ClusteredColumn;
+            series1.Labels.DefaultDataLabelFormat.ShowValue = true;
+            series1.Labels.DefaultDataLabelFormat.Position = LegendDataLabelPosition.InsideBase;
+            series1.Labels.DefaultDataLabelFormat.TextFormat.TextBlockFormat.TextVerticalType = TextVerticalType.Vertical270;
+            IChartSeries series2 = t1.ChartData.Series[2];
+            series2.PlotOnSecondAxis = true;
+            series2.Type = ChartType.StackedLineWithMarkers;
+            series2.Labels.DefaultDataLabelFormat.ShowValue = true;
+            series2.Labels.DefaultDataLabelFormat.Position = LegendDataLabelPosition.Top;
+            
 
         }
     }

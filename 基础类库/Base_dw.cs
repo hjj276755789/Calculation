@@ -136,7 +136,8 @@ namespace Calculation.Base
         {
             try
             {
-                string str = (target > 0 ? "增加" : "减少") + Math.Abs(Math.Round(target * 100, 2)) + "%";
+                double temp = Math.Abs(target) * 100;
+                string str = (target > 0 ? "增加" : "减少") + Math.Round(temp, 2) + "%";
                 return str;
             }
             catch (Exception)
