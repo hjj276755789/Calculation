@@ -383,6 +383,13 @@ namespace 管理网站.Controllers
             this.ViewBag.jzgjlb = ZB_Param_JP_DataProvider.GET_JPGJ();
             return PartialView();
         }
+
+        public PartialViewResult Jcjzcs(int mbid,int rwid)
+        {
+            this.ViewBag.mbid = mbid;
+            this.ViewBag.rwid = rwid;
+            return PartialView();
+        }
         #endregion
 
         #region 数据
@@ -534,10 +541,8 @@ namespace 管理网站.Controllers
         /// <returns></returns>
         public JsonResult jcszsz(int mbid,int rwid,int nf,int zc)
         {
-            if (Param_DataProvider.jcszsz(rwid, mbid, nf, zc))
+            return Json(Param_DataProvider.jcszsz(rwid, mbid, nf, zc));
 
-                return Json(SResult.Success);
-            else return Json(SResult.Error("设置失败"));
 
         }
 

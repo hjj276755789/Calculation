@@ -208,141 +208,167 @@ namespace Calculation.JS
 
                 #region 商务
                 if (item.ytcs[0] == "商务")
+                {
+                    var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
+                    IAutoShape text1 = (IAutoShape)page.Shapes[2];
+                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.hxcs[0]);
+                    //数据
+                    System.Data.DataTable jzgjt = new System.Data.DataTable();
+                    jzgjt.Columns.Add("");
+                    jzgjt.Columns.Add("成交套数", typeof(int));
+                    jzgjt.Columns.Add("建面均价", typeof(double));
+                    //图表
+                    IChart chart = (IChart)page.Shapes[3];
+                    foreach (var item_jp in item.jpxmlb)
                     {
-                        var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
-                        IAutoShape text1 = (IAutoShape)page.Shapes[2];
-                        text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.hxcs[0]);
-                        //数据
-                        System.Data.DataTable jzgjt = new System.Data.DataTable();
-                        jzgjt.Columns.Add("");
-                        jzgjt.Columns.Add("成交套数", typeof(int));
-                        jzgjt.Columns.Add("建面均价", typeof(double));
-                        //图表
-                        IChart chart = (IChart)page.Shapes[3];
-                        foreach (var item_jp in item.jpxmlb)
+                        if (item_jp.hxcs != null)
                         {
-                            if (item_jp.hxcs != null)
+                            for (int i = 0; i < item_jp.hxcs.Length; i++)
                             {
-                                for (int i = 0; i < item_jp.hxcs.Length; i++)
+                                var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item_jp.hxcs[i]).FirstOrDefault();
+
+                                DataRow dr1 = jzgjt.NewRow();
+                                dr1[0] = item_jp.lpcs[0] + "(" + item.hxcs[i] + ")";
+                                if (jpcjxx != null)
                                 {
-                                    var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item_jp.hxcs[i]).FirstOrDefault();
 
-                                    DataRow dr1 = jzgjt.NewRow();
-                                    dr1[0] = item_jp.lpcs[0] + "(" + item.hxcs[i] + ")";
-                                    if (jpcjxx != null)
-                                    {
-
-                                        dr1[1] = jpcjxx["xkts"].ints();
-                                        dr1[2] = jpcjxx["xktnjj"].ints();
-                                    }
-                                    else
-                                    {
-                                        dr1[1] = 0;
-                                        dr1[2] = 0;
-                                    }
-                                    jzgjt.Rows.Add(dr1);
+                                    dr1[1] = jpcjxx["xkts"].ints();
+                                    dr1[2] = jpcjxx["xktnjj"].ints();
                                 }
-
+                                else
+                                {
+                                    dr1[1] = 0;
+                                    dr1[2] = 0;
+                                }
+                                jzgjt.Rows.Add(dr1);
                             }
-                        }
-                        Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
-                        t.AddClone(page);
 
+                        }
                     }
-                    #endregion
+                    Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
+                    t.AddClone(page);
+
+                }
+                #endregion
 
                 #region 别墅
 
 
-                    else if (item.ytcs[0] == "别墅")
+                else if (item.ytcs[0] == "别墅")
+                {
+                    var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
+                    IAutoShape text1 = (IAutoShape)page.Shapes[2];
+                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.ytcs[0]);
+                    System.Data.DataTable jzgjt = new System.Data.DataTable();
+                    jzgjt.Columns.Add("");
+                    jzgjt.Columns.Add("成交套数", typeof(int));
+                    jzgjt.Columns.Add("建面均价", typeof(double));
+                    foreach (var item_jp in item.jpxmlb)
                     {
-                        var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
-                        IAutoShape text1 = (IAutoShape)page.Shapes[2];
-                        text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.ytcs[0]);
-                        System.Data.DataTable jzgjt = new System.Data.DataTable();
-                        jzgjt.Columns.Add("");
-                        jzgjt.Columns.Add("成交套数", typeof(int));
-                        jzgjt.Columns.Add("建面均价", typeof(double));
-                        foreach (var item_jp in item.jpxmlb)
+                        if (item_jp.xfytcs != null)
                         {
-                            if (item_jp.xfytcs != null)
+                            for (int i = 0; i < item_jp.xfytcs.Length; i++)
                             {
-                                for (int i = 0; i < item_jp.xfytcs.Length; i++)
+
+                                var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item_jp.xfytcs[i]).FirstOrDefault();
+
+                                DataRow dr1 = jzgjt.NewRow();
+                                dr1[0] = item_jp.lpcs[0] + "(" + item_jp.xfytcs[i] + ")";
+                                if (jpcjxx != null)
                                 {
 
-                                    var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item_jp.xfytcs[i]).FirstOrDefault();
-
-                                    DataRow dr1 = jzgjt.NewRow();
-                                    dr1[0] = item_jp.lpcs[0] + "(" + item.xfytcs[i] + ")";
-                                    if (jpcjxx != null)
+                                    dr1[1] = jpcjxx["xkts"].ints();
+                                    dr1[2] = jpcjxx["xktnjj"].ints();
+                                    jzgjt.Rows.Add(dr1);
+                                }
+                                else
+                                {
+                                    if (item.xfytcs!=null&&item_jp.xfytcs.Contains(item.xfytcs[i]))
                                     {
-
-                                        dr1[1] = jpcjxx["xkts"].ints();
-                                        dr1[2] = jpcjxx["xktnjj"].ints();
+                                        dr1[1] = 0;
+                                        dr1[2] = 0;
                                         jzgjt.Rows.Add(dr1);
                                     }
                                     else
-                                    {
-                                        if (item_jp.xfytcs.Contains(item.xfytcs[i]))
-                                        {
-                                            dr1[1] = 0;
-                                            dr1[2] = 0;
-                                            jzgjt.Rows.Add(dr1);
-                                        }
-                                        else
-                                            continue;
-                                    }
+                                        continue;
                                 }
-
                             }
+
                         }
-                        Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
-                        t.AddClone(page);
-
-
-                    }
-
-
-                    #endregion
-
-                #region 大业态
-
-
-                    else
-                    {
-                        var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
-                        IAutoShape text1 = (IAutoShape)page.Shapes[2];
-                        text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.ytcs[0]);
-                        //数据
-                        System.Data.DataTable jzgjt = new System.Data.DataTable();
-                        jzgjt.Columns.Add("");
-                        jzgjt.Columns.Add("成交套数", typeof(int));
-                        jzgjt.Columns.Add("建面均价", typeof(double));
-                        foreach (var item_jp in item.jpxmlb)
+                        else
                         {
-                            string jpyt = item_jp.ytcs == null ? item.ytcs[0] : item_jp.ytcs[0];
-                            var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == jpyt).FirstOrDefault();
+                            var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item_jp.ytcs[0]).FirstOrDefault();
 
                             DataRow dr1 = jzgjt.NewRow();
-                            dr1[0] = item_jp.lpcs[0] + "(" + item.ytcs[0] + ")";
+                            dr1[0] = item_jp.lpcs[0] + "(" + item_jp.ytcs[0] + ")";
                             if (jpcjxx != null)
                             {
 
                                 dr1[1] = jpcjxx["xkts"].ints();
                                 dr1[2] = jpcjxx["xktnjj"].ints();
+                                jzgjt.Rows.Add(dr1);
                             }
                             else
                             {
-                                dr1[1] = 0;
-                                dr1[2] = 0;
+                                if (item_jp.ytcs.Contains(item.ytcs[0]))
+                                {
+                                    dr1[1] = 0;
+                                    dr1[2] = 0;
+                                    jzgjt.Rows.Add(dr1);
+                                }
+                                else
+                                    continue;
                             }
-                            jzgjt.Rows.Add(dr1);
-
-
                         }
-                        Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
-                        t.AddClone(page);
+
                     }
+                    Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
+                    t.AddClone(page);
+
+
+                }
+
+
+                #endregion
+
+                #region 大业态
+
+
+                else
+                {
+                    var page = new Presentation(ConfigurationManager.AppSettings["PLUS_JP_JZGJ"]).Slides[0];
+                    IAutoShape text1 = (IAutoShape)page.Shapes[2];
+                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.ytcs[0]);
+                    //数据
+                    System.Data.DataTable jzgjt = new System.Data.DataTable();
+                    jzgjt.Columns.Add("");
+                    jzgjt.Columns.Add("成交套数", typeof(int));
+                    jzgjt.Columns.Add("建面均价", typeof(double));
+                    foreach (var item_jp in item.jpxmlb)
+                    {
+                        string jpyt = item_jp.ytcs == null ? item.ytcs[0] : item_jp.ytcs[0];
+                        var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == jpyt).FirstOrDefault();
+
+                        DataRow dr1 = jzgjt.NewRow();
+                        dr1[0] = item_jp.lpcs[0] + "(" + item.ytcs[0] + ")";
+                        if (jpcjxx != null)
+                        {
+
+                            dr1[1] = jpcjxx["xkts"].ints();
+                            dr1[2] = jpcjxx["xktnjj"].ints();
+                        }
+                        else
+                        {
+                            dr1[1] = 0;
+                            dr1[2] = 0;
+                        }
+                        jzgjt.Rows.Add(dr1);
+
+
+                    }
+                    Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
+                    t.AddClone(page);
+                }
 
                     #endregion
                 
@@ -620,6 +646,10 @@ namespace Calculation.JS
                 }
                 if (tgtplb.Count > 0)
                 {
+                try
+                {
+
+              
                     List<Zb_Jp_Tgtp_Model> zt_pic = new List<Zb_Jp_Tgtp_Model>();
                     List<Zb_Jp_Tgtp_Model> ft_pic = new List<Zb_Jp_Tgtp_Model>();
                     var zt = tgtplb.Where(m => m.tplx == Models.Enums.TP_LX.窄图);
@@ -715,6 +745,13 @@ namespace Calculation.JS
                         }
                     }
                 }
+                catch (Exception e)
+                {
+                    Base_Log.Log(e.Message);
+                    Base_Log.Log(e.StackTrace);
+                    throw;
+                }
+            }
             return t;
         }
 
@@ -790,159 +827,497 @@ namespace Calculation.JS
         }
 
 
-       
+
 
         public DataRow GET_ROW(string yt, DataRow dr1, System.Data.DataTable dt,
                                 DataRow temp_ba_bz,
                                 DataRow temp_ba_sz,
-                                EnumerableRowCollection<DataRow> temp_cjba_bz, 
-                                EnumerableRowCollection<DataRow> temp_cjba_sz, 
+                                EnumerableRowCollection<DataRow> temp_cjba_bz,
+                                EnumerableRowCollection<DataRow> temp_cjba_sz,
                                 JP_JPXM_INFO item)
         {
             for (int j = 0; j < dt.Columns.Count; j++)
             {
-               
 
-                if (Base_Config_Rgsj._认购数据.Contains(dt.Columns[j].ColumnName))
+                try
                 {
-                    switch (dt.Columns[j].ColumnName)
+
+
+                    if (Base_Config_Rgsj._认购数据.Contains(dt.Columns[j].ColumnName))
                     {
-                        case Base_Config_Rgsj.上周_新开套数:
-                        case Base_Config_Rgsj.上周_新开销售套数:
-                        case Base_Config_Rgsj.上周_新开建面均价:
-                        case Base_Config_Rgsj.上周_新开套内均价:
-                        case Base_Config_Rgsj.上周_认购套数:
-                        case Base_Config_Rgsj.上周_认购套内体量:
-                        case Base_Config_Rgsj.上周_认购套内均价:
-                        case Base_Config_Rgsj.上周_认购建面体量:
-                        case Base_Config_Rgsj.上周_认购建面均价:
-                        case Base_Config_Rgsj.上周_认购金额:
-                            {
-                                if (temp_ba_sz != null)
-                                {
-                                    dr1[dt.Columns[j].ColumnName] = temp_ba_sz[dt.Columns[j].ColumnName._ConfigRgsjMc()];
-                                }
-                                else
-                                {
-                                    dr1[dt.Columns[j].ColumnName] = "";
-                                }
-                            }; break;
-
-                            
-                        case Base_Config_Rgsj.本周_新开套数:
-                        case Base_Config_Rgsj.本周_新开销售套数:
-                        case Base_Config_Rgsj.本周_新开建面均价:
-                        case Base_Config_Rgsj.本周_新开套内均价:
-                        case Base_Config_Rgsj.本周_认购套数:
-                        case Base_Config_Rgsj.本周_认购套内体量:
-                        case Base_Config_Rgsj.本周_认购套内均价:
-                        case Base_Config_Rgsj.本周_认购建面体量:
-                        case Base_Config_Rgsj.本周_认购建面均价:
-                        case Base_Config_Rgsj.本周_认购金额:
-                            {
-                                if (temp_ba_bz != null)
-                                {
-                                    dr1[dt.Columns[j].ColumnName] = temp_ba_bz[dt.Columns[j].ColumnName._ConfigRgsjMc()];
-                                }
-                                else
-                                {
-                                    dr1[dt.Columns[j].ColumnName] = "";
-                                }
-                            }; break;
-                        default: {
-                                if (temp_ba_bz != null)
-                                {
-                                    dr1[dt.Columns[j].ColumnName] = temp_ba_bz[dt.Columns[j].ColumnName];
-                                }
-                                else
-                                    dr1[dt.Columns[j].ColumnName] = "";
-                            }; break;
-
-                    }
-                }
-                else if (Base_Config_Cjba._备案数据.Contains(dt.Columns[j].ColumnName))
-                {
                         switch (dt.Columns[j].ColumnName)
                         {
-                            case Base_Config_Cjba.本周_备案套数: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz !=null? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_备案套数._ConfigCjbaMc()].ints()):0; }; break;
-                            case Base_Config_Cjba.本周_成交金额: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz != null ? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()):0; }; break;
-                            case Base_Config_Cjba.本周_建筑面积: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz != null ? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls()):0; }; break;
-                            case Base_Config_Cjba.本周_套内面积: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz != null ? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].ints()):0; }; break;
-                            case Base_Config_Cjba.本周_建面均价: {
-                            
-                                    if ((temp_cjba_bz != null && temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_建面均价._ConfigCjbaMc()].doubls()) != 0))
+                            case Base_Config_Rgsj.上周_新开套数:
+                            case Base_Config_Rgsj.上周_新开销售套数:
+                            case Base_Config_Rgsj.上周_新开建面均价:
+                            case Base_Config_Rgsj.上周_新开套内均价:
+                            case Base_Config_Rgsj.上周_认购套数:
+                            case Base_Config_Rgsj.上周_认购套内体量:
+                            case Base_Config_Rgsj.上周_认购套内均价:
+                            case Base_Config_Rgsj.上周_认购建面体量:
+                            case Base_Config_Rgsj.上周_认购建面均价:
+                            case Base_Config_Rgsj.上周_认购金额:
+                                {
+                                    if (temp_ba_sz != null)
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = temp_ba_sz[dt.Columns[j].ColumnName._ConfigRgsjMc()];
+                                    }
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                }; break;
+                            case Base_Config_Rgsj.本周_新开套数:
+                            case Base_Config_Rgsj.本周_新开销售套数:
+                            case Base_Config_Rgsj.本周_新开建面均价:
+                            case Base_Config_Rgsj.本周_新开套内均价:
+                            case Base_Config_Rgsj.本周_认购套数:
+                            case Base_Config_Rgsj.本周_认购套内体量:
+                            case Base_Config_Rgsj.本周_认购套内均价:
+                            case Base_Config_Rgsj.本周_认购建面体量:
+                            case Base_Config_Rgsj.本周_认购建面均价:
+                            case Base_Config_Rgsj.本周_认购金额:
+                                {
+                                    if (temp_ba_bz != null)
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = temp_ba_bz[dt.Columns[j].ColumnName._ConfigRgsjMc()];
+                                    }
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                }; break;
+                            case Base_Config_Rgsj.本周_认购套数环比: { dr1[dt.Columns[j].ColumnName] = temp_ba_sz["rgts"] != null && temp_ba_sz["rgts"].ints() != 0 ? ((temp_ba_bz["rgts"].ints() - temp_ba_sz["rgts"].ints()) / temp_ba_sz["rgts"].ints()).doubls().ss_bfb() : "0%"; }; break;
+                            case Base_Config_Rgsj.本周_认购金额环比: { dr1[dt.Columns[j].ColumnName] = temp_ba_sz["rgje"] != null && temp_ba_sz["rgje"].ints() != 0 ? ((temp_ba_bz["rgts"].ints() - temp_ba_sz["rgts"].ints()) / temp_ba_sz["rgts"].ints()).doubls().ss_bfb() : "0%"; }; break;
+                            case Base_Config_Rgsj.本周_认购建筑面积环比: { dr1[dt.Columns[j].ColumnName] = temp_ba_sz["rgjmtl"] != null && temp_ba_sz["rgjmtl"].ints() != 0 ? ((temp_ba_bz["rgjmtl"].ints() - temp_ba_sz["rgjmtl"].ints()) / temp_ba_sz["rgjmtl"].ints()).doubls().ss_bfb() : "0%"; }; break;
+                            case Base_Config_Rgsj.本周_认购套内面积环比: { }; break;
+                            case Base_Config_Rgsj.本周_认购建面均价环比: { dr1[dt.Columns[j].ColumnName] = temp_ba_sz["rgjmjj"] != null && temp_ba_sz["rgjmjj"].ints() != 0 ? ((temp_ba_bz["rgjmjj"].ints() - temp_ba_sz["rgjmjj"].ints()) / temp_ba_sz["rgjmjj"].ints()).doubls().ss_bfb() : "0%"; }; break;
+                            case Base_Config_Rgsj.本周_认购套内均价环比: { }; break;
+                            case Base_Config_Rgsj.本周_认购套均总价环比: { }; break;
+                            default:
+                                {
+                                    if (temp_ba_bz != null)
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = temp_ba_bz[dt.Columns[j].ColumnName];
+                                    }
+                                    else
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                }; break;
+
+                        }
+                    }
+                    else if (Base_Config_Cjba._备案数据.Contains(dt.Columns[j].ColumnName))
+                    {
+                        switch (dt.Columns[j].ColumnName)
+                        {
+                            case Base_Config_Cjba.本周_备案套数: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz != null ? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_备案套数._ConfigCjbaMc()].ints()) : 0; }; break;
+                            case Base_Config_Cjba.本周_成交金额: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz != null ? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) : 0; }; break;
+                            case Base_Config_Cjba.本周_建筑面积: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz != null ? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls()) : 0; }; break;
+                            case Base_Config_Cjba.本周_套内面积: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz != null ? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].ints()) : 0; }; break;
+                            case Base_Config_Cjba.本周_建面均价:
+                                {
+
+                                    if ((temp_cjba_bz != null && temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls()) != 0))
+                                        dr1[dt.Columns[j].ColumnName] = (temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                }; break;
+                            case Base_Config_Cjba.本周_套内均价:
+                                {
+                                    if ((temp_cjba_bz != null && temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].doubls()) != 0))
                                         dr1[dt.Columns[j].ColumnName] = (temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].doubls())).je_y();
                                     else
                                     {
                                         dr1[dt.Columns[j].ColumnName] = "";
                                     }
-                            }; break;
-                            case Base_Config_Cjba.本周_套内均价:
+                                }; break;
+                            case Base_Config_Cjba.上周_备案套数: { dr1[dt.Columns[j].ColumnName] = temp_cjba_sz != null ? temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_备案套数._ConfigCjbaMc()].ints()) : 0; }; break;
+                            case Base_Config_Cjba.上周_成交金额: { dr1[dt.Columns[j].ColumnName] = temp_cjba_sz != null ? temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) : 0; }; break;
+                            case Base_Config_Cjba.上周_建筑面积: { dr1[dt.Columns[j].ColumnName] = temp_cjba_sz != null ? temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls()) : 0; }; break;
+                            case Base_Config_Cjba.上周_套内面积: { dr1[dt.Columns[j].ColumnName] = temp_cjba_sz != null ? temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].ints()) : 0; }; break;
+                            case Base_Config_Cjba.上周_建面均价:
                                 {
-                                if((temp_cjba_bz != null && temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].doubls()) != 0))
-                                    dr1[dt.Columns[j].ColumnName] = (temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].doubls())).je_y();
-                                else
-                                {
-                                    dr1[dt.Columns[j].ColumnName] = "";
-                                }
-                            }; break;
-                            case Base_Config_Cjba.上周_备案套数: { dr1[dt.Columns[j].ColumnName] =  temp_cjba_sz != null ?  temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_备案套数._ConfigCjbaMc()].ints()) : 0; }; break;
-                            case Base_Config_Cjba.上周_成交金额: { dr1[dt.Columns[j].ColumnName] =  temp_cjba_sz != null ?  temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) : 0; }; break;
-                            case Base_Config_Cjba.上周_建筑面积: { dr1[dt.Columns[j].ColumnName] =  temp_cjba_sz != null ?  temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls()) : 0; }; break;
-                            case Base_Config_Cjba.上周_套内面积: { dr1[dt.Columns[j].ColumnName] =  temp_cjba_sz != null ?  temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].ints()) : 0; }; break;
-                            case Base_Config_Cjba.上周_建面均价: {
-                                if ((temp_cjba_sz != null && temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls()) != 0))
-                                    dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
-                                else
-                                {
-                                    dr1[dt.Columns[j].ColumnName] = "";
-                                }
-                            }; break;
+                                    if ((temp_cjba_sz != null && temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls()) != 0))
+                                        dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                }; break;
                             case Base_Config_Cjba.上周_套内均价:
-                            {
-                                if ((temp_cjba_sz != null && temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].doubls()) != 0))
-                                    dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].doubls())).je_y();
-                                else
                                 {
-                                    dr1[dt.Columns[j].ColumnName] = "";
-                                }
-                            }; break;
+                                    if ((temp_cjba_sz != null && temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].doubls()) != 0))
+                                        dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].doubls())).je_y();
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                }; break;
+
+
+                            case Base_Config_Cjba.本周_备案套数环比:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = ((temp_cjba_bz.Sum(m => m["ts"].ints()) - temp_cjba_sz.Sum(m => m["ts"].ints())) / temp_cjba_sz.Sum(m => m["ts"].ints())).doubls().ss_bfb();
+                                }; break;
+                            case Base_Config_Cjba.本周_套内均价环比:
+                                {
+                                    long bz_cjje = temp_cjba_bz.Sum(m => m["cjje"].ints());
+                                    long bz_tnmj = temp_cjba_bz.Sum(m => m["tnmj"].ints());
+                                    long sz_cjje = temp_cjba_sz.Sum(m => m["cjje"].ints());
+                                    long sz_tnmj = temp_cjba_sz.Sum(m => m["tnmj"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_cjje / bz_tnmj - sz_cjje / sz_tnmj) / (sz_cjje / sz_tnmj)).doubls().ss_bfb();
+                                }; break;
+                            case Base_Config_Cjba.本周_套内面积环比:
+                                {
+                                    long bz_tnmj = temp_cjba_bz.Sum(m => m["tnmj"].ints());
+                                    long sz_tnmj = temp_cjba_sz.Sum(m => m["tnmj"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_tnmj - sz_tnmj) / (sz_tnmj)).doubls().ss_bfb();
+                                }; break;
+                            case Base_Config_Cjba.本周_套均总价环比:
+                                {
+                                    long bz_cjje = temp_cjba_bz.Sum(m => m["cjje"].ints());
+                                    long bz_ts = temp_cjba_bz.Sum(m => m["ts"].ints());
+                                    long sz_cjje = temp_cjba_sz.Sum(m => m["cjje"].ints());
+                                    long sz_ts = temp_cjba_sz.Sum(m => m["ts"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_cjje / bz_ts - sz_cjje / sz_ts) / (sz_cjje / sz_ts)).doubls().ss_bfb();
+                                }; break;
+
+                            case Base_Config_Cjba.本周_建筑面积环比:
+                                {
+                                    long bz_cjje = temp_cjba_bz.Sum(m => m["cjje"].ints());
+                                    long bz_jzmj = temp_cjba_bz.Sum(m => m["jzmj"].ints());
+                                    long sz_cjje = temp_cjba_sz.Sum(m => m["cjje"].ints());
+                                    long sz_jzmj = temp_cjba_sz.Sum(m => m["jzmj"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_cjje / bz_jzmj - sz_cjje / sz_jzmj) / (sz_cjje / sz_jzmj)).doubls().ss_bfb();
+                                }; break;
+                            case Base_Config_Cjba.本周_建面均价环比:
+                                {
+                                    long bz_cjje = temp_cjba_bz.Sum(m => m["cjje"].ints());
+                                    long bz_jzmj = temp_cjba_bz.Sum(m => m["jzmj"].ints());
+                                    long sz_cjje = temp_cjba_sz.Sum(m => m["cjje"].ints());
+                                    long sz_jzmj = temp_cjba_sz.Sum(m => m["jzmj"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_cjje / bz_jzmj - sz_cjje / sz_jzmj) / (sz_cjje / sz_jzmj)).doubls().ss_bfb();
+                                }; break;
+                            case Base_Config_Cjba.本周_成交金额环比:
+                                {
+                                    long bz_cjje = temp_cjba_bz.Sum(m => m["cjje"].ints());
+                                    long sz_cjje = temp_cjba_sz.Sum(m => m["cjje"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_cjje - sz_cjje) / sz_cjje).doubls().ss_bfb();
+                                }; break;
+
+
+
                             default: { dr1[dt.Columns[j].ColumnName] = ""; }; break;
                         }
-                   
-                    
-                }
-                else if (Base_Config_Jzgj._竞争格局参数名称.Contains(dt.Columns[j].ColumnName))
-                {
-                    switch (dt.Columns[j].ColumnName)
-                    {
-                        case Base_Config_Jzgj.项目名称:
-                            {
-                                dr1[dt.Columns[j].ColumnName] = item.lpcs[0];
-                            }; break;
-                        case Base_Config_Jzgj.业态:
-                            {
-                                dr1[dt.Columns[j].ColumnName] = yt;
-                            }; break;
-                        case Base_Config_Jzgj.组团:
-                            {
-                                dr1[dt.Columns[j].ColumnName] = string.Join(",", item.ztcs);
-                            }; break;
-                        case Base_Config_Jzgj.竞争格局_主力面积区间:
-                            {
-                                dr1[dt.Columns[j].ColumnName] = item.zlmjqj;
-                            }; break;
-                        case Base_Config_Jzgj.竞争格局名称:
-                            {
-                                dr1[dt.Columns[j].ColumnName] = item.jzgjmc;
-                            }; break;
-                    }
 
+
+                    }
+                    else if (Base_Config_Jzgj._竞争格局参数名称.Contains(dt.Columns[j].ColumnName))
+                    {
+                        switch (dt.Columns[j].ColumnName)
+                        {
+                            case Base_Config_Jzgj.项目名称:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = item.lpcs[0];
+                                }; break;
+                            case Base_Config_Jzgj.业态:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = yt;
+                                }; break;
+                            case Base_Config_Jzgj.组团:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = item != null && item.ztcs != null ? string.Join(",", item.ztcs) : "";
+                                }; break;
+                            case Base_Config_Jzgj.竞争格局_主力面积区间:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = item.zlmjqj;
+                                }; break;
+                            case Base_Config_Jzgj.竞争格局名称:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = item.jzgjmc;
+                                }; break;
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    throw e;
                 }
             }
-            
-                return dr1;
+
+            return dr1;
         }
+
+        public DataRow GET_ROW(string yt, DataRow dr1, System.Data.DataTable dt,
+                               EnumerableRowCollection<DataRow> temp_ba_bz,
+                               EnumerableRowCollection<DataRow> temp_ba_sz,
+                               EnumerableRowCollection<DataRow> temp_cjba_bz,
+                               EnumerableRowCollection<DataRow> temp_cjba_sz,
+                               JP_JPXM_INFO item)
+        {
+            for (int j = 0; j < dt.Columns.Count; j++)
+            {
+
+                try
+                {
+
+
+                    if (Base_Config_Rgsj._认购数据.Contains(dt.Columns[j].ColumnName))
+                    {
+                        switch (dt.Columns[j].ColumnName)
+                        {
+                            case Base_Config_Rgsj.上周_新开套数:
+                            case Base_Config_Rgsj.上周_新开销售套数:
+                            case Base_Config_Rgsj.上周_新开建面均价:
+                            case Base_Config_Rgsj.上周_新开套内均价:
+                            case Base_Config_Rgsj.上周_认购套数:
+                            case Base_Config_Rgsj.上周_认购套内体量:
+                            case Base_Config_Rgsj.上周_认购套内均价:
+                            case Base_Config_Rgsj.上周_认购建面体量:
+                            case Base_Config_Rgsj.上周_认购建面均价:
+                            case Base_Config_Rgsj.上周_认购金额:
+                                {
+                                    if (temp_ba_sz != null)
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = temp_ba_sz.Sum(m=>m[dt.Columns[j].ColumnName._ConfigRgsjMc()].doubls());
+                                    }
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                }; break;
+                            case Base_Config_Rgsj.本周_新开套数:
+                            case Base_Config_Rgsj.本周_新开销售套数:
+                            case Base_Config_Rgsj.本周_新开建面均价:
+                            case Base_Config_Rgsj.本周_新开套内均价:
+                            case Base_Config_Rgsj.本周_认购套数:
+                            case Base_Config_Rgsj.本周_认购套内体量:
+                            case Base_Config_Rgsj.本周_认购套内均价:
+                            case Base_Config_Rgsj.本周_认购建面体量:
+                            case Base_Config_Rgsj.本周_认购建面均价:
+                            case Base_Config_Rgsj.本周_认购金额:
+                                {
+                                    if (temp_ba_bz != null)
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = temp_ba_bz.Sum(m => m[dt.Columns[j].ColumnName._ConfigRgsjMc()].doubls());
+                                    }
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                }; break;
+                            case Base_Config_Rgsj.本周到访量:
+                                {
+                                    if (temp_ba_bz != null)
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = temp_ba_bz.Sum(m => m[dt.Columns[j].ColumnName].doubls());
+                                    }
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                };break;
+
+                            case Base_Config_Rgsj.本周_认购套数环比: {
+                                    dr1[dt.Columns[j].ColumnName] = temp_ba_sz.Sum(m=>m["rgts"].ints()) != 0 ? ((temp_ba_bz.Sum(m => m["rgts"].ints()) - temp_ba_sz.Sum(m => m["rgts"].ints())) / temp_ba_sz.Sum(m => m["rgts"].ints())).doubls().ss_bfb() : "0%";
+                                };
+                                break;
+                            case Base_Config_Rgsj.本周_认购金额环比: {
+                                    dr1[dt.Columns[j].ColumnName] = temp_ba_sz.Sum(m => m["rgje"].ints()) != 0 ? ((temp_ba_bz.Sum(m => m["rgje"].ints()) - temp_ba_sz.Sum(m => m["rgje"].ints())) / temp_ba_sz.Sum(m => m["rgje"].ints())).doubls().ss_bfb() : "0%";
+                                }; break;
+                            case Base_Config_Rgsj.本周_认购建筑面积环比:
+                                { dr1[dt.Columns[j].ColumnName] = temp_ba_sz.Sum(m => m["rgjmtl"].doubls()) != 0 ? ((temp_ba_bz.Sum(m => m["rgjmtl"].doubls()) - temp_ba_sz.Sum(m => m["rgjmtl"].doubls())) / temp_ba_sz.Sum(m => m["rgjmtl"].doubls())).doubls().ss_bfb() : "0%";
+                                }; break;
+                            case Base_Config_Rgsj.本周_认购套内面积环比: { }; break;
+                            case Base_Config_Rgsj.本周_认购建面均价环比: {
+                                    dr1[dt.Columns[j].ColumnName] = temp_ba_sz.Sum(m => m["rgjmjj"].doubls()) != 0 ? ((temp_ba_bz.Sum(m => m["rgjmjj"].doubls()) - temp_ba_sz.Sum(m => m["rgjmjj"].doubls())) / temp_ba_sz.Sum(m => m["rgjmjj"].doubls())).doubls().ss_bfb() : "0%";
+                                }; break;
+                            case Base_Config_Rgsj.本周_认购套内均价环比: { }; break;
+                            case Base_Config_Rgsj.本周_认购套均总价环比: { }; break;
+                            case Base_Config_Rgsj.活动:
+                            case Base_Config_Rgsj.营销动作:
+                            case Base_Config_Rgsj.优惠:
+                            case Base_Config_Rgsj.变化原因:
+                                {
+                                    var obj = (from a in temp_ba_bz
+                                               select new
+                                               {
+                                                   str = a.Field<string>(dt.Columns[j].ColumnName)
+                                               }).ToList();
+                                    string s = "";
+                                    if (obj != null && obj.Count > 0)
+                                    {
+                                        for (int i = 0; i < obj.Count; i++)
+                                        {
+                                            s += "," + obj[i].str;
+                                        }
+                                        dr1[dt.Columns[j].ColumnName] = string.Join(",", s);
+                                    }
+                                }
+                                break;
+                            default:
+                                {
+                                    if (temp_ba_bz != null)
+                                    {
+                                        var obj = temp_ba_bz.FirstOrDefault();
+                                        dr1[dt.Columns[j].ColumnName] = obj[dt.Columns[j].ColumnName._ConfigRgsjMc()];
+                                    }
+                                    else
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                }; break;
+
+                        }
+                    }
+                    else if (Base_Config_Cjba._备案数据.Contains(dt.Columns[j].ColumnName))
+                    {
+                        switch (dt.Columns[j].ColumnName)
+                        {
+                            case Base_Config_Cjba.本周_备案套数: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz != null ? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_备案套数._ConfigCjbaMc()].ints()) : 0; }; break;
+                            case Base_Config_Cjba.本周_成交金额: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz != null ? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) : 0; }; break;
+                            case Base_Config_Cjba.本周_建筑面积: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz != null ? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls()) : 0; }; break;
+                            case Base_Config_Cjba.本周_套内面积: { dr1[dt.Columns[j].ColumnName] = temp_cjba_bz != null ? temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].ints()) : 0; }; break;
+                            case Base_Config_Cjba.本周_建面均价:
+                                {
+
+                                    if ((temp_cjba_bz != null && temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls()) != 0))
+                                        dr1[dt.Columns[j].ColumnName] = (temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                }; break;
+                            case Base_Config_Cjba.本周_套内均价:
+                                {
+                                    if ((temp_cjba_bz != null && temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].doubls()) != 0))
+                                        dr1[dt.Columns[j].ColumnName] = (temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].doubls())).je_y();
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                }; break;
+                            case Base_Config_Cjba.上周_备案套数: { dr1[dt.Columns[j].ColumnName] = temp_cjba_sz != null ? temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_备案套数._ConfigCjbaMc()].ints()) : 0; }; break;
+                            case Base_Config_Cjba.上周_成交金额: { dr1[dt.Columns[j].ColumnName] = temp_cjba_sz != null ? temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) : 0; }; break;
+                            case Base_Config_Cjba.上周_建筑面积: { dr1[dt.Columns[j].ColumnName] = temp_cjba_sz != null ? temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls()) : 0; }; break;
+                            case Base_Config_Cjba.上周_套内面积: { dr1[dt.Columns[j].ColumnName] = temp_cjba_sz != null ? temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].ints()) : 0; }; break;
+                            case Base_Config_Cjba.上周_建面均价:
+                                {
+                                    if ((temp_cjba_sz != null && temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls()) != 0))
+                                        dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                }; break;
+                            case Base_Config_Cjba.上周_套内均价:
+                                {
+                                    if ((temp_cjba_sz != null && temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].doubls()) != 0))
+                                        dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].doubls())).je_y();
+                                    else
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "";
+                                    }
+                                }; break;
+
+
+                            case Base_Config_Cjba.本周_备案套数环比:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = ((temp_cjba_bz.Sum(m => m["ts"].ints()) - temp_cjba_sz.Sum(m => m["ts"].ints())) / temp_cjba_sz.Sum(m => m["ts"].ints())).doubls().ss_bfb();
+                                }; break;
+                            case Base_Config_Cjba.本周_套内均价环比:
+                                {
+                                    long bz_cjje = temp_cjba_bz.Sum(m => m["cjje"].ints());
+                                    long bz_tnmj = temp_cjba_bz.Sum(m => m["tnmj"].ints());
+                                    long sz_cjje = temp_cjba_sz.Sum(m => m["cjje"].ints());
+                                    long sz_tnmj = temp_cjba_sz.Sum(m => m["tnmj"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_cjje / bz_tnmj - sz_cjje / sz_tnmj) / (sz_cjje / sz_tnmj)).doubls().ss_bfb();
+                                }; break;
+                            case Base_Config_Cjba.本周_套内面积环比:
+                                {
+                                    long bz_tnmj = temp_cjba_bz.Sum(m => m["tnmj"].ints());
+                                    long sz_tnmj = temp_cjba_sz.Sum(m => m["tnmj"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_tnmj - sz_tnmj) / (sz_tnmj)).doubls().ss_bfb();
+                                }; break;
+                            case Base_Config_Cjba.本周_套均总价环比:
+                                {
+                                    long bz_cjje = temp_cjba_bz.Sum(m => m["cjje"].ints());
+                                    long bz_ts = temp_cjba_bz.Sum(m => m["ts"].ints());
+                                    long sz_cjje = temp_cjba_sz.Sum(m => m["cjje"].ints());
+                                    long sz_ts = temp_cjba_sz.Sum(m => m["ts"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_cjje / bz_ts - sz_cjje / sz_ts) / (sz_cjje / sz_ts)).doubls().ss_bfb();
+                                }; break;
+
+                            case Base_Config_Cjba.本周_建筑面积环比:
+                                {
+                                    long bz_cjje = temp_cjba_bz.Sum(m => m["cjje"].ints());
+                                    long bz_jzmj = temp_cjba_bz.Sum(m => m["jzmj"].ints());
+                                    long sz_cjje = temp_cjba_sz.Sum(m => m["cjje"].ints());
+                                    long sz_jzmj = temp_cjba_sz.Sum(m => m["jzmj"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_cjje / bz_jzmj - sz_cjje / sz_jzmj) / (sz_cjje / sz_jzmj)).doubls().ss_bfb();
+                                }; break;
+                            case Base_Config_Cjba.本周_建面均价环比:
+                                {
+                                    long bz_cjje = temp_cjba_bz.Sum(m => m["cjje"].ints());
+                                    long bz_jzmj = temp_cjba_bz.Sum(m => m["jzmj"].ints());
+                                    long sz_cjje = temp_cjba_sz.Sum(m => m["cjje"].ints());
+                                    long sz_jzmj = temp_cjba_sz.Sum(m => m["jzmj"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_cjje / bz_jzmj - sz_cjje / sz_jzmj) / (sz_cjje / sz_jzmj)).doubls().ss_bfb();
+                                }; break;
+                            case Base_Config_Cjba.本周_成交金额环比:
+                                {
+                                    long bz_cjje = temp_cjba_bz.Sum(m => m["cjje"].ints());
+                                    long sz_cjje = temp_cjba_sz.Sum(m => m["cjje"].ints());
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_cjje - sz_cjje) / sz_cjje).doubls().ss_bfb();
+                                }; break;
+
+
+
+                            default: { dr1[dt.Columns[j].ColumnName] = ""; }; break;
+                        }
+
+
+                    }
+                    else if (Base_Config_Jzgj._竞争格局参数名称.Contains(dt.Columns[j].ColumnName))
+                    {
+                        switch (dt.Columns[j].ColumnName)
+                        {
+                            case Base_Config_Jzgj.项目名称:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = item.lpcs[0];
+                                }; break;
+                            case Base_Config_Jzgj.业态:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = yt;
+                                }; break;
+                            case Base_Config_Jzgj.组团:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = item != null && item.ztcs != null ? string.Join(",", item.ztcs) : "";
+                                }; break;
+                            case Base_Config_Jzgj.竞争格局_主力面积区间:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = item.zlmjqj;
+                                }; break;
+                            case Base_Config_Jzgj.竞争格局名称:
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = item.jzgjmc;
+                                }; break;
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    throw e;
+                }
+            }
+
+            return dr1;
+        }
+
         public DataRow GET_ROW(string yt, DataRow dr1, System.Data.DataTable dt,
                                 DataRow temp_ba_bz,
                                 EnumerableRowCollection<DataRow> temp_cjba_bz,
@@ -1151,6 +1526,16 @@ namespace Calculation.JS
 
 
 
+        /// <summary>
+        /// 主团周度排名
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="index1"></param>
+        /// <param name="index2"></param>
+        /// <param name="index3"></param>
+        /// <param name="index4"></param>
+        /// <param name="qy"></param>
+        /// <returns></returns>
         public ISlideCollection ztzdpm(string str,int[] index1,int[] index2,int [] index3, int[] index4, string qy )
         {
             var p = new Presentation();
@@ -1211,15 +1596,17 @@ namespace Calculation.JS
                 IAutoShape qyhj_txt_1 = (IAutoShape)jbz.Shapes[index3[0]];
                 qyhj_txt_1.TextFrame.Text = string.Format(qyhj_txt_1.TextFrame.Text, qy);
 
-
-                IAutoShape qyhj_txt_2 = (IAutoShape)jbz.Shapes[index3[1]];
-                qyhj_txt_2.TextFrame.Text = string.Format(qyhj_txt_2.TextFrame.Text, data_bz.xzgyl.mj_wf(), data_bz.cjmj.mj_wf(), data_bz.jmjj.mj_wf());
+                if (data_bz != null)
+                {
+                    IAutoShape qyhj_txt_2 = (IAutoShape)jbz.Shapes[index3[1]];
+                               qyhj_txt_2.TextFrame.Text = string.Format(qyhj_txt_2.TextFrame.Text, data_bz.xzgyl.mj_wf(), data_bz.cjmj.mj_wf(), data_bz.jmjj.mj_wf());
                 IAutoShape qyhj_txt_3 = (IAutoShape)jbz.Shapes[index3[2]];
                 qyhj_txt_3.TextFrame.Text = string.Format(qyhj_txt_3.TextFrame.Text, 
-                    data_bz.xzgyl.mj_wf(), ((data_bz.xzgyl - data_sz.xzgyl)/ data_sz.xzgyl).ss_bfb(),
-                    data_bz.cjmj.mj_wf(), ((data_bz.cjmj - data_sz.cjmj) / data_sz.cjmj).ss_bfb(),
-                     data_bz.jmjj.je_y(), ((data_bz.jmjj - data_sz.jmjj) / data_sz.jmjj).ss_bfb()
+                    data_bz.xzgyl.mj_wf(), data_sz !=null && data_sz.xzgyl != 0 ? ((data_bz.xzgyl - data_sz.xzgyl)/ data_sz.xzgyl).ss_bfb():"0",
+                    data_bz.cjmj.mj_wf(), data_sz != null && data_sz.cjmj != 0 ? ((data_bz.cjmj - data_sz.cjmj) / data_sz.cjmj).ss_bfb():"0",
+                     data_bz.jmjj.je_y(), data_sz != null && data_sz.jmjj != 0 ? ((data_bz.jmjj - data_sz.jmjj) / data_sz.jmjj).ss_bfb():"0"
                     );
+                }
             }
             t.AddClone(jbz);
             #endregion
@@ -1257,7 +1644,7 @@ namespace Calculation.JS
                 }
                 else
                 {
-                    dr["项目名称"] = "";
+                    dr["项目名称1"] = "";
                     dr["套数"] = "";
                 }
 

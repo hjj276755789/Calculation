@@ -28,13 +28,16 @@ namespace Calculation.JS
                     int[] index2 = { 2, 3 };
                     int[] index3 = { 4, 2,1 };
                     int[] index4 = { 1, 0 };
+                    Base_Log.Log("主团周度排名开始");
                     foreach (var qypm in ztzdpm(str, index1, index2, index3, index4, item.qycs[0]))
                     {
                         t.AddClone(qypm);
-                    } 
-
+                    }
+                    Base_Log.Log("主团周度排名结束");
 
                     #region 格局统计
+                    Base_Log.Log("格局统计开始");
+
                     var page2 = temp[3];
                     DataTable dt = new DataTable();
                     dt.Columns.Add(Base_Config_Jzgj.竞争格局名称);
@@ -68,9 +71,15 @@ namespace Calculation.JS
                         Office_Tables.SetJP_RUIAN_JPBX_Table(page2, dt, 2, null, null);
                         t.AddClone(page2);
                     }
+                    Base_Log.Log("格局统计结束");
+                    Base_Log.Log("近期动作开始");
+
                     #endregion
                     #region 近期动作
                     var page3 = temp[4];
+                    IAutoShape text3 = (IAutoShape)page3.Shapes[0];
+                    text3.TextFrame.Text = string.Format(text3.TextFrame.Text, item.bamc, item.ytcs[0]);
+
                     DataTable dt1 = new DataTable();
                     dt1.Columns.Add(Base_Config_Jzgj.项目名称);
                     dt1.Columns.Add(Base_Config_Rgsj.优惠);
@@ -81,6 +90,7 @@ namespace Calculation.JS
                         Office_Tables.SetTable(page3, dt1, 1, null, null);
                     }
                     t.AddClone(page3);
+                    Base_Log.Log("近期动作开始");
                     #endregion
 
 

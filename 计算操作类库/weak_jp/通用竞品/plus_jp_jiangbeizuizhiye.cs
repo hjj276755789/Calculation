@@ -110,7 +110,7 @@ namespace Calculation.JS
                     }
                     else
                     {
-                        dr["项目名称"] = "";
+                        dr["项目名称1"] = "";
                         dr["套数"] = "" ;
                     }
 
@@ -196,8 +196,9 @@ namespace Calculation.JS
                 #endregion
                 return t;
             }
-            catch (Exception )
+            catch (Exception e)
             {
+                Base_Log.Log(e.Message);
                 return null;
             }
 
@@ -230,9 +231,10 @@ namespace Calculation.JS
                         var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
                         //本周本案认购数据
                         var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                        var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
                         #endregion
-
-                        dt.Rows.Add(GET_ROW(item.xfytcs[i], dr1, dt, temp_ba_bz, temp_cjba_bz, null, item));
+                        dr1 = GET_ROW(item.xfytcs[i], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item);
+                        dt.Rows.Add(dr1);
 
                     }
                 }
@@ -246,10 +248,15 @@ namespace Calculation.JS
                         //竞品业态
                         var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.hxcs[i]);
                         var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["hx"].ToString() == item.hxcs[i]);
+
+
+                        var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.hxcs[i]);
+                        var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["hx"].ToString() == item.hxcs[i]);
                         //本周本案认购数据
                         var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                        var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
                         #endregion
-                        dt.Rows.Add(GET_ROW(item.hxcs[i], dr1, dt, temp_ba_bz, temp_cjba_bz, null, item));
+                        dt.Rows.Add(GET_ROW(item.hxcs[i], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
                     }
                 }
                 else
@@ -260,11 +267,15 @@ namespace Calculation.JS
                     //竞品业态
                     var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
                     var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+
+                    var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                    var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
                     //本周本案认购数据
                     var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                    var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
                     #endregion
 
-                    dt.Rows.Add(GET_ROW(item.ytcs[0], dr1, dt, temp_ba_bz, temp_cjba_bz, null, item));
+                    dt.Rows.Add(GET_ROW(item.ytcs[0], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
                 }
 
 

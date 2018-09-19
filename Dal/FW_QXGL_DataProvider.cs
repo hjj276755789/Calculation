@@ -34,6 +34,12 @@ namespace Calculation.Dal
             string sql = "select * from calculation.fw_jsb";
             return Models.Modelhelper.类列表赋值<JSXX>(new JSXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
         }
+        public List<JSXX> GET_JSLB(string jsmc)
+        {
+            string sql = "select * from calculation.fw_jsb where jsmc like '%'||@jsmc||'%'";
+            MySqlParameter[] p = { new MySqlParameter("jsmc", jsmc) };
+            return Models.Modelhelper.类列表赋值<JSXX>(new JSXX(), MySqlDbhelper.GetDataSet(sql,p).Tables[0]);
+        }
         public List<JSXX> GET_JSLB(int yhid)
         {
             string sql = "select * from calculation.fw_jsb t,calculation.fw_yhjsb t1 where t.id =t1.jsid and t1.yhid=@yhid ";
@@ -48,6 +54,21 @@ namespace Calculation.Dal
             return Models.Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql,p).Tables[0]);
         }
         /// <summary>
+        /// 获取根权限列表
+        /// </summary>
+        public List<QXXX> GET_GQXLB()
+        {
+            string sql = "select * from fw_qxb where fid is null";
+            return Models.Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
+        }
+        //获取权限列表
+        public List<QXXX> GET_GQXLB(int jsid)
+        {
+            string sql = "select t.* from calculation.fw_qxb t,calculation.fw_jsqxb t1 where t.id =t1.qxid  and t1.jsid=@jsid and t.fid is null";
+            MySqlParameter[] p = { new MySqlParameter("jsid", jsid) };
+            return Models.Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
+        }
+        /// <summary>
         /// 获取所有权限列表
         /// </summary>
         /// <returns></returns>
@@ -59,19 +80,39 @@ namespace Calculation.Dal
         //获取用户角色权限
         public List<QXXX> GET_YHQX(string yhm)
         {
-            string sql = @"select distinct t5.id,t5.qxmc,t5.qxkzq,t5.qxst from calculation.fw_yhb t1
-join calculation.fw_yhjsb t2 on t1.id=t2.yhid
-join calculation.fw_jsb t3 on t2.yhid= t1.id
-join calculation.fw_jsqxb t4 on t3.id =t4.jsid
-join calculation.fw_qxb t5 on t4.qxid =t5.id 
-where t1.yhm=@yhm and t5.fid is null";
+            string sql = @"select distinct e.id,e.qxmc,e.qxkzq,e.qxst from fw_yhb a,fw_jsb b,fw_yhjsb c,fw_jsqxb d,fw_qxb e
+where a.id=c.yhid and b.id =c.jsid and d.jsid=b.id and  e.id=d.qxid
+and a.yhm=@yhm and e.fid is null";
             MySqlParameter[] p = { new MySqlParameter("yhm", yhm) };
             return Models.Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
         //设置用户角色
+        public bool ADD_YHJS(int yhid,int jsid)
+        {
+            string sql = "insert into fw_yhjsb values(@yhid,@jsid)";
+            MySqlParameter[] p = { new MySqlParameter("yhid", yhid), new MySqlParameter("jsid", jsid) };
+           return MySqlDbhelper.ExecuteNonQuery(sql, p)>0;
+        }
+        public bool DEL_YHJS(int yhid, int jsid)
+        {
+            string sql = "delete from fw_yhjsb where yhid=@yhid and jsid=@jsid";
+            MySqlParameter[] p = { new MySqlParameter("yhid", yhid), new MySqlParameter("jsid", jsid) };
+            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
+        }
+
         //设置角色权限
-
-
+        public bool ADD_JSQX(int jsid,int fid)
+        {
+            string sql = @"insert into fw_jsqxb select @jsid,@fid union select @jsid,id from fw_qxb where fid = @fid";
+            MySqlParameter[] p = { new MySqlParameter("jsid", jsid), new MySqlParameter("fid", fid) };
+            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
+        }
+        public bool DEL_JSQX(int jsid, int fid)
+        {
+            string sql = @"DELETE FROM fw_jsqxb WHERE  JSID=@JSID AND qxid in (select id from fw_qxb where fid = @fid or id=@fid)";
+            MySqlParameter[] p = { new MySqlParameter("jsid", jsid), new MySqlParameter("fid", fid) };
+            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
+        }
 
 
 

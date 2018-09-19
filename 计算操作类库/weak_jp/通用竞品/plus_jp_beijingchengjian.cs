@@ -19,6 +19,7 @@ namespace Calculation.JS
         {
             try
             {
+                
                 var param = Cache_param_zb._param_jp.Where(m => m.cjid == cjbh);
                 var p = new Presentation();
                 var t = p.Slides;

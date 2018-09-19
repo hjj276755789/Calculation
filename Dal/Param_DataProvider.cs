@@ -220,23 +220,16 @@ where c.rwid = @rwid and a.csid =@csid";
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
 
-        public static bool jcszsz(int rwid, int mbid, int nf, int zc)
+
+        public static SResult jcszsz(int rwid, int mbid, int nf, int zc)
         {
-            DataTable batable = GET_JP_BAXX_REAL(mbid, nf, zc - 1);
-            DataTable jptable = GET_JP_JPXMXX_REAL(mbid, nf, zc - 1);
+            //查询指定周次本案信息
+            DataTable batable = GET_JP_BAXX_REAL(mbid, nf, zc);
+            //查询指定周次竞品项目信息
+            DataTable jptable = GET_JP_JPXMXX_REAL(mbid, nf, zc);
             List<JP_BA_INFO> list = new List<JP_BA_INFO>();
 
-            #region 清空本周参数
-            del_jp_jpxx(rwid);
-            del_jp_ba(rwid);
-            #endregion
-
-
-
-
             #region 查询上周参数
-
-
             foreach (DataRow item in batable.Rows)
             {
                 JP_BA_INFO jp = new JP_BA_INFO();
@@ -262,7 +255,11 @@ where c.rwid = @rwid and a.csid =@csid";
                     jpxm.ztcs = xm["ztcs"] == null || string.IsNullOrEmpty(xm["ztcs"].ToString()) ? null : xm["ztcs"].ToString().Split(',');
                     jpxm.lpcs = xm["lpcs"] == null || string.IsNullOrEmpty(xm["lpcs"].ToString()) ? null : xm["lpcs"].ToString().Split(',');
                     jpxm.ytcs = xm["ytcs"] == null || string.IsNullOrEmpty(xm["ytcs"].ToString()) ? null : xm["ytcs"].ToString().Split(',');
-                    jpxm.xfytcs = xm["xfytcs"] == null || string.IsNullOrEmpty(item["xfytcs"].ToString()) ? null : xm["xfytcs"].ToString().Split(',');
+                    if (xm["xfytcs"] == null || string.IsNullOrEmpty(xm["xfytcs"].ToString()))
+                        jpxm.xfytcs = null;
+                    else {
+                        jpxm.xfytcs = xm["xfytcs"].ToString().Split(',');
+                    };
                     jpxm.hxcs = xm["hxcs"] == null || string.IsNullOrEmpty(xm["hxcs"].ToString()) ? null : xm["hxcs"].ToString().Split(',');
                     jpxm.zlmjqj = xm["zlmjqj"].ToString();
                     jp.jpxmlb.Add(jpxm);
@@ -270,10 +267,19 @@ where c.rwid = @rwid and a.csid =@csid";
                 list.Add(jp);
             }
             #endregion
-            foreach (var item in list)
+
+            if (list.Count > 0)
             {
-                string sql = "insert into calculation.xtgl_param_jpba (rwid,bamc,qycs,ztcs,lpcs,ytcs,xfytcs,hxcs) values(@rwid,@bamc,@qycs,@ztcs,@lpcs,@ytcs,@xfytcs,@hxcs)";
-                MySqlParameter[] p = { new MySqlParameter("rwid",rwid),
+                #region 清空本周参数
+                del_jp_jpxx(rwid);
+                del_jp_ba(rwid);
+                #endregion
+
+
+                foreach (var item in list)
+                {
+                    string sql = "insert into calculation.xtgl_param_jpba (rwid,bamc,qycs,ztcs,lpcs,ytcs,xfytcs,hxcs,zlmjqj) values(@rwid,@bamc,@qycs,@ztcs,@lpcs,@ytcs,@xfytcs,@hxcs,@zlmjqj)";
+                    MySqlParameter[] p = { new MySqlParameter("rwid",rwid),
                                         new MySqlParameter("bamc",item.bamc),
                                         new MySqlParameter("qycs",item.qycs==null?"":string.Join(",", item.qycs)),
                                         new MySqlParameter("ztcs",item.ztcs==null?"":string.Join(",", item.ztcs)),
@@ -281,28 +287,33 @@ where c.rwid = @rwid and a.csid =@csid";
                                         new MySqlParameter("ytcs",item.ytcs==null?"":string.Join(",", item.ytcs)),
                                         new MySqlParameter("xfytcs",item.xfytcs==null?"":string.Join(",", item.xfytcs)),
                                         new MySqlParameter("hxcs",item.hxcs==null?"":string.Join(",", item.hxcs)),
+                                        new MySqlParameter("zlmjqj",item.zlmjqj==null?"": item.zlmjqj)
                 };
-                MySqlDbhelper.ExecuteNonQuery(sql, p);
-                if (item.jpxmlb != null && item.jpxmlb.Count > 0)
-                {
-                    StringBuilder sqlbuilder = new StringBuilder("insert into calculation.xtgl_param_jpgj(baid,jzgjid,qycs,ztcs,lpcs,ytcs,xfytcs,hxcs) values ");
-                    foreach (var item_jp in item.jpxmlb)
+                    MySqlDbhelper.ExecuteNonQuery(sql, p);
+                    if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                     {
+                        StringBuilder sqlbuilder = new StringBuilder("insert into calculation.xtgl_param_jpgj(baid,jzgjid,qycs,ztcs,lpcs,ytcs,xfytcs,hxcs,zlmjqj) values ");
+                        foreach (var item_jp in item.jpxmlb)
+                        {
 
-                        sqlbuilder.Append(string.Format(@"((select max(id) from calculation.xtgl_param_jpba),'{0}','{1}','{2}','{3}','{4}','{5}','{6}'),",
-                              item_jp.jzgjid,
-                              item_jp.qycs == null ? "" : string.Join(",", item_jp.qycs),
-                              item_jp.ztcs == null ? "" : string.Join(",", item_jp.ztcs),
-                              item_jp.lpcs == null ? "" : string.Join(",", item_jp.lpcs),
-                              item_jp.ytcs == null ? "" : string.Join(",", item_jp.ytcs),
-                              item_jp.xfytcs == null ? "" : string.Join(",", item_jp.xfytcs),
-                              item_jp.hxcs == null ? "" : string.Join(",", item_jp.hxcs)));
+                            sqlbuilder.Append(string.Format(@"((select max(id) from calculation.xtgl_param_jpba),'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}'),",
+                                  item_jp.jzgjid,
+                                  item_jp.qycs == null ? "" : string.Join(",", item_jp.qycs),
+                                  item_jp.ztcs == null ? "" : string.Join(",", item_jp.ztcs),
+                                  item_jp.lpcs == null ? "" : string.Join(",", item_jp.lpcs),
+                                  item_jp.ytcs == null ? "" : string.Join(",", item_jp.ytcs),
+                                  item_jp.xfytcs == null ? "" : string.Join(",", item_jp.xfytcs),
+                                  item_jp.hxcs == null ? "" : string.Join(",", item_jp.hxcs),
+                                  item_jp.zlmjqj == null ? "" : item_jp.zlmjqj));
+                        }
+                        string sql1 = sqlbuilder.ToString();
+                        MySqlDbhelper.ExecuteNonQuery(sql1.Substring(0, sql1.Length - 1));
                     }
-                    string sql1 = sqlbuilder.ToString();
-                    MySqlDbhelper.ExecuteNonQuery(sql1.Substring(0, sql1.Length - 1));
                 }
+                return SResult.Success;
             }
-            return true;
+            else
+                return SResult.Error("指定周次没有设置参数");
         }
 
         public static bool del_jp_ba(int rwid)

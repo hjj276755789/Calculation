@@ -43,5 +43,10 @@ namespace 管理网站.Controllers
                 return View();
             }
         }
+        public ActionResult Logout()
+        {
+            CurrentUser.SignOut();
+            return RedirectToAction("login", "Account");
+        }
     }
 }

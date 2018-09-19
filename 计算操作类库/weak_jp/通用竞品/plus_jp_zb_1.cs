@@ -31,10 +31,6 @@ namespace Calculation.JS
                     IAutoShape text1 = (IAutoShape)page.Shapes[2];
                     text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc);
 
-                    IAutoShape text2 = (IAutoShape)page.Shapes[5];
-                    text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.ytcs[0]);
-
-
                     #region 格局统计
                     DataTable dt = new DataTable();
                     dt.Columns.Add(Base_Config_Jzgj.项目名称);
@@ -45,22 +41,21 @@ namespace Calculation.JS
                     
                         ;
                     dt.Columns.Add("sz_mjd");
-                    dt.Columns.Add(Base_Config_Rgsj.上周_认购套内均价);
+                    dt.Columns.Add(Base_Config_Rgsj.上周_认购建面均价);
 
-                    dt.Columns.Add(Base_Config_Cjba.本周_备案套数);
-                    dt.Columns.Add(Base_Config_Cjba.本周_套内均价);
-
-                    dt.Columns.Add("bz_mjd");
-                    dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_新开套数);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_认购套数);
 
                     dt.Columns.Add("bz_mjd");
+                    dt.Columns.Add(Base_Config_Rgsj.本周_认购建面均价);
+
+                    dt.Columns.Add("--");
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价);
 
-                    dt.Columns.Add(Base_Config_Rgsj.变化原因);
-                    dt.Columns.Add(Base_Config_Rgsj.优惠);
-                    dt.Columns.Add(Base_Config_Rgsj.本周来电);
+                    dt.Columns.Add(Base_Config_Rgsj.营销动作);
                     dt.Columns.Add(Base_Config_Rgsj.本周到访量);
-                    dt.Columns.Add(Base_Config_Rgsj.活动);
+
+                    
                     #endregion
                     if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                     {

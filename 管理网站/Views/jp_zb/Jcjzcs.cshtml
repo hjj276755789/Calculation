@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "指定继承周次参数";
+}
+
+
+
+<div class="graphicdesign illustrator photography">
+    <div class="gal-detail thumb">
+        <div class="row">
+            <h4>指定继承周次参数</h4>
+        </div>
+        <div class="row">
+            <input type="hidden" value="@this.ViewBag.mbid" name="mbid" id="mbid" />
+            <input type="hidden" value="@this.ViewBag.rwid" name="rwid" id="rwid" />
+            <input type="text" class="form-control"  placeholder="年份" name="nf" id="nf" />
+            <input type="text" class="form-control"  placeholder="周次" name="zc" id="zc"/>
+        </div>
+            <div class="row">
+                <button onclick="inherit()" class="btn btn-primary ">确定</button>
+            </div>
+       </div>
+</div>
+<script>
+    function inherit() {
+        var mbid = $("#mbid").val();
+        var rwid = $("#rwid").val();
+        var nf = $("#nf").val();
+        var zc = $("#zc").val();
+        $.ajax({
+            url: "/jp_zb/jcszsz",
+            data: { mbid: mbid, rwid: rwid,nf:nf, zc: zc},
+            type: "post",
+            success: function (data) {
+                if (data.IsSuccessful) {
+                    alert("继承成功");
+                    table.reflush(option);
+                    init1();
+                }
+                else alert(data.ErrMsg);
+
+            }
+        })
+    }
+</script>

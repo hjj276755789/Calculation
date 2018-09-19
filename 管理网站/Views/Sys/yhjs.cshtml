@@ -1,27 +1,56 @@
-﻿
+﻿@using Calculation.Models
 @{
     Layout = null;
 }
+<h3>角色列表</h3>
+<div id="jslb" class="row">
+    @{
+        List<JSXX> jslb = this.ViewBag.jslb as List<JSXX>;
+        List<JSXX> yhjslb = this.ViewBag.yhjslb as List<JSXX>;
+        foreach (var item in jslb)
+        {
+            string jsclassname = "btn btn-link ";
+            string jsid = "js" + item.id;
+            foreach (var yhitem in yhjslb)
+            {
+                if (item.id == yhitem.id)
+                {
+                    jsclassname = "btn btn-link btn-primary";
+                }
+            }
+            <a class='@jsclassname' id="@jsid" onclick='chouse(@item.id)'>@item.jsmc</a>
 
-<div id="jslb" class="row"></div>
+
+        }
+    }
+</div>
 
 <script>
-    $.ajax({
-        url: '/sys/GET_JSLB_BY_ID',
-        data: { 'yhid': '@this.ViewBag.yhid' },
-        method: 'post',
-        success: function (data) {
-            if(data!=null&data.length>0)
-            {
-                $("#jslb").empty();
-                for (var i = 0; i < data.length; i++) {
-                    var a = "<a class='btn btn-link' onclick='chouse(" + data[i].id + ")'>" + data[i].jsmc + "</a>";
-                    $("#jslb").append(a);
+    function chouse(a)
+    {
+        var obj = $("#js" + a);
+        if (obj.hasClass("btn-primary")) {
+
+            $.ajax({
+                url: "/sys/Remove_YHJS",
+                type: "post",
+                data: { yhid: @this.ViewBag.yhid, jsid:a },
+                success: function (data) {
+                    obj.removeClass("btn-primary");
                 }
-                
-            }
+            })
         }
-    })
+        else {
+            $.ajax({
+                url: "/sys/ADD_YHJS",
+                type: "post",
+                data: { yhid: @this.ViewBag.yhid, jsid:a },
+                success: function (data) {
+                    obj.addClass("btn-primary");
+                }
+            })
+        }
+    }
 
 </script>
 

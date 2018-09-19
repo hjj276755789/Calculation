@@ -16,6 +16,7 @@ namespace Calculation.JS
         {
             try
             {
+
                 var param = Cache_param_zb._param_jp.Where(m => m.cjid == cjbh);
                 var p = new Presentation();
                 var t = p.Slides;
@@ -68,7 +69,7 @@ namespace Calculation.JS
                         Office_Tables.SetJP_RUIAN_JPBX_Table(page2, dt, 2, null, null);
                         t.AddClone(page2);
                     }
-
+                    Base_Log.Log("竞品统计完成");
                     foreach (var page3 in _plus_jp_dyt_tgtp(item))
                     {
                         t.AddClone(page3);
@@ -80,6 +81,7 @@ namespace Calculation.JS
             catch (Exception e)
             {
                 Base_Log.Log(e.Message);
+                Base_Log.Log(e.StackTrace);
                 return null;
             }
         }
@@ -201,7 +203,7 @@ namespace Calculation.JS
                         var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
                         #endregion
 
-                        dt.Rows.Add(GET_ROW(item.xfytcs[i], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
+                        dt.Rows.Add(GET_ROW(item.hxcs[i], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
                     }
                 }
                 else

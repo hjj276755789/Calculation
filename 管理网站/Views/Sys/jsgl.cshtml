@@ -1,7 +1,139 @@
 ﻿
 @{
-    ViewBag.Title = "jsgl";
+    ViewBag.Title = "角色管理";
 }
+<div class="row" style="width: 90%; margin: 20px;">
+    <input type="text" id="角色名称" class="form-control" /><input type="button" value="收索" onclick="search()" class="btn btn-danger" />
+    <a class="btn btn-primary waves-effect waves-light" href="/sys/add_js" data-toggle="modal" data-target="#tjjs" onclick="cleardata('#tjjs')">添加角色 </a>
 
-<h2>jsgl</h2>
+</div>
 
+<div id="jslb" style="width: 90%; margin: 20px;">
+
+</div>
+
+<DIV tabindex="-1" class="modal fade" id="tjjs" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+<DIV tabindex="-1" class="modal fade" id="jsqx" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+@section scripts{
+    <script>
+    function search()
+    {
+        alert($('#mbmc').val());
+    }
+    function cleardata(a) {
+        $(a).on("hidden.bs.modal", function () {
+            $(this).removeData("bs.modal");
+        });
+
+    }
+
+    function Table_bs($box) {
+
+        var _init_bit = false;
+        var _box = $box;
+
+        this.init = function () {
+
+            _box.addClass('table-responsive');
+
+            var html = '';
+            html += '<table class="table table-bordered " style="text-align: center; ">';
+            html += '<thead style="font-weight: bold;">';
+            // html += '<tr>';
+            // html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
+            // html += '<tr>';
+            // html += '</tr>';
+            html += '</tbody>';
+            html += '</table>';
+
+            _box.append($(html));
+
+            _init_bit = true;
+        }
+        this.load = function (option) {
+
+            if (!_init_bit) {
+                this.init();
+            }
+
+            // 表头
+            var thead = option.colNames;
+
+            var html_thead = '';
+            html_thead += '<tr>';
+            for (var i = 0; i < thead.length; i++) {
+                html_thead += '<td>' + thead[i] + '</td>';
+            }
+            html_thead += '</tr>';
+
+            _box.find('thead').append($(html_thead));
+
+            // 表身
+            var tbody = option.data;
+            var html_tbody = '';
+
+            for (var j1 = 0; j1 < tbody.length; j1++) {
+                var buff = tbody[j1];
+
+                html_tbody += '<tr>';
+                for (var j2 = 0; j2 < buff.length; j2++) {
+                    html_tbody += '<td>' + buff[j2] + '</td>';
+                }
+                html_tbody += '</tr>';
+            }
+            _box.find('tbody').append($(html_tbody));
+        }
+    }
+
+    var option = {
+        colNames: ['角色编号',"角色名称","角色描述","操作"],
+        data: [
+
+        ]
+
+    }
+
+    $(function () {
+        var t = new Table_bs($('#jslb'));
+
+        $.ajax({
+            url: "/sys/GET_JSLB",
+            data: { },
+            type:"post",
+            success: function (data) {
+                var d =[];
+                for (var i = 0; i < data.length; i++) {
+                    d.push([data[i].id, data[i].jsmc, data[i].jsms, '<a class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#jsqx"  href="/sys/jsqxgl?jsid=' + data[i].id + '">角色授权</a>']);
+                }
+                option.data = d;
+                t.load(option);
+            }
+        })
+
+    });
+    </script>
+}

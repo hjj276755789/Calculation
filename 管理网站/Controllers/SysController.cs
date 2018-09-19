@@ -42,6 +42,8 @@ namespace 管理网站.Controllers
         public PartialViewResult yhjs(int yhid)
         {
             this.ViewBag.yhid = yhid;
+            this.ViewBag.jslb = _fw.GET_JSLB();
+            this.ViewBag.yhjslb = _fw.GET_JSLB(yhid);
             return PartialView();
         }
 
@@ -55,31 +57,27 @@ namespace 管理网站.Controllers
         {
             return View();
         }
+
+        public PartialViewResult jsqxgl(int jsid)
+        {
+            this.ViewBag.jsid = jsid;
+            this.ViewBag.qxlb = _fw.GET_GQXLB();
+            this.ViewBag.jsqxlb = _fw.GET_QXLB(jsid);
+            return PartialView();
+        }
         #endregion
 
 
         #region 数据块
+        #region 用户块
         public JsonResult GET_YHLB()
         {
             return Json(_fw.GET_YHLB());
         }
-        public JsonResult GET_JSLB()
-        {
-            return Json(_fw.GET_JSLB());
+        #endregion
 
-        }
-        public JsonResult GET_JSLB_BY_ID(int yhid)
-        {
-            return Json(_fw.GET_JSLB(yhid));
-        }
-        public JsonResult GET_QXLB()
-        {
-            return Json(_fw.GET_QXLB());
-        }
-        public JsonResult GET_QXLB_BY_ID(int jsid)
-        {
-            return Json(_fw.GET_QXLB(jsid));
-        }
+        
+
         [HttpPost]
         public JsonResult ADD_YHXX(string yhm,string yhmm,string cfmm)
         {
@@ -103,6 +101,44 @@ namespace 管理网站.Controllers
                 else
                     return Json(SResult.Error("新增用户失败！"));
         }
+
+
+        #region 角色块
+        public JsonResult GET_JSLB()
+        {
+            return Json(_fw.GET_JSLB());
+        }
+
+        public JsonResult Remove_YHJS(int yhid, int jsid)
+        {
+            if (_fw.DEL_YHJS(yhid, jsid))
+                return Json(SResult.Success);
+            else return Json(SResult.Error("设置失败"));
+        }
+
+        public JsonResult ADD_YHJS(int yhid, int jsid)
+        {
+            if (_fw.ADD_YHJS(yhid, jsid))
+                return Json(SResult.Success);
+            else return Json(SResult.Error("设置失败"));
+        }
+        #endregion
+
+        #region 权限块
+        public JsonResult ADD_JSQX(int jsid, int gqxid)
+        {
+            if(_fw.ADD_JSQX(jsid, gqxid))
+                return Json(SResult.Success);
+            else return Json(SResult.Error("设置失败"));
+        }
+        public JsonResult Remove_JSQX(int jsid,int gqxid)
+        {
+            if (_fw.DEL_JSQX(jsid, gqxid))
+                return Json(SResult.Success);
+            else return Json(SResult.Error("设置失败"));
+        }
+        
+        #endregion
         #endregion
 
     }

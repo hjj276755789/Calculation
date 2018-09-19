@@ -11,11 +11,27 @@
     <a class="btn btn-primary waves-effect waves-light" onclick="javascript:history.back(-1);">返回</a>
     <input type="text" id="bamc" class="form-control" placeholder="添加竞品本案项目" /><input type="button" value="添加竞品本案项目" onclick="add()" class="btn btn-danger" />
     <input type="button" value="确认参数设置通过" onclick="sub()" class="btn btn-danger" />
-    <input type="button" value="继承上周设置" onclick="inherit()" class="btn btn-primary" />
+    <a class="btn btn-primary waves-effect waves-light" href="/jp_zb/Jcjzcs?mbid=@this.ViewBag.mbid&rwid=@p.rwid" data-toggle="modal" data-target="#jczbsz" >继承设置 </a> 
 </div>
 <div class="table row" id="baxm">
 
 </div>
+
+
+
+
+<DIV tabindex="-1" class="modal fade" id="jczbsz" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
 
 
 @section scripts{
@@ -84,23 +100,7 @@
 
         }
 
-        function inherit()
-        {
-            $.ajax({
-                url: "/jp_zb/jcszsz",
-                data: {'mbid':mbid,zc:zc,nf:nf,'rwid':rwid},
-                type: "post",
-                success: function (data) {
-                    if (data.IsSuccessful) {
-                        alert("继承成功");
-                        table.reflush(option);
-                        init1();
-                    }
-                    else alert(data.ErrMsg);
-
-                }
-            })
-        }
+        
         
 
 
@@ -110,7 +110,6 @@
                 $(a).on("hidden.bs.modal", function () {
                     $(this).removeData("bs.modal");
                 });
-
             }
             function Table_bs($box) {
 

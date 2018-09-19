@@ -16,6 +16,7 @@ namespace Calculation.JS
         {
             try
             {
+
                 var param = Cache_param_zb._param_jp.Where(m => m.cjid == cjbh);
                 var p = new Presentation();
                 var t = p.Slides;
@@ -45,10 +46,10 @@ namespace Calculation.JS
                         dt.Columns.Add(Base_Config_Rgsj.本周_新开套内均价);
                         dt.Columns.Add(Base_Config_Rgsj.本周到访量);
                         dt.Columns.Add(Base_Config_Rgsj.上周_认购套数);
-                        dt.Columns.Add(Base_Config_Rgsj.上周_认购套内均价);
+                        dt.Columns.Add(Base_Config_Rgsj.上周_认购建面均价);
                         dt.Columns.Add(Base_Config_Rgsj.本周_认购套数);
-                        dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价);
-                        dt.Columns.Add(Base_Config_Rgsj.营销动作);
+                        dt.Columns.Add(Base_Config_Rgsj.本周_认购建面均价);
+                        dt.Columns.Add(Base_Config_Rgsj.活动);
                     }
                     else
                     {
@@ -61,7 +62,7 @@ namespace Calculation.JS
                         dt.Columns.Add(Base_Config_Cjba.上周_建面均价);
                         dt.Columns.Add(Base_Config_Cjba.本周_备案套数);
                         dt.Columns.Add(Base_Config_Cjba.本周_建面均价);
-                        dt.Columns.Add(Base_Config_Rgsj.营销动作);
+                        dt.Columns.Add(Base_Config_Rgsj.活动);
                     }
                     IAutoShape text2 = (IAutoShape)page2.Shapes[2];
                     text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.bamc);
@@ -124,17 +125,15 @@ namespace Calculation.JS
 
                         #region 数据准备
                         //竞品业态
-                        var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                        var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString().Contains(item.ytcs[0]));
                         var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
 
-                        var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                        var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString().Contains(item.ytcs[0]));
                         var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
-                        //本周本案认购数据
-                        var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
-                        var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
+                       
                         #endregion
 
-                        dt.Rows.Add(GET_ROW(item.ytcs[0], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
+                        dt.Rows.Add(GET_ROW(item.ytcs[0], dr1, dt, temp_rgsj_bz, temp_rgsj_sz, temp_cjba_bz, temp_cjba_sz, item));
                     }
                 }
                 else if (item.ytcs[0] == "商务")

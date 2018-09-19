@@ -49,8 +49,15 @@ namespace Calculation.Base
         public const string 本周_认购建面均价 = "bz_rgjmjj";
         public const string 本周_认购套内体量 = "bz_rgtntl";
         public const string 本周_认购建面体量 = "bz_rgjmtl";
-        public const string 本周_认购金额     = "bz_rxgje";
-       
+        public const string 本周_认购金额     = "bz_rgje";
+
+        public const string 本周_认购套数环比 = "bz_rgtshb";
+        public const string 本周_认购金额环比 = "bz_rgjehb";
+        public const string 本周_认购建筑面积环比 = "bz_rgjzmjhb";
+        public const string 本周_认购套内面积环比 = "bz_rgtnmjhb";
+        public const string 本周_认购建面均价环比 = "bz_rgjmjjhb";
+        public const string 本周_认购套内均价环比 = "bz_rgtnjjhb";
+        public const string 本周_认购套均总价环比 = "bz_rgtjzjhb";
 
         public const string 上周_新开套数     = "sz_xkts";
         public const string 上周_新开销售套数 = "sz_xkxsts";
@@ -95,6 +102,14 @@ namespace Calculation.Base
         public const string 本周_套内均价 = "bz_tnjj";
         public const string 本周_套均总价 = "bz_tjzj";
 
+        public const string 本周_备案套数环比 = "bz_cjtshb";
+        public const string 本周_成交金额环比 = "bz_cjjehb";
+        public const string 本周_建筑面积环比 = "bz_jzmjhb";
+        public const string 本周_套内面积环比 = "bz_tnmjhb";
+        public const string 本周_建面均价环比 = "bz_jmjjhb";
+        public const string 本周_套内均价环比 = "bz_tnjjhb";
+        public const string 本周_套均总价环比 = "bz_tjzjhb";
+
         public const string 上周_备案套数 = "sz_ts";
         public const string 上周_成交金额 = "sz_cjje";
         public const string 上周_建筑面积 = "sz_jzmj";
@@ -104,7 +119,8 @@ namespace Calculation.Base
         public const string 上周_套均总价 = "sz_tjzj";
 
         public static string[] _备案数据 = { "bz_ts","bz_cjje","bz_jzmj","bz_tnmj","bz_jmjj","bz_tnjj", "bz_tjzj",
-                                             "sz_ts","sz_cjje","sz_jzmj","sz_tnmj","sz_jmjj","sz_tnjj","sz_tjzj"
+                                             "sz_ts","sz_cjje","sz_jzmj","sz_tnmj","sz_jmjj","sz_tnjj","sz_tjzj",
+                                             "bz_cjtshb","bz_cjjehb","bz_jzmjhb","bz_tnmjhb","bz_jmjjhb","bz_tnjjhb","bz_tjzjhb"
         };
     }
 
@@ -119,3 +135,4 @@ namespace Calculation.Base
     }
 
 }
+

@@ -475,7 +475,9 @@
     <Content Include="Scripts\_references.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -538,6 +540,9 @@
     <Content Include="Views\jp_zb\Jpxm.cshtml" />
     <Content Include="Views\zb\add_mbdg.cshtml" />
     <Content Include="Views\zb\upload_jpxmtgtp.cshtml" />
+    <Content Include="Views\jp_zb\Jcjzcs.cshtml" />
+    <Content Include="Views\Sys\qxgl.cshtml" />
+    <Content Include="Views\Sys\jsqxgl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -578,7 +583,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>30351</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

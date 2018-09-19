@@ -10,6 +10,7 @@ namespace 管理网站.Controllers
 {
     public class HomeController : BaseController
     {
+        private FW_QXGL_DataProvider _fw = new FW_QXGL_DataProvider();
         /// <summary>
         /// 首页
         /// </summary>
@@ -18,6 +19,7 @@ namespace 管理网站.Controllers
         {
             if (this.CurrentUser!=null&&this.CurrentUser.IsAuthenticated)
             {
+                this.ViewBag.qxxx = _fw.GET_YHQX(this.CurrentUser.YHID);
                 return View();
             }
             else

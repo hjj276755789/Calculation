@@ -29,8 +29,8 @@ namespace Calculation.JS
 
 
                     var page = temp[0];
-                    IAutoShape text = (IAutoShape)page.Shapes[2];
-                    text.TextFrame.Text = string.Format(text.TextFrame.Text, item.bamc);
+                    IAutoShape text1 = (IAutoShape)page.Shapes[0];
+                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc);
                     System.Data.DataTable dt = new System.Data.DataTable();
                     dt.Columns.Add(Base_Config_Jzgj.项目名称);
                     dt.Columns.Add(Base_Config_Jzgj.业态);

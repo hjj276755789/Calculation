@@ -34,24 +34,26 @@ namespace Calculation.JS
                     IAutoShape text1 = (IAutoShape)page.Shapes[0];
                     text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc);
                     System.Data.DataTable dt = new System.Data.DataTable();
-                    dt.Columns.Add("bkmc");
-                    dt.Columns.Add("lpmc");
-                    dt.Columns.Add("yt");
-                    dt.Columns.Add("zlmjqj"); // 主力套内面积区间
+                    dt.Columns.Add(Base_Config_Jzgj.组团);
+                    dt.Columns.Add(Base_Config_Jzgj.项目名称);
+                    dt.Columns.Add(Base_Config_Jzgj.业态);
+                    dt.Columns.Add(Base_Config_Jzgj.竞争格局_主力面积区间); // 主力套内面积区间
 
-                    dt.Columns.Add("bzcjts");  //
-                    dt.Columns.Add("bzcjtnjj");
+                    dt.Columns.Add(Base_Config_Cjba.本周_备案套数);  //
+                    dt.Columns.Add(Base_Config_Cjba.本周_套内均价);
 
-                    dt.Columns.Add("xkts"); //新开套数
-                    dt.Columns.Add("rgts"); //认购套数
-                    dt.Columns.Add("rgtnjj"); //认购套内均价
 
-                    dt.Columns.Add("hd");   //本周表现及近期动作
+
+                    dt.Columns.Add(Base_Config_Rgsj.本周_新开套数); //新开套数
+                    dt.Columns.Add(Base_Config_Rgsj.本周_认购套数); //认购套数
+                    dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价); //认购套内均价
+
+                    dt.Columns.Add(Base_Config_Rgsj.活动);   //本周表现及近期动作
 
 
                     if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                     {
-                        dt = GET_JPXM_ROW(dt, item.jpxmlb);
+                        dt = GET_JPXM_BX(dt, item.jpxmlb);
                     }
 
                     Office_Tables.SetJP_JUNFENG_Table(page, dt, 1, null, null);
@@ -68,7 +70,86 @@ namespace Calculation.JS
             }
         }
 
+        public System.Data.DataTable GET_JPXM_BX(System.Data.DataTable dt, List<JP_JPXM_INFO> jpxm)
+        {
+            foreach (var item in jpxm)
+            {
+                try
+                {
+                if (item.ytcs[0] == "别墅")
+                {
+                    for (int i = 0; i < item.xfytcs.Length; i++)
+                    {
 
+                        DataRow dr1 = dt.NewRow();
+
+                        #region 数据准备
+                        //竞品业态
+                        var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                        var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+
+                        var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                        var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+                        //本周本案认购数据
+                        var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                        var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
+                        #endregion
+
+                        dt.Rows.Add(GET_ROW(item.xfytcs[i], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
+
+                    }
+                }
+                else if (item.ytcs[0] == "商务")
+                {
+                    for (int i = 0; i < item.hxcs.Length; i++)
+                    {
+                        DataRow dr1 = dt.NewRow();
+
+                        #region 数据准备
+                        //竞品业态
+                        var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.hxcs[i]);
+                        var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["hx"].ToString() == item.hxcs[i]);
+
+                        var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.hxcs[i]);
+                        var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["hx"].ToString() == item.hxcs[i]);
+                        //本周本案认购数据
+                        var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                        var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
+                        #endregion
+
+                        dt.Rows.Add(GET_ROW(item.xfytcs[i], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
+                    }
+                }
+                else
+                {
+                    DataRow dr1 = dt.NewRow();
+
+                    #region 数据准备
+                    //竞品业态
+                    var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                    var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+
+                    var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                    var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                    //本周本案认购数据
+                    var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                    var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
+                    #endregion
+
+                    dt.Rows.Add(GET_ROW(item.ytcs[0], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
+                }
+                }
+                catch (Exception e)
+                {
+
+                    throw e;
+                }
+
+            }
+
+
+            return dt;
+        }
 
         public DataTable GET_JPXM_ROW(DataTable dt, List<JP_JPXM_INFO> jpxm)
         {
