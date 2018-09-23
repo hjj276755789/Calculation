@@ -864,7 +864,7 @@ namespace Calculation.JS
                                     }
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
                             case Base_Config_Rgsj.本周_新开套数:
@@ -884,7 +884,7 @@ namespace Calculation.JS
                                     }
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
                             case Base_Config_Rgsj.本周_认购套数环比: { dr1[dt.Columns[j].ColumnName] = temp_ba_sz["rgts"] != null && temp_ba_sz["rgts"].ints() != 0 ? ((temp_ba_bz["rgts"].ints() - temp_ba_sz["rgts"].ints()) / temp_ba_sz["rgts"].ints()).doubls().ss_bfb() : "0%"; }; break;
@@ -901,7 +901,7 @@ namespace Calculation.JS
                                         dr1[dt.Columns[j].ColumnName] = temp_ba_bz[dt.Columns[j].ColumnName];
                                     }
                                     else
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                 }; break;
 
                         }
@@ -921,7 +921,7 @@ namespace Calculation.JS
                                         dr1[dt.Columns[j].ColumnName] = (temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
                             case Base_Config_Cjba.本周_套内均价:
@@ -930,7 +930,7 @@ namespace Calculation.JS
                                         dr1[dt.Columns[j].ColumnName] = (temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].doubls())).je_y();
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
                             case Base_Config_Cjba.上周_备案套数: { dr1[dt.Columns[j].ColumnName] = temp_cjba_sz != null ? temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_备案套数._ConfigCjbaMc()].ints()) : 0; }; break;
@@ -943,7 +943,7 @@ namespace Calculation.JS
                                         dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
                             case Base_Config_Cjba.上周_套内均价:
@@ -952,7 +952,7 @@ namespace Calculation.JS
                                         dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].doubls())).je_y();
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
 
@@ -1087,7 +1087,7 @@ namespace Calculation.JS
                                     }
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
                             case Base_Config_Rgsj.本周_新开套数:
@@ -1107,7 +1107,7 @@ namespace Calculation.JS
                                     }
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
                             case Base_Config_Rgsj.本周到访量:
@@ -1118,7 +1118,7 @@ namespace Calculation.JS
                                     }
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 };break;
 
@@ -1167,7 +1167,7 @@ namespace Calculation.JS
                                         dr1[dt.Columns[j].ColumnName] = obj[dt.Columns[j].ColumnName._ConfigRgsjMc()];
                                     }
                                     else
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                 }; break;
 
                         }
@@ -1187,7 +1187,7 @@ namespace Calculation.JS
                                         dr1[dt.Columns[j].ColumnName] = (temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
                             case Base_Config_Cjba.本周_套内均价:
@@ -1196,7 +1196,7 @@ namespace Calculation.JS
                                         dr1[dt.Columns[j].ColumnName] = (temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].doubls())).je_y();
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
                             case Base_Config_Cjba.上周_备案套数: { dr1[dt.Columns[j].ColumnName] = temp_cjba_sz != null ? temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_备案套数._ConfigCjbaMc()].ints()) : 0; }; break;
@@ -1209,7 +1209,7 @@ namespace Calculation.JS
                                         dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
                             case Base_Config_Cjba.上周_套内均价:
@@ -1218,7 +1218,7 @@ namespace Calculation.JS
                                         dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].doubls())).je_y();
                                     else
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = "";
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
 
@@ -1275,7 +1275,7 @@ namespace Calculation.JS
 
 
 
-                            default: { dr1[dt.Columns[j].ColumnName] = ""; }; break;
+                            default: { dr1[dt.Columns[j].ColumnName] = "0"; }; break;
                         }
 
 
@@ -1377,7 +1377,7 @@ namespace Calculation.JS
                                 }
                                 else
                                 {
-                                    dr1[dt.Columns[j].ColumnName] = "";
+                                    dr1[dt.Columns[j].ColumnName] = "0";
                                 }
                             }; break;
 
@@ -1399,7 +1399,7 @@ namespace Calculation.JS
                                 }
                                 else
                                 {
-                                    dr1[dt.Columns[j].ColumnName] = "";
+                                    dr1[dt.Columns[j].ColumnName] = "0";
                                 }
                             }; break;
                         default:
@@ -1409,7 +1409,7 @@ namespace Calculation.JS
                                     dr1[dt.Columns[j].ColumnName] = temp_ba_bz[dt.Columns[j].ColumnName];
                                 }
                                 else
-                                    dr1[dt.Columns[j].ColumnName] = "";
+                                    dr1[dt.Columns[j].ColumnName] = "0";
                             }; break;
 
                     }
@@ -1429,7 +1429,7 @@ namespace Calculation.JS
                                     dr1[dt.Columns[j].ColumnName] = (temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].doubls())).je_y();
                                 else
                                 {
-                                    dr1[dt.Columns[j].ColumnName] = "";
+                                    dr1[dt.Columns[j].ColumnName] = "0";
                                 }
                             }; break;
                         case Base_Config_Cjba.本周_套内均价:
@@ -1438,7 +1438,7 @@ namespace Calculation.JS
                                     dr1[dt.Columns[j].ColumnName] = (temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_bz.Sum(m => m[Base_Config_Cjba.本周_套内面积._ConfigCjbaMc()].doubls())).je_y();
                                 else
                                 {
-                                    dr1[dt.Columns[j].ColumnName] = "";
+                                    dr1[dt.Columns[j].ColumnName] = "0";
                                 }
                             }; break;
                         case Base_Config_Cjba.上周_备案套数: { dr1[dt.Columns[j].ColumnName] = temp_cjba_sz != null ? temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_备案套数._ConfigCjbaMc()].ints()) : 0; }; break;
@@ -1451,7 +1451,7 @@ namespace Calculation.JS
                                     dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
                                 else
                                 {
-                                    dr1[dt.Columns[j].ColumnName] = "";
+                                    dr1[dt.Columns[j].ColumnName] = "0";
                                 }
                             }; break;
                         case Base_Config_Cjba.上周_套内均价:
@@ -1460,10 +1460,10 @@ namespace Calculation.JS
                                     dr1[dt.Columns[j].ColumnName] = (temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_成交金额._ConfigCjbaMc()].longs()) / temp_cjba_sz.Sum(m => m[Base_Config_Cjba.上周_套内面积._ConfigCjbaMc()].doubls())).je_y();
                                 else
                                 {
-                                    dr1[dt.Columns[j].ColumnName] = "";
+                                    dr1[dt.Columns[j].ColumnName] = "0";
                                 }
                             }; break;
-                        default: { dr1[dt.Columns[j].ColumnName] = ""; }; break;
+                        default: { dr1[dt.Columns[j].ColumnName] = "0"; }; break;
                     }
 
 

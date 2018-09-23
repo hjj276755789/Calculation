@@ -17,6 +17,7 @@ namespace Calculation.JS
         {
             try
             {
+                
                 var param = Cache_param_zb._param_jp.Where(m => m.cjid == cjbh);
                 var p = new Presentation();
                 var t = p.Slides;
@@ -73,6 +74,8 @@ namespace Calculation.JS
                         IAutoShape text2 = (IAutoShape)page2.Shapes[2];
                         text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.bamc, item.ytcs != null ? item.ytcs[0] : "");
 
+
+                        dt = GET_JPBA_BX(dt, item);
                         if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                         {
                             dt = GET_JPXM_BX(dt, item.jpxmlb);
@@ -107,6 +110,8 @@ namespace Calculation.JS
                         IAutoShape text2 = (IAutoShape)page2.Shapes[2];
                         text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.bamc, "商铺");
 
+                        dt = GET_JPBA_BX(dt, item);
+
                         if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                         {
                             dt = GET_JPXM_BX(dt, item.jpxmlb);
@@ -129,6 +134,100 @@ namespace Calculation.JS
                 return null;
             }
         }
+
+
+
+        public System.Data.DataTable GET_JPBA_BX(System.Data.DataTable dt, JP_BA_INFO item)
+        {
+            if (item.ytcs[0] == "别墅")
+            {
+                if (item.xfytcs != null&&item.xfytcs.Length>0) { 
+                    for (int i = 0; i < item.xfytcs.Length; i++)
+                    {
+
+                        DataRow dr1 = dt.NewRow();
+
+                        #region 数据准备
+                        //竞品业态
+                        var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                        var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+
+                        var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                        var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+                        //本周本案认购数据
+                        var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                        var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
+                        #endregion
+
+                        dt.Rows.Add(GET_ROW_BA(item.xfytcs[i], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
+
+                    }
+                }
+                else
+                {
+                    DataRow dr1 = dt.NewRow();
+
+                    #region 数据准备
+                    //竞品业态
+                    var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                    var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+
+                    var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                    var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                    //本周本案认购数据
+                    var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                    var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
+                    #endregion
+
+                    dt.Rows.Add(GET_ROW_BA(item.ytcs[0], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
+                }
+            }
+            else if (item.ytcs[0] == "商务")
+            {
+                for (int i = 0; i < item.hxcs.Length; i++)
+                {
+                    DataRow dr1 = dt.NewRow();
+
+                    #region 数据准备
+                    //竞品业态
+                    var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.hxcs[i]);
+                    var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["hx"].ToString() == item.hxcs[i]);
+
+                    var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.hxcs[i]);
+                    var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["hx"].ToString() == item.hxcs[i]);
+                    //本周本案认购数据
+                    var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                    var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
+                    #endregion
+
+                    dt.Rows.Add(GET_ROW_BA(item.xfytcs[i], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
+                }
+            }
+            else if (item.ytcs[0] == "商业")
+            {
+
+            }
+            else
+            {
+                DataRow dr1 = dt.NewRow();
+
+                #region 数据准备
+                //竞品业态
+                var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+
+                var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.ytcs[0]);
+                //本周本案认购数据
+                var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
+                #endregion
+
+                dt.Rows.Add(GET_ROW_BA(item.ytcs[0], dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
+            }
+            return dt;
+        }
+
 
         public System.Data.DataTable GET_JPXM_BX(System.Data.DataTable dt, List<JP_JPXM_INFO> jpxm)
         {

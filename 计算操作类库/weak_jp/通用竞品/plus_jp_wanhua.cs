@@ -16,7 +16,7 @@ namespace Calculation.JS
         {
             try
             {
-                str = "E:\\工作\\项目\\铭腾房地产\\plus\\jp\\万华\\万华竞品.pptx";
+                
                 var param = Cache_param_zb._param_jp.Where(m => m.cjid == cjbh);
                 var p = new Presentation();
                 var t = p.Slides;
