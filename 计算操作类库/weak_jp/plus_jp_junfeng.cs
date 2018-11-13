@@ -48,7 +48,7 @@ namespace Calculation.JS
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套数); //认购套数
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价); //认购套内均价
 
-                    dt.Columns.Add(Base_Config_Rgsj.活动);   //本周表现及近期动作
+                    dt.Columns.Add(Base_Config_Rgsj.本周_活动);   //本周表现及近期动作
 
 
                     if (item.jpxmlb != null && item.jpxmlb.Count > 0)

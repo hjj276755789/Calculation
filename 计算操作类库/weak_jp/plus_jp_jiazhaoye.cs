@@ -65,8 +65,8 @@ namespace Calculation.JS
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套数环比); 
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价环比);
 
-                    dt.Columns.Add(Base_Config_Rgsj.变化原因);   
-                    dt.Columns.Add(Base_Config_Rgsj.营销动作); 
+                    dt.Columns.Add(Base_Config_Rgsj.本周_变化原因);   
+                    dt.Columns.Add(Base_Config_Rgsj.本周_营销动作); 
 
                     if (item.jpxmlb!=null&&item.jpxmlb.Count>0)
                     {

@@ -53,11 +53,11 @@ namespace Calculation.JS
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套数);
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价);
 
-                    dt.Columns.Add(Base_Config_Rgsj.变化原因);
-                    dt.Columns.Add(Base_Config_Rgsj.优惠);
-                    dt.Columns.Add(Base_Config_Rgsj.本周来电);
-                    dt.Columns.Add(Base_Config_Rgsj.本周到访量);
-                    dt.Columns.Add(Base_Config_Rgsj.活动);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_变化原因);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_优惠);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_本周来电);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_本周到访量);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_活动);
                     #endregion
                     if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                     {

@@ -448,5 +448,156 @@ namespace Calculation.Base
             }
             table.Rows.RemoveAt(3, false);
         }
+        /// <summary>
+        /// 旭辉城--持续销售项目
+        /// </summary>
+        /// <param name="sld"></param>
+        /// <param name="dt"></param>
+        /// <param name="index"></param>
+        /// <param name="style"></param>
+        /// <param name="xsts"></param>
+        public static void SetJP_XUHUICHENG_CHIXUXIAOSHOUXIANGMU_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[1][3].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 3);
+            table.Rows[1][5].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz-2);
+            table.Rows[1][7].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 1);
+            table.Rows[1][9].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[3];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(3, false);
+        }
+        /// <summary>
+        /// 旭辉-- 重点企业销售额
+        /// </summary>
+        /// <param name="sld"></param>
+        /// <param name="dt"></param>
+        /// <param name="index"></param>
+        /// <param name="style"></param>
+        /// <param name="xsts"></param>
+        public static void SetJP_XUHUICHENG_XIAOSHOUE_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[1][2].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 3);
+            table.Rows[1][3].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 2);
+            table.Rows[1][4].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 1);
+            table.Rows[1][5].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[2];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(2, false);
+        }
+
+        public static void SetJP_LVDI_PUTONG_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[1][2].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz-1);
+            table.Rows[1][4].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[3];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(3, false);
+        }
+        public static void SetJP_LVDI_SHANGWU_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[0][2].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz-3);
+            table.Rows[0][6].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz-2);
+            table.Rows[0][10].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz-1);
+            table.Rows[0][14].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[3];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(3, false);
+        }
+
+        public static void SetJP_BEIDAZIYUAN_PT_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+
+            ITable table = (ITable)sld.Shapes[index];
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[2];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(2, false);
+        }
+
+        public static void SetJP_JINGDIDICHAN_PT_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[1][2].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 3);
+            table.Rows[1][6].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 2);
+            table.Rows[1][8].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 1);
+            table.Rows[1][10].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            table.Rows[1][12].TextFrame.Text = string.Format("{0}月备案（{1}）",Base_date.sy_First.Month, Base_date.GET_NFYFMC(Base_date.bn,Base_date.sy_First.Month));
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[3];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(3, false);
+        }
+
+
+        public static void SetJP_BEIMENGZHIDI_JINGZHENGXIANGMU_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[0][3].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[3];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(3, false);
+        }
     }
+
 }

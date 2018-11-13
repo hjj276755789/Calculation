@@ -44,12 +44,12 @@ namespace Calculation.JS
                         dt.Columns.Add(Base_Config_Rgsj.本周_新开套数);
                         dt.Columns.Add(Base_Config_Rgsj.本周_新开销售套数);
                         dt.Columns.Add(Base_Config_Rgsj.本周_新开套内均价);
-                        dt.Columns.Add(Base_Config_Rgsj.本周到访量);
+                        dt.Columns.Add(Base_Config_Rgsj.本周_本周到访量);
                         dt.Columns.Add(Base_Config_Rgsj.上周_认购套数);
                         dt.Columns.Add(Base_Config_Rgsj.上周_认购建面均价);
                         dt.Columns.Add(Base_Config_Rgsj.本周_认购套数);
                         dt.Columns.Add(Base_Config_Rgsj.本周_认购建面均价);
-                        dt.Columns.Add(Base_Config_Rgsj.活动);
+                        dt.Columns.Add(Base_Config_Rgsj.本周_活动);
                     }
                     else
                     {
@@ -62,7 +62,7 @@ namespace Calculation.JS
                         dt.Columns.Add(Base_Config_Cjba.上周_建面均价);
                         dt.Columns.Add(Base_Config_Cjba.本周_备案套数);
                         dt.Columns.Add(Base_Config_Cjba.本周_建面均价);
-                        dt.Columns.Add(Base_Config_Rgsj.活动);
+                        dt.Columns.Add(Base_Config_Rgsj.本周_活动);
                     }
                     IAutoShape text2 = (IAutoShape)page2.Shapes[2];
                     text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.bamc);

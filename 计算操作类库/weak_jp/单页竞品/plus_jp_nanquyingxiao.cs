@@ -57,7 +57,7 @@ namespace Calculation.JS
                         dt.Columns.Add(Base_Config_Rgsj.本周_认购建面均价);
                         dt.Columns.Add(Base_Config_Rgsj.本周_认购建面均价环比);
 
-                        dt.Columns.Add(Base_Config_Rgsj.变化原因);
+                        dt.Columns.Add(Base_Config_Rgsj.本周_变化原因);
 
                         IAutoShape text2 = (IAutoShape)page2.Shapes[2];
                         text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.bamc);
@@ -82,7 +82,7 @@ namespace Calculation.JS
                         dt.Columns.Add(Base_Config_Cjba.本周_建面均价);
                         dt.Columns.Add(Base_Config_Cjba.本周_建面均价环比);
 
-                        dt.Columns.Add(Base_Config_Rgsj.变化原因);
+                        dt.Columns.Add(Base_Config_Rgsj.本周_变化原因);
 
                         IAutoShape text2 = (IAutoShape)page2.Shapes[2];
                         text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.bamc);

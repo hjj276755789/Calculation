@@ -62,6 +62,12 @@
     <Compile Include="weak_jp\plus_jp_base.cs" />
     <Compile Include="weak_jp\单页竞品\plus_jp_nanquyingxiao.cs" />
     <Compile Include="weak_jp\单页竞品\plus_jp_xiangyu.cs" />
+    <Compile Include="weak_jp\独立模板\plus_jp_jingdidichan.cs" />
+    <Compile Include="weak_jp\竞品模板1\plus_jp_base_jpmb1.cs" />
+    <Compile Include="weak_jp\竞品模板1\plus_jp_hejingfutai.cs" />
+    <Compile Include="weak_jp\竞品模板1\plus_jp_xuhuicheng.cs" />
+    <Compile Include="weak_jp\竞品模板3\plus_jp_beimengzhidi.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_beidaziyuan.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_beijingchengjian.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_biguiyuan.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_dongyuandichan.cs" />
@@ -79,6 +85,7 @@
     <Compile Include="weak_jp\通用竞品\plus_jp_jiangbeizuizhiye.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_lifanfeichuifu.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_luneng.cs" />
+    <Compile Include="weak_jp\通用竞品\plus_jp_lvdi.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_shouchuang.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_wanhua.cs" />
     <Compile Include="weak_jp\通用竞品\plus_jp_xianggangzhidi.cs" />

@@ -102,9 +102,9 @@ namespace 管理网站.Controllers
         ///获取周报模板类型
         [HttpPost]
        
-        public JsonResult get_zbmblx(int pagesize, int pagenow)
+        public JsonResult get_zbmblx(int pagesize, int pagenow,string mbmc)
         {
-            return Json(rwgl.GET_ZB_LB(pagesize, pagenow));
+            return Json(rwgl.GET_ZB_LB(pagesize, pagenow,mbmc));
         }
         /// <summary>
         /// 获取后保任务列表
@@ -408,17 +408,20 @@ namespace 管理网站.Controllers
         /// <param name="pagesize"></param>
         /// <param name="pagenow"></param>
         /// <returns></returns>
-        public JsonResult cxjg(int nf, int zc, string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx, int? pagesize, int? pagenow)
+        public JsonResult cxjg(int nf, int zc, string[] zt, string[] qy, string[] kfs, string[] lpmc, string[] yt, string[] xfyt, string[] hx, int? pagesize, int? pagenow)
         {
             IPageList<Data_Cjba_Default> list = null;
-            if (zt != null || qy != null || lpmc != null || yt != null || xfyt != null || hx != null) {
+            if (zt != null || qy != null ||kfs!=null|| lpmc != null || yt != null || xfyt != null || hx != null) {
                 JP_ParamValueModel param = new JP_ParamValueModel();
                 param.zt = zt;
                 param.qy = qy;
+                param.kfs = kfs;
                 param.lpmc = lpmc;
                 param.yt = yt;
                 param.xfyt = xfyt;
                 param.hx = hx;
+
+                
                 list = Param_DataProvider.GET_JP_CJBAXX(nf, zc, param, pagesize.HasValue ? pagesize.Value : 10, pagenow.HasValue ? pagenow.Value : 1);
             }
             else
@@ -457,18 +460,20 @@ namespace 管理网站.Controllers
                 return Json(SResult.Success);
             else return Json(SResult.Error("删除失败"));
         }
-        public JsonResult save_baxmcs(string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx, string zlmjqj,int id)
+        public JsonResult save_baxmcs(string[] zt, string[] qy, string[] kfs,string[] lpmc, string[] yt, string[] xfyt, string[] hx, string[] zlmjqj,string qtcs,int id)
         {
-            if (zt != null || qy != null || lpmc != null || yt != null || xfyt != null || hx != null)
+            if (zt != null || qy != null ||kfs!=null|| lpmc != null || yt != null || xfyt != null || hx != null|| zlmjqj!=null||qtcs!=null)
             {
                 JP_ParamValueModel param = new JP_ParamValueModel();
                 param.zt = zt;
                 param.qy = qy;
+                param.kfs = kfs;
                 param.lpmc = lpmc;
                 param.yt = yt;
                 param.xfyt = xfyt;
                 param.hx = hx;
                 param.zlmjqj = zlmjqj;
+                param.qtcs = qtcs;
                 if (Param_DataProvider.SAVE_JP_BAXMCS(id, param))
                     return Json(SResult.Success);
                 else return Json(SResult.Error("保存失败"));
@@ -506,14 +511,15 @@ namespace 管理网站.Controllers
             return Json(SResult.Success);
             else return Json(SResult.Error("删除失败"));
         }
-        public JsonResult save_jpxmcs(string[] zt, string[] qy, string[] lpmc, string[] yt, string[] xfyt, string[] hx,string zlmjqj, int id)
+        public JsonResult save_jpxmcs(string[] zt, string[] qy, string [] kfs,string[] lpmc, string[] yt, string[] xfyt, string[] hx,string [] zlmjqj, int id)
         {
-            if (zt != null || qy != null || lpmc != null || yt != null || xfyt != null || hx != null)
+            if (zt != null || qy != null || kfs != null || lpmc != null || yt != null || xfyt != null || hx != null|| zlmjqj!=null)
             {
                 JP_ParamValueModel param = new JP_ParamValueModel();
                 param.zt = zt;
                 param.qy = qy;
                 param.lpmc = lpmc;
+                param.kfs = kfs;
                 param.yt = yt;
                 param.xfyt = xfyt;
                 param.hx = hx;
@@ -546,10 +552,52 @@ namespace 管理网站.Controllers
 
         }
 
-        
+
+        #region 参数
+
+       
+        public JsonResult GET_ZTLB(string ztmc)
+        {
+            var list = Param_DataProvider.GET_ZTMC(ztmc);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GET_QYLB(string qymc)
+        {
+            var list = Param_DataProvider.GET_QYMC(qymc);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GET_KFSLB(string kfs)
+        {
+            var list = Param_DataProvider.GET_KFS(kfs);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GET_LPLB(string lpmc)
+        {
+            var list = Param_DataProvider.GET_LPMC(lpmc);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GET_YTLB(string ytmc)
+        {
+            var list = Param_DataProvider.GET_YTMC(ytmc);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GET_XFYTLB(string xfyt)
+        {
+            var list = Param_DataProvider.GET_XFYTMC(xfyt);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GET_HXLB(string hxmc)
+        {
+            var list = Param_DataProvider.GET_HXMC(hxmc);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+    
         #endregion
 
-                                                                             
+
 
     }       
 }

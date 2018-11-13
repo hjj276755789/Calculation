@@ -49,8 +49,8 @@ namespace Calculation.JS
                         dt.Columns.Add(Base_Config_Cjba.本周_备案套数);
                         dt.Columns.Add(Base_Config_Cjba.本周_建面均价);
                                                    
-                        dt.Columns.Add(Base_Config_Rgsj.变化原因);
-                        dt.Columns.Add(Base_Config_Rgsj.营销动作);
+                        dt.Columns.Add(Base_Config_Rgsj.本周_变化原因);
+                        dt.Columns.Add(Base_Config_Rgsj.本周_营销动作);
                     }
                     else { 
                    
@@ -74,8 +74,8 @@ namespace Calculation.JS
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套数);
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购建面均价);
 
-                    dt.Columns.Add(Base_Config_Rgsj.变化原因);
-                    dt.Columns.Add(Base_Config_Rgsj.营销动作);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_变化原因);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_营销动作);
                     }
                     #endregion
                     IAutoShape text2 = (IAutoShape)page.Shapes[2];

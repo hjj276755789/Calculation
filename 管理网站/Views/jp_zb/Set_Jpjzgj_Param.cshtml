@@ -32,9 +32,35 @@
 </style>
 
 <div>
+    
     <div class="row param">
         <div class="col-lg-3">
-            <input type="text" id="ztmc" class="form-control col-sm-9" placeholder="组团名称" /><input type="button" value="搜索" onclick="add('ztmc')" class="btn btn-danger" />
+            <input type="text" id="qymc" class="form-control col-sm-9" placeholder="区域名称" onblur="default2('qymccslb')" /><input type="button" value="搜索" onclick="add('qymc')" class="btn btn-danger" />
+            <select tabindex="-1" class="select2 form-control select2-offscreen " id="qymccslb" style="display:none;" onblur="default1('qymccslb')">
+                <option value="#">&nbsp;</option>
+            </select>
+        </div>
+        <div class="col-lg-9" id="qymc_param">
+
+        </div>
+    </div>
+    <div class="row param">
+        <div class="col-lg-3">
+            <input type="text" id="kfs" class="form-control col-sm-9" placeholder="开发商" onblur="default2('kfscslb')" /><input type="button" value="搜索" onclick="add('kfs')" class="btn btn-danger" />
+            <select tabindex="-1" class="select2 form-control select2-offscreen " id="kfscslb" style="display:none;" onblur="default1('kfscslb')">
+                <option value="#">&nbsp;</option>
+            </select>
+        </div>
+        <div class="col-lg-9" id="kfs_param">
+
+        </div>
+    </div>
+    <div class="row param">
+        <div class="col-lg-3">
+            <input type="text" id="ztmc" class="form-control col-sm-9" placeholder="组团名称" onblur="default2('ztmccslb')" /><input type="button" value="搜索" onclick="add('ztmc')" class="btn btn-danger" />
+            <select tabindex="-1" class="select2 form-control select2-offscreen " id="ztmccslb" style="display:none;" onblur="default1('ztmccslb')">
+                <option value="#">&nbsp;</option>
+            </select>
         </div>
         <div class="col-lg-9" id="ztmc_param">
 
@@ -43,15 +69,10 @@
     </div>
     <div class="row param">
         <div class="col-lg-3">
-            <input type="text" id="qymc" class="form-control col-sm-9" placeholder="区域名称" /><input type="button" value="搜索" onclick="add('qymc')" class="btn btn-danger" />
-        </div>
-        <div class="col-lg-9" id="qymc_param">
-
-        </div>
-    </div>
-    <div class="row param">
-        <div class="col-lg-3">
-            <input type="text" id="lpmc" class="form-control col-sm-9" placeholder="楼盘名称" /><input type="button" value="搜索" onclick="add('lpmc')" class="btn btn-danger" />
+            <input type="text" id="lpmc" class="form-control col-sm-9" placeholder="楼盘名称" onblur="default2('lpmccslb')" /><input type="button" value="搜索" onclick="add('lpmc')" class="btn btn-danger" />
+            <select tabindex="-1" class="select2 form-control select2-offscreen " id="lpmccslb" style="display:none;" onblur="default1('lpmccslb')">
+                <option value="#">&nbsp;</option>
+            </select>
         </div>
         <div class="col-lg-9" id="lpmc_param">
 
@@ -59,21 +80,40 @@
     </div>
     <div class="row param">
         <div class="col-lg-3">
-            <input type="text" id="ytmc" class="form-control  col-sm-9" placeholder="业态" /><input type="button" value="搜索" onclick="add('ytmc')" class="btn btn-danger" />
+            <input type="text" id="ytmc" class="form-control col-sm-9" placeholder="业态名称" onblur="default2('ytmccslb')" /><input type="button" value="搜索" onclick="add('ytmc')" class="btn btn-danger" />
+            <select tabindex="-1" class="select2 form-control select2-offscreen " id="ytmccslb" style="display:none;" onblur="default1('ytmccslb')">
+                <option value="#">&nbsp;</option>
+            </select>
         </div>
         <div class="col-lg-9" id="ytmc_param">
         </div>
     </div>
     <div class="row param">
-        <div class="col-lg-3"><input type="text" id="xfyt" class="form-control  col-sm-9  col-lg-9" placeholder="细分业态" /><input type="button" value="搜索" onclick="add('xfyt')" class="btn btn-danger" /></div>
+        <div class="col-lg-3">
+            <input type="text" id="xfyt" class="form-control col-sm-9" placeholder="细分业态" onblur="default2('xfytcslb')" /><input type="button" value="搜索" onclick="add('xfyt')" class="btn btn-danger" />
+            <select tabindex="-1" class="select2 form-control select2-offscreen " id="xfytcslb" style="display:none;" onblur="default1('xfytcslb')">
+                <option value="#">&nbsp;</option>
+            </select>
+        </div>
         <div class="col-lg-9" id="xfyt_param"></div>
     </div>
     <div class="row param">
-        <div class="col-lg-3"><input type="text" id="hxmc" class="form-control  col-sm-9  col-lg-9" placeholder="户型" /><input type="button" value="搜索" onclick="add('hxmc')" class="btn btn-danger" /></div>
+        <div class="col-lg-3">
+            <input type="text" id="hxmc" class="form-control col-sm-9" placeholder="户型名称" onblur="default2('hxmccslb')" />
+           
+            <input type="button" value="搜索" onclick="add('hxmc')" class="btn btn-danger" />
+            <select tabindex="-1" class="select2 form-control select2-offscreen " id="hxmccslb" style="display:none;" onblur="default1('hxmccslb')">
+                <option value="#">&nbsp;</option>
+            </select>
+        </div>
         <div class="col-lg-9" id="hxmc_param"></div>
     </div>
     <div class="row param">
-        <div class="col-lg-3"><input type="text" id="zlmjqj" class="form-control  col-sm-9  col-lg-9" placeholder="主力面积区间" /><input type="button" value="设置" onclick="add('zlmjqj')" class="btn btn-danger" /></div>
+        <div class="col-lg-3">
+        <input type="text" id="zlmjqj_q" class="form-control col-lg-4" placeholder="前面积区间" />
+        <input type="text" id="zlmjqj_h" class="form-control col-lg-5" placeholder="后面积区间"  />
+        <input type="button" value="设置" onclick="add('zlmjqj')" class="btn btn-danger" />
+        </div>
         <div class="col-lg-9" id="zlmjqj_param"></div>
     </div>
 </div>
@@ -86,72 +126,98 @@
     <script>
         var zt = [];
         var qy = [];
+        var kfs=[];
         var lpmc = [];
         var yt = [];
         var xfyt = [];
         var hx = [];
-        var zlmjqj="";
+        var zlmjqj=[];
+       
         var nf= @this.ViewBag.nf;
         var zc= @this.ViewBag.zc;
 
         function add(a) {
             var d = $("#" + a).val();
-            if (d!=null&d!=""&d!=undefined) {
-                if(a!="zlmjqj"){
-                    $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + $("#" + a).val() + "<i class='md md-clear'></i></a>");
+            if ((d!=null&d!=""&d!=undefined)) {
+                $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + $("#" + a).val() + "<i class='md md-clear'></i></a>");
+                    
                     switch (a) {
                         case 'ztmc': { zt.push($("#" + a).val().trim()); }; break;
                         case 'qymc': { qy.push($("#" + a).val().trim()); }; break;
+                        case 'kfs': { kfs.push($("#" + a).val().trim()); }; break;
                         case 'lpmc': { lpmc.push($("#" + a).val().trim()); }; break;
                         case 'ytmc': { yt.push($("#" + a).val().trim()); }; break;
                         case 'xfyt': { xfyt.push($("#" + a).val().trim()); }; break;
                         case 'hxmc': { hx.push($("#" + a).val().trim()); }; break;
+                        
                     }
-                }
-                else{
-                    $("#" + a + "_param").empty();
-                    $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + $("#" + a).val() + "<i class='md md-clear'></i></a>");
-                    zlmjqj = $("#" + a).val();
-                }
                 option.pagenow = 1;
                 init2();
+            }
+            else if(a=='zlmjqj')
+            {
+                var qqj = $("#zlmjqj_q").val().trim();
+                var hqj =$("#zlmjqj_h").val().trim();
+                var v="";
+                if(checknull(qqj)&&checknull(hqj))
+                {
+                    alert("请填内容！");
+                }
+                else{
+                    if(!checknull(qqj)&&checknull(hqj))
+                        v="0-"+qqj;
+                    else if(checknull(qqj)&&!checknull(hqj))
+                        v=hqj+"-∞";
+                    else 
+                        v=qqj+"-"+hqj;
+                    zlmjqj.push(v);
+                    $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + v + "<i class='md md-clear'></i></a>");
+                }
+               
             }
             else
             {
                 alert("请填内容！")
             }
+        } 
+        function checknull(a)
+        {
+            if(a==null||a=="")
+                return true;
+        }
+        function add_by_list(a,b) {
+
+            $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + b.value + "<i class='md md-clear'></i></a>");
+            option.pagenow = 1;
+            init2();
         }
         function del(a, b) {
             document.getElementById(a + "_param").removeChild(b);
             switch (a) {
                 case 'ztmc': { zt.splice(zt.indexOf(b.text.trim()), 1); }; break;
                 case 'qymc': { qy.splice(qy.indexOf(b.text.trim()), 1); }; break;
+                case 'kfs': { kfs.splice(kfs.indexOf(b.text.trim()), 1); }; break;
                 case 'lpmc': { lpmc.splice(lpmc.indexOf(b.text.trim()), 1); }; break;
                 case 'ytmc': { yt.splice(yt.indexOf(b.text.trim()), 1); }; break;
                 case 'xfyt': { xfyt.splice(xfyt.indexOf(b.text.trim()), 1); }; break;
                 case 'hxmc': { hx.splice(hx.indexOf(b.text.trim()), 1); }; break;
-                case 'zlmjqj': { zlmjqj=""; }; break;
+                case 'zlmjqj': { zlmjqj.splice(zlmjqj.indexOf(b.text.trim()), 1);}; break;
             }
             option.pagenow = 1;
             init2();
         }
         function add_default(a,b) {
-            if(a!="zlmjqj"){
+
             $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + b+ "<i class='md md-clear'></i></a>");
             switch (a) {
                 case 'ztmc': { zt.push(b); }; break;
                 case 'qymc': { qy.push(b); }; break;
+                case 'kfs': { kfs.push(b); }; break;
                 case 'lpmc': { lpmc.push(b); }; break;
                 case 'ytmc': { yt.push(b); }; break;
                 case 'xfyt': { xfyt.push(b); }; break;
                 case 'hxmc': { hx.push(b); }; break;
-                
-            }
-            }
-            else{
-                $("#" + a + "_param").empty()
-                $("#" + a + "_param").append("<a class='param_value_item' onclick='del(\"" + a + "\",this)'>" + b+ "<i class='md md-clear'></i></a>");
-                zlmjqj=b;
+                case 'zlmjqj': { zlmjqj.push(b); }; break;
             }
             option.pagenow = 1;
             init2();
@@ -270,7 +336,7 @@
         }
         function init2() {
 
-            var data = { 'nf':nf,'zc':zc,'zt': zt, 'qy': qy, 'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx ,'pagenow':option.pagenow,'pagesize':option.pagesize};
+            var data = { 'nf':nf,'zc':zc,'zt': zt, 'qy': qy,  'kfs': kfs,'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx ,'pagenow':option.pagenow,'pagesize':option.pagesize};
             $.ajax({
                 url: "/jp_zb/cxjg",
                 data: data,
@@ -289,7 +355,7 @@
             })
         }
         function init1() {
-            var data = { 'nf':nf,'zc':zc,'zt': zt, 'qy': qy, 'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx ,'pagenow':option.pagenow,'pagesize':option.pagesize};
+            var data = { 'nf':nf,'zc':zc,'zt': zt, 'qy': qy, 'kfs': kfs, 'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx ,'pagenow':option.pagenow,'pagesize':option.pagesize};
             $.ajax({
                 url: "/jp_zb/cxjg",
                 data: data,
@@ -297,7 +363,7 @@
                 success: function (data) {
                     var d = [];
                     for (var i = 0; i < data.data.length; i++) {
-                        d.push([data.data[i].cjrq, data.data[i].qy, data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, data.data[i].zlmjqj ]);
+                        d.push([data.data[i].cjrq, data.data[i].qy,data.data[i].zt, data.data[i].kfs, data.data[i].lpmc, data.data[i].yt, data.data[i].xfyt, data.data[i].hx, data.data[i].jzmj, data.data[i].tnmj, data.data[i].cjje, data.data[i].ts, data.data[i].zlmjqj ]);
                     };
                     option.data = d;
                     option.datacount = data.datacount;
@@ -320,7 +386,7 @@
                         if(data.ztcs)
                         {
                             var ztlb =data.ztcs.split(",");
-                            for (var i = 0; i < ztlb; i++) {
+                            for (var i = 0; i < ztlb.length; i++) {
                                 add_default("ztmc",ztlb[i]);
                             }
                         }
@@ -329,6 +395,13 @@
                             var qylb =data.qycs.split(",");
                             for (var i = 0; i < qylb.length; i++) {
                                 add_default("qymc",qylb[i]);
+                            }
+                        }
+                        if(data.kfs)
+                        {
+                            var kfs =data.kfs.split(",");
+                            for (var i = 0; i < kfs.length; i++) {
+                                add_default("kfs",kfs[i]);
                             }
                         }
                         if(data.lpcs)
@@ -361,7 +434,10 @@
                         }
                         if(data.zlmjqj)
                         {
-                            add_default("zlmjqj",data.zlmjqj);
+                            var zlmjqj =data.zlmjqj.split(",");
+                            for (var i = 0; i < zlmjqj.length; i++) {
+                                add_default("zlmjqj",zlmjqj[i]);
+                            }
                         }
                     }
                 }
@@ -370,7 +446,7 @@
 
         function save()
         {
-            var data = { 'zt': zt, 'qy': qy, 'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx,'zlmjqj':zlmjqj, 'id': @ViewBag.id };
+            var data = { 'zt': zt, 'qy': qy,  'kfs': kfs,'lpmc': lpmc, 'yt': yt, 'xfyt': xfyt, 'hx': hx,'zlmjqj':zlmjqj, 'id': @ViewBag.id };
             $.ajax({
                 url: "/jp_zb/save_jpxmcs",
                 data: data,
@@ -386,5 +462,181 @@
             })
 
         }
+
+        $("#ztmc").bind("input propertychange",function(event){
+            if( $("#ztmc").val()){
+                $.ajax({
+                    url:"/jp_zb/GET_ZTLB",
+                    data: {'ztmc': $("#ztmc").val()},
+                    type: "get",
+                    success: function (data) {
+                        var obj =$("#ztmccslb");
+                        obj.empty();
+                        for (var i = 0; i < data.length; i++) {
+                            obj.append("<option value='"+data[i]+"' onclick=\"chouse(\'ztmc\',this)\">"+data[i]+"</option>");
+                        }
+                        obj.show();
+                        $("#ztmccslb").trigger("click");
+                    }
+                })
+            }else
+            {
+                $("#ztmccslb").hide();
+            }
+        })
+        $("#qymc").bind("input propertychange",function(event){
+            if( $("#qymc").val()){
+                $.ajax({
+                    url:"/jp_zb/get_qylb",
+                    data: {'qymc': $("#qymc").val()},
+                    type: "get",
+                    success: function (data) {
+                        var obj =$("#qymccslb");
+                        obj.empty();
+                        for (var i = 0; i < data.length; i++) {
+                            obj.append("<option value='"+data[i]+"' onclick=\"chouse(\'qymc\',this)\">"+data[i]+"</option>");
+                        }
+                        obj.show();
+                        $("#qymccslb").trigger("click");
+                    }
+                })
+            }else
+            {
+                $("#qymccslb").hide();
+            }
+        })
+        $("#kfs").bind("input propertychange",function(event){
+            if( $("#kfs").val()){
+                $.ajax({
+                    url:"/jp_zb/get_kfslb",
+                    data: {'kfs': $("#kfs").val()},
+                    type: "get",
+                    success: function (data) {
+                        var obj =$("#kfscslb");
+                        obj.empty();
+                        for (var i = 0; i < data.length; i++) {
+                            obj.append("<option value='"+data[i]+"' onclick=\"chouse(\'kfs\',this)\">"+data[i]+"</option>");
+                        }
+                        obj.show();
+                        $("#kfscslb").trigger("click");
+                    }
+                })
+            }else
+            {
+                $("#kfscslb").hide();
+            }
+        })
+        $("#lpmc").bind("input propertychange",function(event){
+            if( $("#lpmc").val()){
+                $.ajax({
+                    url:"/jp_zb/get_lplb",
+                    data: {'lpmc': $("#lpmc").val()},
+                    type: "get",
+                    success: function (data) {
+                        var obj =$("#lpmccslb");
+                        obj.empty();
+                        for (var i = 0; i < data.length; i++) {
+                            obj.append("<option value='"+data[i]+"' onclick=\"chouse(\'lpmc\',this)\">"+data[i]+"</option>");
+                        }
+                        obj.show();
+                        $("#lpmccslb").trigger("click");
+                    }
+                })
+            }else
+            {
+                $("#lpmccslb").hide();
+            }
+        })
+        $("#ytmc").bind("input propertychange",function(event){
+            if( $("#ytmc").val()){
+                $.ajax({
+                    url:"/jp_zb/get_ytlb",
+                    data: {'ytmc': $("#ytmc").val()},
+                    type: "get",
+                    success: function (data) {
+                        var obj =$("#ytmccslb");
+                        obj.empty();
+                        for (var i = 0; i < data.length; i++) {
+                            obj.append("<option value='"+data[i]+"' onclick=\"chouse(\'ytmc\',this)\">"+data[i]+"</option>");
+                        }
+                        obj.show();
+                        $("#ytmccslb").trigger("click");
+                    }
+                })
+            }else
+            {
+                $("#ytmccslb").hide();
+            }
+        })
+        $("#xfyt").bind("input propertychange",function(event){
+            if( $("#xfyt").val()){
+                $.ajax({
+                    url:"/jp_zb/get_xfytlb",
+                    data: {'xfyt': $("#xfyt").val()},
+                    type: "get",
+                    success: function (data) {
+                        var obj =$("#xfytcslb");
+                        obj.empty();
+                        for (var i = 0; i < data.length; i++) {
+                            obj.append("<option value='"+data[i]+"' onclick=\"chouse(\'xfyt\',this)\">"+data[i]+"</option>");
+                        }
+                        obj.show();
+                        $("#xfytcslb").trigger("click");
+                    }
+                })
+            }else
+            {
+                $("#ytmccslb").hide();
+            }
+        });
+        $("#hxmc").bind("input propertychange",function(event){
+            if( $("#hxmc").val()){
+                $.ajax({
+                    url:"/jp_zb/get_hxlb",
+                    data: {'hxmc': $("#hxmc").val()},
+                    type: "get",
+                    success: function (data) {
+                        var obj =$("#hxmccslb");
+                        obj.empty();
+                        for (var i = 0; i < data.length; i++) {
+                            obj.append("<option value='"+data[i]+"' onclick=\"chouse(\'hxmc\',this)\">"+data[i]+"</option>");
+                        }
+                        obj.show();
+                        $("#hxmccslb").trigger("click");
+                    }
+                })
+            }else
+            {
+                $("#hxmccslb").hide();
+            }
+        });
+        function chouse(a,b){
+            switch (a) {
+                case 'ztmc': { zt.push(b.value); }; break;
+                case 'qymc': { qy.push(b.value); }; break;
+                case 'kfs': { kfs.push(b.value); }; break;
+                case 'lpmc': { lpmc.push(b.value); }; break;
+                case 'ytmc': { yt.push(b.value); }; break;
+                case 'xfyt': { xfyt.push(b.value); }; break;
+                case 'hxmc': { hx.push(b.value); }; break;
+            }
+            add_by_list(a,b);
+            $("#"+a+"cslb").hide();
+        }
+        function default1(a)
+        {
+            var obj= $("#"+a);
+            if(obj){obj.hide();};
+        }
+        function default2(a)
+        {
+            var b=  document.activeElement.id
+            if( b!=a)
+            {
+                default1(a);
+            }
+        }
+
+
     </script>
 }

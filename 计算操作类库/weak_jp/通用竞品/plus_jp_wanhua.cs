@@ -47,7 +47,7 @@ namespace Calculation.JS
                         dt.Columns.Add(Base_Config_Cjba.本周_套内均价);
                         dt.Columns.Add(Base_Config_Rgsj.本周_认购套数);
                         dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价);
-                        dt.Columns.Add(Base_Config_Rgsj.活动);
+                        dt.Columns.Add(Base_Config_Rgsj.本周_活动);
                   
                     IAutoShape text2 = (IAutoShape)page2.Shapes[1];
                     text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.bamc);

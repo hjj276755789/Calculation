@@ -50,7 +50,7 @@ namespace Calculation.Base
         /// <summary>
         /// 本月（实际为上月）
         /// </summary>
-        private static int by { get; set; }
+        public static int by { get; set; }
         /// <summary>
         /// 本月第一天（实际为上月）
         /// </summary>
@@ -155,13 +155,41 @@ namespace Calculation.Base
             DateTime dt_Last = CalcWeekDay_last(year, weak);
             return dt_first.ToString("M.d") + "-" + dt_Last.ToString("M.d");
         }
+        /// <summary>
+        /// 获取年份周次名称
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="weak"></param>
+        /// <returns></returns>
         public static string GET_NFZCMC(int year, int weak)
         {
             DateTime dt_first = CalcWeekDay_first(year, weak);
             DateTime dt_Last = CalcWeekDay_last(year, weak);
             return year+"."+dt_first.ToString("M.d") + "-" + year + "." + dt_Last.ToString("M.d");
         }
-
+        /// <summary>
+        /// 获取年份
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="weak"></param>
+        /// <returns></returns>
+        public static string GET_NFYFMC(int year, int month)
+        {
+            by_First = new DateTime(year, month, 1);
+            by_Last = by_First.AddDays(DateTime.DaysInMonth(year, month) - 1);
+            return by_First.ToString("M.d") + "-" + by_Last.ToString("M.d");
+        }
+        /// <summary>
+        /// 通过周次获取当前月份
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="weak"></param>
+        /// <returns></returns>
+        public static int GET_Y_FROM_Z(int year, int weak)
+        {
+            DateTime dt=  CalcWeekDay_first(year, weak);
+            return dt.Month;
+        }
 
 
 

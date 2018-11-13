@@ -105,7 +105,7 @@ namespace Calculation.Base
             try
             {
                 if (!string.IsNullOrEmpty(target)) {
-                    var s = target.Substring(3, target.Length - 3);
+                    var s = target.Substring(target.IndexOf('_',0)+1, target.Length - target.IndexOf('_', 0)-1);
                     return s;
                 }
                 else return target;
@@ -127,7 +127,10 @@ namespace Calculation.Base
             try
             {
                 if (!string.IsNullOrEmpty(target))
-                    return target.Substring(3, target.Length - 3);
+                {
+                    var s = target.Substring(target.IndexOf('_', 0) + 1, target.Length - target.IndexOf('_', 0) - 1);
+                    return s;
+                }
                 else return target;
             }
             catch (Exception)

@@ -152,7 +152,7 @@
 
 
         var option = {
-            colNames: ["编号", '竞品本案名称', '区域', '组团', '楼盘', '业态', '细分业态', '户型','主力面积区间', '设置参数',"操作"],
+            colNames: ["编号", '竞品本案名称', '区域', '组团', '开发商', '楼盘', '业态', '细分业态', '户型','主力面积区间', '设置参数',"操作"],
             data: [
 
             ],
@@ -173,7 +173,7 @@
                 success: function (data) {
                     var d = [];
                     for (var i = 0; i < data.length; i++) {
-                        d.push([data[i].id, data[i].jzgjmc, data[i].qycs, data[i].ztcs, data[i].lpcs, data[i].ytcs, data[i].xfytcs, data[i].hxcs,data[i].zlmjqj,
+                        d.push([data[i].id, data[i].jzgjmc, data[i].qycs, data[i].ztcs,data[i].kfs, data[i].lpcs, data[i].ytcs, data[i].xfytcs, data[i].hxcs,data[i].zlmjqj,
                             '<a class="btn btn-link" href="/jp_zb/Set_Jpjzgj_Param?id='+data[i].id+'&nf='+nf+'&zc='+zc+'">设置参数</a>', ' <a class="btn btn-link" onclick="del(' + data[i].id + ')">删除</a>']);
                     };
                     option.data = d;

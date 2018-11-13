@@ -58,7 +58,7 @@ namespace Calculation.JS
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套数);
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价);
 
-                    dt.Columns.Add(Base_Config_Rgsj.营销动作);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_营销动作);
                     IAutoShape text2 = (IAutoShape)page2.Shapes[5];
                     text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.bamc,item.ytcs[0]);
                     #endregion

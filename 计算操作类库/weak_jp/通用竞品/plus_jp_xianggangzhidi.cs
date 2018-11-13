@@ -48,7 +48,7 @@ namespace Calculation.JS
                     dt.Columns.Add("sssz_rgtnjj");//上上上周_套内均价
                     dt.Columns.Add("sssz_tjzj");//上上上周_套内均价
 
-                    dt.Columns.Add(Base_Config_Rgsj.变化原因);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_变化原因);
                     #endregion
                     if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                     {
@@ -61,6 +61,7 @@ namespace Calculation.JS
             }
             catch (Exception e)
             {
+                Base_Log.Log(e.StackTrace);
                 return null;
             }
 
@@ -88,8 +89,8 @@ namespace Calculation.JS
                         //竞品业态
                         var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
                         var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
-                        var temp_rgsj_ssz = (Cache_data_rgsj.jbz.Select("zc=" + (Base_date.bz - 2)).CopyToDataTable()).AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
-                        var temp_rgsj_sssz = (Cache_data_rgsj.jbz.Select("zc=" + (Base_date.bz - 3)).CopyToDataTable()).AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                        var temp_rgsj_ssz = Cache_data_rgsj.ssz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
+                        var temp_rgsj_sssz = Cache_data_rgsj.sssz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] && m["yt"].ToString() == item.xfytcs[i]);
                         //本周本案认购数据
                         var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
                         var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();

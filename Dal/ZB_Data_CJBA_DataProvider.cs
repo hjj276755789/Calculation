@@ -78,5 +78,7 @@ between unix_timestamp('" + first.ToString("yyyy/MM/dd") + "') and unix_timestam
             MySqlParameter[] p = {  new MySqlParameter("dqz", dqz) };
             return MySqlDbhelper.GetDataSet(sql,p).Tables[0];
         }
+
+       
     }
 }

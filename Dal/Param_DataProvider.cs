@@ -113,6 +113,10 @@ where c.rwid = @rwid and a.csid =@csid";
             {
                 tempsql += " and qy in ('" + string.Join("','", param.qy) + "')";
             }
+            if (param.kfs != null)
+            {
+                tempsql += " and kfs in ('" + string.Join("','", param.kfs) + "')";
+            }
             if (param.zt != null)
             {
                 tempsql += " and zt in ('" + string.Join("','", param.zt) + "')";
@@ -169,28 +173,31 @@ where c.rwid = @rwid and a.csid =@csid";
 
         public static bool SAVE_JP_JPXMCS(int id, JP_ParamValueModel p)
         {
-            string sql = @"update calculation.xtgl_param_jpgj set ztcs=@ztcs,qycs=@qycs,lpcs=@lpcs,ytcs=@ytcs,xfytcs=@xfytcs,hxcs=@hxcs,zlmjqj=@zlmjqj where id=@id";
+            string sql = @"update calculation.xtgl_param_jpgj set ztcs=@ztcs,qycs=@qycs,kfs=@kfs,lpcs=@lpcs,ytcs=@ytcs,xfytcs=@xfytcs,hxcs=@hxcs,zlmjqj=@zlmjqj where id=@id";
             MySqlParameter[] par = { new MySqlParameter("id", id),
                 new MySqlParameter("ztcs",p.zt==null||p.zt.Count()==0?"": string.Join("," ,p.zt)),
                 new MySqlParameter("qycs",p.qy==null||p.qy.Count()==0?"": string.Join("," ,p.qy)),
+                new MySqlParameter("kfs",p.kfs==null||p.kfs.Count()==0?"": string.Join("," ,p.kfs)),
                 new MySqlParameter("lpcs",p.lpmc==null||p.lpmc.Count()==0?"": string.Join("," ,p.lpmc)),
                 new MySqlParameter("ytcs",p.yt==null||p.yt.Count()==0?"": string.Join("," ,p.yt)),
                 new MySqlParameter("xfytcs",p.xfyt==null||p.xfyt.Count()==0?"": string.Join("," ,p.xfyt)),
                 new MySqlParameter("hxcs",p.hx==null||p.hx.Count()==0?"": string.Join("," ,p.hx)),
-                new MySqlParameter("zlmjqj",p.zlmjqj)};
+                new MySqlParameter("zlmjqj",p.zlmjqj==null||p.zlmjqj.Count()==0?"": string.Join("," ,p.zlmjqj))};
             return MySqlDbhelper.ExecuteNonQuery(sql, par) > 0;
         }
         public static bool SAVE_JP_BAXMCS(int id, JP_ParamValueModel p)
         {
-            string sql = @"update calculation.xtgl_param_jpba set ztcs=@ztcs,qycs=@qycs,lpcs=@lpcs,ytcs=@ytcs,xfytcs=@xfytcs,hxcs=@hxcs,zlmjqj=@zlmjqj where id=@id";
+            string sql = @"update calculation.xtgl_param_jpba set ztcs=@ztcs,qycs=@qycs,kfs=@kfs,lpcs=@lpcs,ytcs=@ytcs,xfytcs=@xfytcs,hxcs=@hxcs,zlmjqj=@zlmjqj,qtcs=@qtcs where id=@id";
             MySqlParameter[] par = { new MySqlParameter("id", id),
                 new MySqlParameter("ztcs",p.zt==null||p.zt.Count()==0?"": string.Join("," ,p.zt)),
                 new MySqlParameter("qycs",p.qy==null||p.qy.Count()==0?"": string.Join("," ,p.qy)),
+                new MySqlParameter("kfs",p.kfs==null||p.kfs.Count()==0?"": string.Join("," ,p.kfs)),
                 new MySqlParameter("lpcs",p.lpmc==null||p.lpmc.Count()==0?"": string.Join("," ,p.lpmc)),
                 new MySqlParameter("ytcs",p.yt==null||p.yt.Count()==0?"": string.Join("," ,p.yt)),
                 new MySqlParameter("xfytcs",p.xfyt==null||p.xfyt.Count()==0?"": string.Join("," ,p.xfyt)),
                 new MySqlParameter("hxcs",p.hx==null||p.hx.Count()==0?"": string.Join("," ,p.hx)),
-                new MySqlParameter("zlmjqj",p.zlmjqj) };
+                new MySqlParameter("zlmjqj",p.zlmjqj==null||p.zlmjqj.Count()==0?"": string.Join("," ,p.zlmjqj)),
+                new MySqlParameter("qtcs",p.qtcs)};
             return MySqlDbhelper.ExecuteNonQuery(sql, par) > 0;
         }
 
@@ -237,12 +244,14 @@ where c.rwid = @rwid and a.csid =@csid";
                 jp.bamc = item["bamc"].ToString();
                 jp.rwid = item["rwid"].ints();
                 jp.qycs = item["qycs"] == null || string.IsNullOrEmpty(item["qycs"].ToString()) ? null : item["qycs"].ToString().Split(',');
+                jp.kfs = item["kfs"] == null || string.IsNullOrEmpty(item["kfs"].ToString()) ? null : item["kfs"].ToString().Split(',');
                 jp.ztcs = item["ztcs"] == null || string.IsNullOrEmpty(item["ztcs"].ToString()) ? null : item["ztcs"].ToString().Split(',');
                 jp.lpcs = item["lpcs"] == null || string.IsNullOrEmpty(item["lpcs"].ToString()) ? null : item["lpcs"].ToString().Split(',');
                 jp.ytcs = item["ytcs"] == null || string.IsNullOrEmpty(item["ytcs"].ToString()) ? null : item["ytcs"].ToString().Split(',');
                 jp.xfytcs = item["xfytcs"] == null || string.IsNullOrEmpty(item["xfytcs"].ToString()) ? null : item["xfytcs"].ToString().Split(',');
                 jp.hxcs = item["hxcs"] == null || string.IsNullOrEmpty(item["hxcs"].ToString()) ? null : item["hxcs"].ToString().Split(',');
-                jp.zlmjqj = item["zlmjqj"].ToString();
+                jp.zlmjqj = item["zlmjqj"] == null || string.IsNullOrEmpty(item["zlmjqj"].ToString()) ? null : item["zlmjqj"].ToString().Split(',');
+                jp.qtcs = item["qtcs"].ToString();
                 jp.jpxmlb = new List<JP_JPXM_INFO>();
                 var xmlist = jptable.AsEnumerable().Where(m => m["baid"].ints() == item["id"].ints());
                 foreach (var xm in xmlist)
@@ -252,6 +261,7 @@ where c.rwid = @rwid and a.csid =@csid";
                     jpxm.baid = xm["baid"].ints();
                     jpxm.jzgjid = xm["jzgjid"].ints();
                     jpxm.qycs = xm["qycs"] == null || string.IsNullOrEmpty(xm["qycs"].ToString()) ? null : xm["qycs"].ToString().Split(',');
+                    jpxm.kfs = xm["kfs"] == null || string.IsNullOrEmpty(xm["kfs"].ToString()) ? null : xm["kfs"].ToString().Split(',');
                     jpxm.ztcs = xm["ztcs"] == null || string.IsNullOrEmpty(xm["ztcs"].ToString()) ? null : xm["ztcs"].ToString().Split(',');
                     jpxm.lpcs = xm["lpcs"] == null || string.IsNullOrEmpty(xm["lpcs"].ToString()) ? null : xm["lpcs"].ToString().Split(',');
                     jpxm.ytcs = xm["ytcs"] == null || string.IsNullOrEmpty(xm["ytcs"].ToString()) ? null : xm["ytcs"].ToString().Split(',');
@@ -261,7 +271,8 @@ where c.rwid = @rwid and a.csid =@csid";
                         jpxm.xfytcs = xm["xfytcs"].ToString().Split(',');
                     };
                     jpxm.hxcs = xm["hxcs"] == null || string.IsNullOrEmpty(xm["hxcs"].ToString()) ? null : xm["hxcs"].ToString().Split(',');
-                    jpxm.zlmjqj = xm["zlmjqj"].ToString();
+                    jpxm.zlmjqj = item["zlmjqj"] == null || string.IsNullOrEmpty(item["zlmjqj"].ToString()) ? null : item["zlmjqj"].ToString().Split(','); ;
+                    
                     jp.jpxmlb.Add(jpxm);
                 }
                 list.Add(jp);
@@ -282,29 +293,33 @@ where c.rwid = @rwid and a.csid =@csid";
                     MySqlParameter[] p = { new MySqlParameter("rwid",rwid),
                                         new MySqlParameter("bamc",item.bamc),
                                         new MySqlParameter("qycs",item.qycs==null?"":string.Join(",", item.qycs)),
+                                        new MySqlParameter("kfs",item.kfs==null?"":string.Join(",", item.kfs)),
                                         new MySqlParameter("ztcs",item.ztcs==null?"":string.Join(",", item.ztcs)),
                                         new MySqlParameter("lpcs",item.lpcs==null?"":string.Join(",", item.lpcs)),
                                         new MySqlParameter("ytcs",item.ytcs==null?"":string.Join(",", item.ytcs)),
                                         new MySqlParameter("xfytcs",item.xfytcs==null?"":string.Join(",", item.xfytcs)),
                                         new MySqlParameter("hxcs",item.hxcs==null?"":string.Join(",", item.hxcs)),
-                                        new MySqlParameter("zlmjqj",item.zlmjqj==null?"": item.zlmjqj)
+                                        new MySqlParameter("zlmjqj",item.zlmjqj==null?"":string.Join(",", item.zlmjqj)),
+                                        new MySqlParameter("qtcs",item.qtcs==null?"": item.qtcs)
                 };
                     MySqlDbhelper.ExecuteNonQuery(sql, p);
                     if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                     {
-                        StringBuilder sqlbuilder = new StringBuilder("insert into calculation.xtgl_param_jpgj(baid,jzgjid,qycs,ztcs,lpcs,ytcs,xfytcs,hxcs,zlmjqj) values ");
+                        StringBuilder sqlbuilder = new StringBuilder("insert into calculation.xtgl_param_jpgj(baid,jzgjid,qycs,kfs,ztcs,lpcs,ytcs,xfytcs,hxcs,zlmjqj) values ");
                         foreach (var item_jp in item.jpxmlb)
                         {
 
-                            sqlbuilder.Append(string.Format(@"((select max(id) from calculation.xtgl_param_jpba),'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}'),",
+                            sqlbuilder.Append(string.Format(@"((select max(id) from calculation.xtgl_param_jpba),'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}'),",
                                   item_jp.jzgjid,
                                   item_jp.qycs == null ? "" : string.Join(",", item_jp.qycs),
+                                  item_jp.kfs == null ? "" : string.Join(",", item_jp.kfs),
                                   item_jp.ztcs == null ? "" : string.Join(",", item_jp.ztcs),
                                   item_jp.lpcs == null ? "" : string.Join(",", item_jp.lpcs),
                                   item_jp.ytcs == null ? "" : string.Join(",", item_jp.ytcs),
                                   item_jp.xfytcs == null ? "" : string.Join(",", item_jp.xfytcs),
                                   item_jp.hxcs == null ? "" : string.Join(",", item_jp.hxcs),
-                                  item_jp.zlmjqj == null ? "" : item_jp.zlmjqj));
+                                  item_jp.zlmjqj == null ? "" : string.Join(",", item_jp.zlmjqj))
+                                  );
                         }
                         string sql1 = sqlbuilder.ToString();
                         MySqlDbhelper.ExecuteNonQuery(sql1.Substring(0, sql1.Length - 1));
@@ -373,7 +388,90 @@ where c.rwid = @rwid and a.csid =@csid";
 
         }
 
-
+        public static List<string> GET_QYMC(string qy)
+        {
+            string sql = "select distinct qy from xtgl_data_zb_cjba where qy like @qy limit 0,10";
+            MySqlParameter[] p = { new MySqlParameter("qy", "%" + qy + "%") };
+            List<string> obj = new List<string>();
+            var temp=MySqlDbhelper.GetDataSet(sql,p).Tables[0];
+            foreach (DataRow item in temp.Rows)
+            {
+                obj.Add(item[0].ToString());
+            }
+            return obj;
+        }
+        public static List<string> GET_KFS(string kfs)
+        {
+            string sql = "select distinct kfs from xtgl_data_zb_cjba where kfs like @kfs limit 0,10";
+            MySqlParameter[] p = { new MySqlParameter("kfs", "%" + kfs + "%") };
+            List<string> obj = new List<string>();
+            var temp = MySqlDbhelper.GetDataSet(sql, p).Tables[0];
+            foreach (DataRow item in temp.Rows)
+            {
+                obj.Add(item[0].ToString());
+            }
+            return obj;
+        }
+        public static List<string> GET_ZTMC(string zt)
+        {
+            string sql = "select distinct zt from xtgl_data_zb_cjba where zt like @zt limit 0,10";
+            MySqlParameter[] p = { new MySqlParameter("zt", "%" + zt + "%") };
+            List<string> obj = new List<string>();
+            var temp = MySqlDbhelper.GetDataSet(sql, p).Tables[0];
+            foreach (DataRow item in temp.Rows)
+            {
+                obj.Add(item[0].ToString());
+            }
+            return obj;
+        }
+        public static List<string> GET_LPMC(string lpmc)
+        {
+            string sql = "select distinct LPMC from xtgl_data_zb_cjba where lpmc like  @lpmc limit 0,10";
+            MySqlParameter[] p = { new MySqlParameter("lpmc", "%" + lpmc + "%") };
+            List<string> obj = new List<string>();
+            var temp = MySqlDbhelper.GetDataSet(sql,p).Tables[0];
+            foreach (DataRow item in temp.Rows)
+            {
+                obj.Add(item[0].ToString());
+            }
+            return obj;
+        }
+        public static List<string> GET_YTMC(string yt)
+        {
+            string sql = "select distinct yt from xtgl_data_zb_cjba where yt like  @yt limit 0,10";
+            MySqlParameter[] p = { new MySqlParameter("yt", "%" + yt + "%") };
+            List<string> obj = new List<string>();
+            var temp = MySqlDbhelper.GetDataSet(sql,p).Tables[0];
+            foreach (DataRow item in temp.Rows)
+            {
+                obj.Add(item[0].ToString());
+            }
+            return obj;
+        }
+        public static List<string> GET_XFYTMC(string xfytmc)
+        {
+            string sql = "select distinct xfyt from xtgl_data_zb_cjba where xfyt like  @xfyt limit 0,10";
+            MySqlParameter[] p = { new MySqlParameter("xfyt", "%" + xfytmc + "%") };
+            List<string> obj = new List<string>();
+            var temp = MySqlDbhelper.GetDataSet(sql, p).Tables[0];
+            foreach (DataRow item in temp.Rows)
+            {
+                obj.Add(item[0].ToString());
+            }
+            return obj;
+        }
+        public static List<string> GET_HXMC(string hxmc)
+        {
+            string sql = "select distinct hx from xtgl_data_zb_cjba where hx like  @hx limit 0,10";
+            MySqlParameter[] p = { new MySqlParameter("hx", "%" + hxmc + "%") };
+            List<string> obj = new List<string>();
+            var temp = MySqlDbhelper.GetDataSet(sql, p).Tables[0];
+            foreach (DataRow item in temp.Rows)
+            {
+                obj.Add(item[0].ToString());
+            }
+            return obj;
+        }
         #endregion
         #endregion
     }

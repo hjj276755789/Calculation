@@ -163,8 +163,8 @@ namespace Calculation.JS
                     System.Data.DataTable dt = new System.Data.DataTable();
                     dt.Columns.Add(Base_Config_Jzgj.竞争格局名称);
                     dt.Columns.Add(Base_Config_Jzgj.项目名称);
-                    dt.Columns.Add(Base_Config_Rgsj.本周到访量);
-                    dt.Columns.Add(Base_Config_Rgsj.本周来电);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_本周到访量);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_本周来电);
                     dt.Columns.Add(Base_Config_Rgsj.本周_新开套数);
                     dt.Columns.Add(Base_Config_Rgsj.本周_新开销售套数);
                     dt.Columns.Add(Base_Config_Rgsj.新开套内均价);
@@ -179,9 +179,9 @@ namespace Calculation.JS
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套数);
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价);
 
-                    dt.Columns.Add(Base_Config_Rgsj.成交套数环比);
-                    dt.Columns.Add(Base_Config_Rgsj.套内均价环比);
-                    dt.Columns.Add(Base_Config_Rgsj.变化原因);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_成交套数环比);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_套内均价环比);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_变化原因);
 
 
                     if (item.jpxmlb != null && item.jpxmlb.Count > 0)

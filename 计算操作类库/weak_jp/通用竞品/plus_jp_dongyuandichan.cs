@@ -38,7 +38,7 @@ namespace Calculation.JS
                     dt.Columns.Add(Base_Config_Cjba.本周_建面均价);
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套数);
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购建面均价);
-                    dt.Columns.Add(Base_Config_Rgsj.营销动作);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_营销动作);
 
                     if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                     {

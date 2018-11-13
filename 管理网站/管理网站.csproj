@@ -543,6 +543,7 @@
     <Content Include="Views\jp_zb\Jcjzcs.cshtml" />
     <Content Include="Views\Sys\qxgl.cshtml" />
     <Content Include="Views\Sys\jsqxgl.cshtml" />
+    <Content Include="Views\Account\test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

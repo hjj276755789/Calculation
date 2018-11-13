@@ -60,9 +60,9 @@ namespace Calculation.JS
 
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套数);
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价);
-                    dt.Columns.Add(Base_Config_Rgsj.成交套数环比);
-                    dt.Columns.Add(Base_Config_Rgsj.套内均价环比);
-                    dt.Columns.Add(Base_Config_Rgsj.变化原因);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_成交套数环比);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_套内均价环比);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_变化原因);
                     IAutoShape text2 = (IAutoShape)page2.Shapes[1];
                     text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.bamc, item.ytcs[0]);
                     if (item.jpxmlb != null && item.jpxmlb.Count > 0)
@@ -82,8 +82,8 @@ namespace Calculation.JS
 
                     DataTable dt1 = new DataTable();
                     dt1.Columns.Add(Base_Config_Jzgj.项目名称);
-                    dt1.Columns.Add(Base_Config_Rgsj.优惠);
-                    dt1.Columns.Add(Base_Config_Rgsj.营销动作);
+                    dt1.Columns.Add(Base_Config_Rgsj.本周_优惠);
+                    dt1.Columns.Add(Base_Config_Rgsj.本周_营销动作);
                     if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                     {
                         dt1 = GET_JPXM_BX(dt1, item.jpxmlb);

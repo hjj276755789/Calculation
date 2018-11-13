@@ -65,6 +65,7 @@ namespace Calculation.Models
     {
         public string[] zt { get; set; }
         public string [] qy { get; set; }
+        public string [] kfs { get; set; }
         public string[] lpmc { get; set; }
         public string[] yt { get; set; }
         public string[] xfyt { get; set; }
@@ -72,7 +73,11 @@ namespace Calculation.Models
         /// <summary>
         /// 主力面积区间，不参与筛选
         /// </summary>
-        public string zlmjqj { get; set; }
+        public string [] zlmjqj { get; set; }
+        /// <summary>
+        /// 其他参数
+        /// </summary>
+        public string qtcs { get; set; }
     }
     /// <summary>
     /// 竞品-本案
@@ -84,11 +89,13 @@ namespace Calculation.Models
         public string bamc { get; set; }
         public string ztcs { get; set; }
         public string qycs { get; set; }
+        public string kfs { get; set; }
         public string lpcs { get; set; }
         public string ytcs { get; set; }
         public string xfytcs { get; set; }
         public string hxcs { get; set; }
         public string zlmjqj { get; set; }
+        public string qtcs { get; set; }
 
     }
     /// <summary>
@@ -102,6 +109,7 @@ namespace Calculation.Models
         public string jzgjmc { get; set; }
         public string ztcs { get; set; }
         public string qycs { get; set; }
+        public string kfs { get; set; }
         public string lpcs { get; set; }
         public string ytcs { get; set; }
         public string xfytcs { get; set; }
@@ -126,12 +134,14 @@ namespace Calculation.Models
         public int rwid { get; set; }
         public string bamc { get; set; }
         public string [] qycs { get; set; }
+        public string [] kfs { get; set; }
         public string [] ztcs { get; set; }
         public string [] lpcs { get; set; }
         public string [] ytcs { get; set; }
         public string [] xfytcs { get; set; }
         public string [] hxcs { get; set; }
-        public string zlmjqj { get; set; }
+        public string [] zlmjqj { get; set; }
+        public string qtcs { get; set; }
         public List<JP_JPXM_INFO> jpxmlb { get; set; }
     }
     public class JP_JPXM_INFO
@@ -142,12 +152,14 @@ namespace Calculation.Models
         public string jzgjmc { get; set; }
         public int px { get; set; }
         public string[] qycs { get; set; }
+        public string[] kfs { get; set; }
         public string[] ztcs { get; set; }
         public string[] lpcs { get; set; }
         public string[] ytcs { get; set; }
         public string[] xfytcs { get; set; }
         public string[] hxcs { get; set; }
-        public string zlmjqj { get; set; }
+        public string[] zlmjqj { get; set; }
+        public string qtcs { get; set; }
 
     }
 }

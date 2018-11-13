@@ -52,8 +52,8 @@ namespace Calculation.JS
                     dt.Columns.Add("--");
                     dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价);
 
-                    dt.Columns.Add(Base_Config_Rgsj.营销动作);
-                    dt.Columns.Add(Base_Config_Rgsj.本周到访量);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_营销动作);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_本周到访量);
 
                     
                     #endregion

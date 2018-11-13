@@ -354,8 +354,8 @@ namespace Calculation.JS
                         if (jpcjxx != null)
                         {
 
-                            dr1[1] = jpcjxx["xkts"].ints();
-                            dr1[2] = jpcjxx["xktnjj"].ints();
+                            dr1[1] = jpcjxx[Base_Config_Rgsj.本周_新开套数._ConfigCjbaMc()].ints();
+                            dr1[2] = jpcjxx[Base_Config_Rgsj.本周_新开套内均价._ConfigCjbaMc()].ints();
                         }
                         else
                         {
@@ -576,15 +576,49 @@ namespace Calculation.JS
             var t = new Presentation().Slides;
             t.RemoveAt(0);
 
-                List<Zb_Jp_Tgtp_Model> tgtplb = new List<Zb_Jp_Tgtp_Model>();
+            List<Zb_Jp_Tgtp_Model> tgtplb = new List<Zb_Jp_Tgtp_Model>();
+            try
+            {
+                Image img = (Image)new Bitmap(Path.Combine(path, item.lpcs[0] + ".jpg"));
+                if ((img.Width / 1.0) / img.Height < zd)
+                {
+                    Zb_Jp_Tgtp_Model tgtp = new Zb_Jp_Tgtp_Model();
+                    tgtp.img = img;
+                    tgtp.xmmc = item.lpcs[0];
+                    tgtp.tplx = Models.Enums.TP_LX.窄图;
+                    tgtplb.Add(tgtp);
+                }
+                else if ((img.Width / 1.0) / img.Height > zd && (img.Width / 1.0) / img.Height < kd)
+                {
+                    Zb_Jp_Tgtp_Model tgtp = new Zb_Jp_Tgtp_Model();
+                    tgtp.img = img;
+                    tgtp.xmmc = item.lpcs[0];
+                    tgtp.tplx = Models.Enums.TP_LX.方图;
+                    tgtplb.Add(tgtp);
+                }
+                else
+                {
+                    Zb_Jp_Tgtp_Model tgtp = new Zb_Jp_Tgtp_Model();
+                    tgtp.img = img;
+                    tgtp.xmmc = item.lpcs[0];
+                    tgtp.tplx = Models.Enums.TP_LX.宽图;
+                    tgtplb.Add(tgtp);
+                }
+            }
+            catch
+            {
+                Base_Log.Log(Path.Combine(path, item.bamc + ".jpg") + "文件不存在");
+            }
+            foreach (var item_jp in item.jpxmlb)
+            {
                 try
                 {
-                    Image img = (Image)new Bitmap(Path.Combine(path, item.lpcs[0] + ".jpg"));
+                    Image img = (Image)new Bitmap(Path.Combine(path, item_jp.lpcs[0] + ".jpg"));
                     if ((img.Width / 1.0) / img.Height < zd)
                     {
                         Zb_Jp_Tgtp_Model tgtp = new Zb_Jp_Tgtp_Model();
                         tgtp.img = img;
-                        tgtp.xmmc = item.lpcs[0];
+                        tgtp.xmmc = item_jp.lpcs[0];
                         tgtp.tplx = Models.Enums.TP_LX.窄图;
                         tgtplb.Add(tgtp);
                     }
@@ -592,7 +626,7 @@ namespace Calculation.JS
                     {
                         Zb_Jp_Tgtp_Model tgtp = new Zb_Jp_Tgtp_Model();
                         tgtp.img = img;
-                        tgtp.xmmc = item.lpcs[0];
+                        tgtp.xmmc = item_jp.lpcs[0];
                         tgtp.tplx = Models.Enums.TP_LX.方图;
                         tgtplb.Add(tgtp);
                     }
@@ -600,56 +634,29 @@ namespace Calculation.JS
                     {
                         Zb_Jp_Tgtp_Model tgtp = new Zb_Jp_Tgtp_Model();
                         tgtp.img = img;
-                        tgtp.xmmc = item.lpcs[0];
+                        tgtp.xmmc = item_jp.lpcs[0];
                         tgtp.tplx = Models.Enums.TP_LX.宽图;
                         tgtplb.Add(tgtp);
                     }
                 }
                 catch
                 {
-                    Base_Log.Log(Path.Combine(path, item.bamc + ".jpg") + "文件不存在");
-                }
-                foreach (var item_jp in item.jpxmlb)
-                {
-                    try
-                    {
-                        Image img = (Image)new Bitmap(Path.Combine(path, item_jp.lpcs[0] + ".jpg"));
-                        if ((img.Width / 1.0) / img.Height < zd)
-                        {
-                            Zb_Jp_Tgtp_Model tgtp = new Zb_Jp_Tgtp_Model();
-                            tgtp.img = img;
-                            tgtp.xmmc = item_jp.lpcs[0];
-                            tgtp.tplx = Models.Enums.TP_LX.窄图;
-                            tgtplb.Add(tgtp);
-                        }
-                        else if ((img.Width / 1.0) / img.Height > zd && (img.Width / 1.0) / img.Height < kd)
-                        {
-                            Zb_Jp_Tgtp_Model tgtp = new Zb_Jp_Tgtp_Model();
-                            tgtp.img = img;
-                            tgtp.xmmc = item_jp.lpcs[0];
-                            tgtp.tplx = Models.Enums.TP_LX.方图;
-                            tgtplb.Add(tgtp);
-                        }
-                        else
-                        {
-                            Zb_Jp_Tgtp_Model tgtp = new Zb_Jp_Tgtp_Model();
-                            tgtp.img = img;
-                            tgtp.xmmc = item_jp.lpcs[0];
-                            tgtp.tplx = Models.Enums.TP_LX.宽图;
-                            tgtplb.Add(tgtp);
-                        }
-                    }
-                    catch
+                    if (item_jp.lpcs != null && item_jp.lpcs.Length > 0)
                     {
                         Base_Log.Log(Path.Combine(path, item_jp.lpcs[0] + ".jpg") + "文件不存在");
                     }
+                    else
+                    {
+                        Base_Log.Log("楼盘参数为空，竞品参数编号：" + item_jp.id);
+                    }
                 }
-                if (tgtplb.Count > 0)
-                {
+            }
+            if (tgtplb.Count > 0)
+            {
                 try
                 {
 
-              
+
                     List<Zb_Jp_Tgtp_Model> zt_pic = new List<Zb_Jp_Tgtp_Model>();
                     List<Zb_Jp_Tgtp_Model> ft_pic = new List<Zb_Jp_Tgtp_Model>();
                     var zt = tgtplb.Where(m => m.tplx == Models.Enums.TP_LX.窄图);
@@ -857,6 +864,7 @@ namespace Calculation.JS
                             case Base_Config_Rgsj.上周_认购建面体量:
                             case Base_Config_Rgsj.上周_认购建面均价:
                             case Base_Config_Rgsj.上周_认购金额:
+                            case Base_Config_Rgsj.上周_本周到访量:
                                 {
                                     if (temp_ba_sz != null)
                                     {
@@ -877,6 +885,8 @@ namespace Calculation.JS
                             case Base_Config_Rgsj.本周_认购建面体量:
                             case Base_Config_Rgsj.本周_认购建面均价:
                             case Base_Config_Rgsj.本周_认购金额:
+                            case Base_Config_Rgsj.本周_本周到访量:
+
                                 {
                                     if (temp_ba_bz != null)
                                     {
@@ -896,12 +906,20 @@ namespace Calculation.JS
                             case Base_Config_Rgsj.本周_认购套均总价环比: { }; break;
                             default:
                                 {
-                                    if (temp_ba_bz != null)
+                                    try
                                     {
-                                        dr1[dt.Columns[j].ColumnName] = temp_ba_bz[dt.Columns[j].ColumnName];
+                                        if (temp_ba_bz != null)
+                                        {
+                                            dr1[dt.Columns[j].ColumnName] = temp_ba_bz[dt.Columns[j].ColumnName];
+                                        }
+                                        else
+                                            dr1[dt.Columns[j].ColumnName] = "0";
                                     }
-                                    else
-                                        dr1[dt.Columns[j].ColumnName] = "0";
+                                    catch (Exception)
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = "-";
+                                    }
+                                    
                                 }; break;
 
                         }
@@ -1032,7 +1050,7 @@ namespace Calculation.JS
                                 }; break;
                             case Base_Config_Jzgj.竞争格局_主力面积区间:
                                 {
-                                    dr1[dt.Columns[j].ColumnName] = item.zlmjqj;
+                                    dr1[dt.Columns[j].ColumnName] =string.Join(",",item.zlmjqj);
                                 }; break;
                             case Base_Config_Jzgj.竞争格局名称:
                                 {
@@ -1110,7 +1128,7 @@ namespace Calculation.JS
                                         dr1[dt.Columns[j].ColumnName] = "0";
                                     }
                                 }; break;
-                            case Base_Config_Rgsj.本周到访量:
+                            case Base_Config_Rgsj.本周_本周到访量:
                                 {
                                     if (temp_ba_bz != null)
                                     {
@@ -1138,10 +1156,10 @@ namespace Calculation.JS
                                 }; break;
                             case Base_Config_Rgsj.本周_认购套内均价环比: { }; break;
                             case Base_Config_Rgsj.本周_认购套均总价环比: { }; break;
-                            case Base_Config_Rgsj.活动:
-                            case Base_Config_Rgsj.营销动作:
-                            case Base_Config_Rgsj.优惠:
-                            case Base_Config_Rgsj.变化原因:
+                            case Base_Config_Rgsj.本周_活动:
+                            case Base_Config_Rgsj.本周_营销动作:
+                            case Base_Config_Rgsj.本周_优惠:
+                            case Base_Config_Rgsj.本周_变化原因:
                                 {
                                     var obj = (from a in temp_ba_bz
                                                select new
@@ -1404,12 +1422,20 @@ namespace Calculation.JS
                             }; break;
                         default:
                             {
-                                if (temp_ba_bz != null)
+                                try
                                 {
-                                    dr1[dt.Columns[j].ColumnName] = temp_ba_bz[dt.Columns[j].ColumnName];
+                                    if (temp_ba_bz != null)
+                                    {
+                                        dr1[dt.Columns[j].ColumnName] = temp_ba_bz[dt.Columns[j].ColumnName];
+                                    }
+                                    else
+                                        dr1[dt.Columns[j].ColumnName] = "0";
                                 }
-                                else
+                                catch (Exception)
+                                {
                                     dr1[dt.Columns[j].ColumnName] = "0";
+                                }
+                                
                             }; break;
 
                     }

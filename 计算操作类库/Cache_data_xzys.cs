@@ -39,6 +39,11 @@ namespace Calculation.JS
                 bz = bztemp.Count() != 0 ? bztemp.CopyToDataTable() : new DataTable();
                 var sztemp = jbz.Select("zc=" + (Base_date.bz - 1));
                 sz = sztemp.Count() != 0 ? sztemp.CopyToDataTable() : new DataTable();
+                var ssztemp = jbz.Select("zc=" + (Base_date.bz - 2));
+                ssz = ssztemp.Count() != 0 ? sztemp.CopyToDataTable() : new DataTable();
+                var sssztemp = jbz.Select("zc=" + (Base_date.bz - 3));
+                sssz = sssztemp.Count() != 0 ? sztemp.CopyToDataTable() : new DataTable();
+
                 tz = ZB_Data_XZYS_DataProvider.GET_ZB(Base_date.tz_first, Base_date.tz_Last);
             }
             else
@@ -51,6 +56,11 @@ namespace Calculation.JS
                     bz = bztemp.Count() != 0 ? bztemp.CopyToDataTable() : new DataTable();
                     var sztemp = jbz.Select("zc=" + (Base_date.bz - 1));
                     sz = sztemp.Count() != 0 ? sztemp.CopyToDataTable() : new DataTable();
+                    var ssztemp = jbz.Select("zc=" + (Base_date.bz - 2));
+                    ssz = ssztemp.Count() != 0 ? sztemp.CopyToDataTable() : new DataTable();
+                    var sssztemp = jbz.Select("zc=" + (Base_date.bz - 3));
+                    sssz = sssztemp.Count() != 0 ? sztemp.CopyToDataTable() : new DataTable();
+
                     tz = ZB_Data_XZYS_DataProvider.GET_ZB(Base_date.tz_first, Base_date.tz_Last);
                     nowdatetask = new dateTask(null, Base_date.bn, null, Base_date.bz);
                 }
@@ -84,6 +94,20 @@ namespace Calculation.JS
         /// 上周
         /// </summary>
         public static DataTable sz
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 上上周
+        /// </summary>
+        public static DataTable ssz
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 上上上周
+        /// </summary>
+        public static DataTable sssz
         {
             get; set;
         }

@@ -29,7 +29,24 @@
 <script>
     function search()
     {
-        alert($('#mbmc').val());
+        var t = new Table_bs($('#zblb'));
+
+        $.ajax({
+            url: "/zb/get_zbmblx",
+            data: { "pagesize": 30, "pagenow": 1, "mbmc": $('#mbmc').val() },
+            type: "post",
+            success: function (data) {
+                var d = [];
+                for (var i = 0; i < data.length; i++) {
+                    d.push(['<input type="checkbox">', data[i].mbid, data[i].mbmc, '<a class="btn btn-primary waves-effect waves-light" href="/zb/zb_rwlb?mbid=' + data[i].mbid + '&mbmc=' + data[i].mbmc + '&xflx=' + data[i].xflx + '">发起任务</a>']);
+                }
+                option.data = d;
+                option.datacount = data.datacount;
+                option.pagenow = data.pagenow;
+                t.reflush(option);
+                t.load(option);
+            }
+        })
     }
     function cleardata(a) {
         $(a).on("hidden.bs.modal", function () {
@@ -96,6 +113,12 @@
             }
             _box.find('tbody').append($(html_tbody));
         }
+        this.reflush = function (option) {
+            _box.empty();
+            this.init();
+            //option.data = [];
+            //this.load(option);
+        }
     }
 
     var option = {
@@ -106,23 +129,9 @@
         
     }
 
-    $(function () {
-        var t = new Table_bs($('#zblb'));
 
-        $.ajax({
-            url: "/zb/get_zbmblx",
-            data: { "pagesize": 8, "pagenow": 1 },
-            type:"post",
-            success: function (data) {
-                var d =[];
-                for (var i = 0; i < data.length; i++) {
-                    d.push(['<input type="checkbox">', data[i].mbid, data[i].mbmc, '<a class="btn btn-primary waves-effect waves-light" href="/zb/zb_rwlb?mbid=' + data[i].mbid + '&mbmc=' + data[i].mbmc + '&xflx=' + data[i].xflx + '">发起任务</a>']);
-                }
-                option.data = d;
-                t.load(option);
-            }
-        })
-       
+    $(function () {
+        search();
     });
 </script>
     }
