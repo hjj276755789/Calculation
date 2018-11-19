@@ -833,7 +833,75 @@ namespace Calculation.JS
             return null;
         }
 
-
+        /// <summary>
+        /// 区域周度备案排名
+        /// </summary>
+        /// <param name="yt">业态参数，可以为空</param>
+        /// <param name="sl">展示数量</param>
+        /// <returns></returns>
+        public virtual System.Data.DataTable _plus_qy_ba_zdpm(string [] yt,int sl, System.Data.DataTable dt)
+        {
+            var data = (from a in Cache_data_cjjl.bz.AsEnumerable()
+                        where yt != null && yt.Length > 0 ? yt.Contains(a["yt"]) : true
+                        group a by new
+                        {
+                            qy = a["qy"]
+                        } into g
+                        select new
+                        {
+                            qy = g.Key.qy,
+                            cjts = g.Sum(m => m["ts"].ints()),
+                            cjje = g.Sum(m => m["cjje"].longs()).je_y(),
+                            jzmj = g.Sum(m => m["jzmj"].doubls()).mj(),
+                            tnmj = g.Sum(m => m["tnmj"].doubls()).mj(),
+                        }
+                        into b
+                        orderby b.cjts descending
+                        select b).Take(sl).ToList();
+            foreach (var item in data)
+            {
+                DataRow dr = dt.NewRow();
+                foreach (DataColumn col in dt.Columns)
+                {
+                    switch (col.ColumnName)
+                    {
+                        case Base_Config_TJXM.区域:
+                            {
+                                dr[col.ColumnName] = item.qy;
+                            };break;
+                        case Base_Config_TJXM.备案套数:
+                            {
+                                dr[col.ColumnName] = item.cjts;
+                            };break;
+                        case Base_Config_TJXM.建筑面积:
+                            {
+                                dr[col.ColumnName] = item.jzmj;
+                            };break;
+                        case Base_Config_TJXM.套内面积:
+                            {
+                                dr[col.ColumnName] = item.tnmj;
+                            }; break;
+                        case Base_Config_TJXM.成交金额:
+                            {
+                                dr[col.ColumnName] = item.cjje.je_wy();
+                            }; break;
+                        case Base_Config_TJXM.建面均价: {
+                                dr[col.ColumnName] = (item.cjje / item.jzmj).je_y();
+                            };break;
+                        case Base_Config_TJXM.套内均价:
+                            {
+                                dr[col.ColumnName] = (item.cjje / item.tnmj).je_y();
+                            }; break;
+                        case Base_Config_TJXM.套均总价:
+                            {
+                                dr[col.ColumnName] = (item.cjje / item.cjts).je_y();
+                            }; break;
+                    }
+                }
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
 
 
         public DataRow GET_ROW(string yt, DataRow dr1, System.Data.DataTable dt,

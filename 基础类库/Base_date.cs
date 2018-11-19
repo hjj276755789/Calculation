@@ -103,7 +103,7 @@ namespace Calculation.Base
 
 
         #region 周计算方法
-        private static DateTime CalcWeekDay_first(int year, int week)
+        public static DateTime CalcWeekDay_first(int year, int week)
         {
             DateTime first = DateTime.MinValue;
             //指定年范围  
@@ -114,7 +114,7 @@ namespace Calculation.Base
             first = start.AddDays((7 - startWeekDay) + (week - 2) * 7 +1);
             return first;
         }
-        private static DateTime CalcWeekDay_last(int year, int week)
+        public static DateTime CalcWeekDay_last(int year, int week)
         {
             DateTime first = DateTime.MinValue;
             DateTime last = DateTime.MinValue;
@@ -177,6 +177,10 @@ namespace Calculation.Base
         {
             by_First = new DateTime(year, month, 1);
             by_Last = by_First.AddDays(DateTime.DaysInMonth(year, month) - 1);
+            return by_First.ToString("M.d") + "-" + by_Last.ToString("M.d");
+        }
+        public static string GET_NFYFMC(DateTime by_First, DateTime by_Last)
+        {
             return by_First.ToString("M.d") + "-" + by_Last.ToString("M.d");
         }
         /// <summary>

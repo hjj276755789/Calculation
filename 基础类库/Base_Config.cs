@@ -13,12 +13,6 @@ namespace Calculation.Base
             横向 = 1,
             纵向 = 2
         }
-
-     
-
- 
-
-      
     }
     /// <summary>
     /// _认购数据
@@ -172,6 +166,24 @@ namespace Calculation.Base
         public const string 业态 = "yt";
         public const string 组团 = "zt";
         public static string [] _竞争格局参数名称 = { "jzgjmc", "zlmjqj", "lpmc", "yt" , "zt" };
+    }
+    /// <summary>
+    /// 统计项目
+    /// </summary>
+    public class Base_Config_TJXM
+    {
+        public const string 区域 = "qy";
+        public const string 组团 = "zt";
+        public const string 开发商 = "kfs";
+        public const string 楼盘名称 = "lpmc";
+        public const string 备案套数 = "ts";
+        public const string 建筑面积 = "jzmj";
+        public const string 套内面积 = "tnmj";
+        public const string 成交金额 = "cjje";
+        public const string 建面均价 = "jmjj";
+        public const string 套内均价 = "tnjj";
+        public const string 套均总价 = "tjzj";
+        public static string[] _统计项目参数名称 = { "qy","zt", "kfs","lpmc","ts", "jzmj", "tnmj", "cjje", "jmjj","tnjj","tjzj" };
     }
 
 }

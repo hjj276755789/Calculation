@@ -746,7 +746,7 @@ namespace Calculation.JS
                                 {
 
                                     dr1[1] = jpcjxx[Base_Config_Rgsj.本周_认购套数._ConfigCjbaMc()].ints();
-                                    dr1[2] = jpcjxx[Base_Config_Rgsj.本周_认购套内均价._ConfigCjbaMc()].ints();
+                                    dr1[2] = jpcjxx[Base_Config_Rgsj.本周_认购建面均价._ConfigCjbaMc()].ints();
                                 }
                                 else
                                 {
@@ -775,6 +775,186 @@ namespace Calculation.JS
                     jzgjt.Columns.Add("");
                     jzgjt.Columns.Add("成交套数", typeof(int));
                     jzgjt.Columns.Add("建面均价", typeof(double));
+                    foreach (var item_jp in item.jpxmlb)
+                    {
+                        if (item_jp.xfytcs != null)
+                        {
+                            for (int i = 0; i < item_jp.xfytcs.Length; i++)
+                            {
+
+                                var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item_jp.xfytcs[i]).FirstOrDefault();
+
+                                DataRow dr1 = jzgjt.NewRow();
+                                dr1[0] = item_jp.lpcs[0] + "(" + item_jp.xfytcs[i] + ")";
+                                if (jpcjxx != null)
+                                {
+
+                                    dr1[1] = jpcjxx[Base_Config_Rgsj.本周_认购套数._ConfigCjbaMc()].ints();
+                                    dr1[2] = jpcjxx[Base_Config_Rgsj.本周_认购建面均价._ConfigCjbaMc()].ints();
+                                    jzgjt.Rows.Add(dr1);
+                                }
+                                else
+                                {
+                                    if (item.xfytcs != null && item_jp.xfytcs.Contains(item.xfytcs[i]))
+                                    {
+                                        dr1[1] = 0;
+                                        dr1[2] = 0;
+                                        jzgjt.Rows.Add(dr1);
+                                    }
+                                    else
+                                        continue;
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item_jp.ytcs[0]).FirstOrDefault();
+
+                            DataRow dr1 = jzgjt.NewRow();
+                            dr1[0] = item_jp.lpcs[0] + "(" + item_jp.ytcs[0] + ")";
+                            if (jpcjxx != null)
+                            {
+                                dr1[1] = jpcjxx[Base_Config_Rgsj.本周_认购套数._ConfigCjbaMc()].ints();
+                                dr1[2] = jpcjxx[Base_Config_Rgsj.本周_认购建面均价._ConfigCjbaMc()].ints();
+                                jzgjt.Rows.Add(dr1);
+                            }
+                            else
+                            {
+                                if (item_jp.ytcs.Contains(item.ytcs[0]))
+                                {
+                                    dr1[1] = 0;
+                                    dr1[2] = 0;
+                                    jzgjt.Rows.Add(dr1);
+                                }
+                                else
+                                    continue;
+                            }
+                        }
+
+                    }
+                    Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
+                    t.AddClone(page);
+
+
+                }
+
+
+                #endregion
+
+                #region 大业态
+
+
+                else
+                {
+                    IAutoShape text1 = (IAutoShape)page.Shapes[2];
+                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text,pagenow, item.ytcs[0]);
+                    //数据
+                    System.Data.DataTable jzgjt = new System.Data.DataTable();
+                    jzgjt.Columns.Add("");
+                    jzgjt.Columns.Add("成交套数", typeof(int));
+                    jzgjt.Columns.Add("建面均价", typeof(double));
+                    foreach (var item_jp in item.jpxmlb)
+                    {
+                        string jpyt = item_jp.ytcs == null ? item.ytcs[0] : item_jp.ytcs[0];
+                        var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == jpyt).FirstOrDefault();
+
+                        DataRow dr1 = jzgjt.NewRow();
+                        dr1[0] = item_jp.lpcs[0] + "(" + item.ytcs[0] + ")";
+                        if (jpcjxx != null)
+                        {
+
+                            dr1[1] = jpcjxx[Base_Config_Rgsj.本周_认购套数._ConfigCjbaMc()].ints();
+                            dr1[2] = jpcjxx[Base_Config_Rgsj.本周_认购建面均价._ConfigCjbaMc()].ints();
+                        }
+                        else
+                        {
+                            dr1[1] = 0;
+                            dr1[2] = 0;
+                        }
+                        jzgjt.Rows.Add(dr1);
+
+
+                    }
+                    Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
+                    t.AddClone(page);
+                }
+
+                #endregion
+
+                return t;
+            }
+            catch (Exception e)
+            {
+                Base_Log.Log(e.Message);
+                return null;
+            }
+        }
+
+        public ISlideCollection _plus_jp_dyt_jzgj_taonei(ISlide sld, JP_BA_INFO item, string pagenow)
+        {
+            try
+            {
+                var p = new Presentation();
+                var t = p.Slides;
+                t.RemoveAt(0);
+                var page = sld;
+                #region 商务
+                if (item.ytcs[0] == "商务")
+                {
+
+                    IAutoShape text1 = (IAutoShape)page.Shapes[2];
+                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text, pagenow, item.ytcs[0]);
+                    //数据
+                    System.Data.DataTable jzgjt = new System.Data.DataTable();
+                    jzgjt.Columns.Add("");
+                    jzgjt.Columns.Add("成交套数", typeof(int));
+                    jzgjt.Columns.Add("套内均价", typeof(double));
+                    //图表
+                    Aspose.Slides.Charts.IChart chart = (Aspose.Slides.Charts.IChart)page.Shapes[3];
+                    foreach (var item_jp in item.jpxmlb)
+                    {
+                        if (item_jp.hxcs != null)
+                        {
+                            for (int i = 0; i < item_jp.hxcs.Length; i++)
+                            {
+                                var jpcjxx = Cache_data_rgsj.bz.AsEnumerable().Where(a => a["xm"].ToString() == item_jp.lpcs[0] && a["yt"].ToString() == item_jp.hxcs[i]).FirstOrDefault();
+
+                                DataRow dr1 = jzgjt.NewRow();
+                                dr1[0] = item_jp.lpcs[0] + "(" + item.hxcs[i] + ")";
+                                if (jpcjxx != null)
+                                {
+
+                                    dr1[1] = jpcjxx[Base_Config_Rgsj.本周_认购套数._ConfigCjbaMc()].ints();
+                                    dr1[2] = jpcjxx[Base_Config_Rgsj.本周_认购套内均价._ConfigCjbaMc()].ints();
+                                }
+                                else
+                                {
+                                    dr1[1] = 0;
+                                    dr1[2] = 0;
+                                }
+                                jzgjt.Rows.Add(dr1);
+                            }
+
+                        }
+                    }
+                    Office_Charts.Chart_jp_fudi_chart1(page, jzgjt, 3);
+                    t.AddClone(page);
+
+                }
+                #endregion
+
+                #region 别墅
+
+
+                else if (item.ytcs[0] == "别墅")
+                {
+                    IAutoShape text1 = (IAutoShape)page.Shapes[2];
+                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text, pagenow, item.ytcs[0]);
+                    System.Data.DataTable jzgjt = new System.Data.DataTable();
+                    jzgjt.Columns.Add("");
+                    jzgjt.Columns.Add("成交套数", typeof(int));
+                    jzgjt.Columns.Add("套内均价", typeof(double));
                     foreach (var item_jp in item.jpxmlb)
                     {
                         if (item_jp.xfytcs != null)
@@ -848,12 +1028,12 @@ namespace Calculation.JS
                 else
                 {
                     IAutoShape text1 = (IAutoShape)page.Shapes[2];
-                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text,pagenow, item.ytcs[0]);
+                    text1.TextFrame.Text = string.Format(text1.TextFrame.Text, pagenow, item.ytcs[0]);
                     //数据
                     System.Data.DataTable jzgjt = new System.Data.DataTable();
                     jzgjt.Columns.Add("");
                     jzgjt.Columns.Add("成交套数", typeof(int));
-                    jzgjt.Columns.Add("建面均价", typeof(double));
+                    jzgjt.Columns.Add("套内均价", typeof(double));
                     foreach (var item_jp in item.jpxmlb)
                     {
                         string jpyt = item_jp.ytcs == null ? item.ytcs[0] : item_jp.ytcs[0];
@@ -865,7 +1045,7 @@ namespace Calculation.JS
                         {
 
                             dr1[1] = jpcjxx[Base_Config_Rgsj.本周_认购套数._ConfigCjbaMc()].ints();
-                            dr1[2] = jpcjxx[Base_Config_Rgsj.本周_认购建面均价._ConfigCjbaMc()].ints();
+                            dr1[2] = jpcjxx[Base_Config_Rgsj.本周_认购套内均价._ConfigCjbaMc()].ints();
                         }
                         else
                         {

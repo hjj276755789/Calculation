@@ -598,6 +598,130 @@ namespace Calculation.Base
             }
             table.Rows.RemoveAt(3, false);
         }
+
+        public static void SetJP_XIANGYU_JINGPINGBEIAN_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[1][2].TextFrame.Text = string.Format("备案套数（{0}）",Base_date.GET_ZCMC(Base_date.bn, Base_date.bz));
+            table.Rows[1][10].TextFrame.Text = string.Format("备案套数（{0}）", Base_date.GET_ZCMC(Base_date.bn, Base_date.bz-1));
+            table.Rows[1][14].TextFrame.Text = string.Format("累计套数（{0}）", Base_date.GET_NFYFMC(Base_date.by_First, Base_date.bz_Last));
+            table.Rows[1][18].TextFrame.Text = string.Format("累计套数（{0}）", "1.1-" + Base_date.bz_Last.ToString("M.d"));
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[2];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(2, false);
+        }
+        public static void SetJP_XIANGYU_biaoxian_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[0][6].TextFrame.Text =  Base_date.GET_ZCMC(Base_date.bn, Base_date.bz -1);
+            table.Rows[0][12].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz );
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[3];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(3, false);
+        }
+        public static void SetJP_XIANGYU_ZHOUBAO_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[2][1].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 3);
+            table.Rows[2][2].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz -2);
+            table.Rows[2][3].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz -1);
+            table.Rows[2][4].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            table.Rows[2][5].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz-3);
+            table.Rows[2][6].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz-2);
+            table.Rows[2][7].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz-1);
+            table.Rows[2][8].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[3];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(3, false);
+        }
+
+        public static void SetJP_CHONGQINGSHICHANGYINGXIAOBU_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[1][3].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 3);
+            table.Rows[1][5].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 2);
+            table.Rows[1][7].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 1);
+            table.Rows[1][9].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            table.Rows[1][11].TextFrame.Text = string.Format("{0}月备案", Base_date.sy_First.Month);
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[3];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(3, false);
+        }
+
+
+        public static void SetJP_CHONGQINGGONGSIYINGXIAOBU_XIAOSHOUE_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[1][2].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 3);
+            table.Rows[1][3].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 2);
+            table.Rows[1][4].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz - 1);
+            table.Rows[1][5].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[2];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(2, false);
+        }
+
+        public static void SetJP_CHONGQING18TI_Table(ISlide sld, System.Data.DataTable dt, int index, Office_ChartStyle style, int? xsts)
+        {
+
+            ITable table = (ITable)sld.Shapes[index];
+            table.Rows[0][4].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz-1);
+            table.Rows[0][10].TextFrame.Text = Base_date.GET_ZCMC(Base_date.bn, Base_date.bz);
+            foreach (System.Data.DataRow item in dt.Rows)
+            {
+                IRow row = table.Rows[3];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    row[i].TextFrame.Text = item[i].ToString();
+
+                }
+                table.Rows.AddClone(row, false);
+            }
+            table.Rows.RemoveAt(3, false);
+        }
     }
 
 }

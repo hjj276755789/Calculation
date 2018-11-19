@@ -42,9 +42,10 @@ namespace Calculation.JS
 
 
 
-                    #region 格局统计
+                    
                     var page3 = temp[3];
                     DataTable dt = new DataTable();
+                    #region 格局统计
                     if (item.ytcs[0] == "商务" || item.ytcs[0] == "商铺") {
                         dt.Columns.Add(Base_Config_Jzgj.项目名称);
 
@@ -61,7 +62,7 @@ namespace Calculation.JS
 
                         IAutoShape text2 = (IAutoShape)page2.Shapes[2];
                         text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.bamc);
-                        #endregion
+                     
                         if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                         {
                             dt = GET_JPXM_BX(dt, item.jpxmlb);
@@ -69,8 +70,9 @@ namespace Calculation.JS
                             t.AddClone(page2);
                         }
                     }
-
-                    else {
+                    #endregion
+                    else
+                    {
                         dt.Columns.Add(Base_Config_Jzgj.项目名称);
 
                         dt.Columns.Add(Base_Config_Cjba.本周_建筑面积);
