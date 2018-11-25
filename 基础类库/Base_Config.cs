@@ -20,8 +20,8 @@ namespace Calculation.Base
     public class Base_Config_Rgsj
     {
         
-        public const string 主力建面区间态 = "zljmqj";
-        public const string 主力套内面积区间 = "zltnqj";
+        public const string 本周_主力建面区间 = "bz_zljmqj";
+        public const string 本周_主力套内面积区间 = "bz_zltnqj";
         public const string 新开套内均价 = "xktnjj";
         public const string 新开建面均价 = "xkjmjj";
 
@@ -29,7 +29,7 @@ namespace Calculation.Base
         public const string 本周_新开销售套数 = "bz_xkxsts";
         public const string 本周_新开建面均价 = "bz_xkjmjj";
         public const string 本周_新开套内均价 = "bz_xktnjj";
-        public const string 本周_套均总价 = "bz_tjzj";
+        public const string 本周_套均总价 = "bzrg_tjzj";
         public const string 本周_认购套数     = "bz_rgts";
         public const string 本周_认购套内均价 = "bz_rgtnjj";
         public const string 本周_认购建面均价 = "bz_rgjmjj";
@@ -61,7 +61,7 @@ namespace Calculation.Base
         public const string 上周_新开销售套数 = "sz_xkxsts";
         public const string 上周_新开建面均价 = "sz_xkjmjj";
         public const string 上周_新开套内均价 = "sz_xktnjj";
-        public const string 上周_套均总价 = "sz_tjzj";
+        public const string 上周_套均总价 = "szrg_tjzj";
         public const string 上周_认购套数     = "sz_rgts";
         public const string 上周_认购套内均价 = "sz_rgtnjj";
         public const string 上周_认购建面均价 = "sz_rgjmjj";
@@ -69,39 +69,46 @@ namespace Calculation.Base
         public const string 上周_认购建面体量 = "sz_rgjmtl";
         public const string 上周_认购金额     = "sz_rgje";
         public const string 上周_本周到访量 = "sz_bzdfl";
+        public const string 上周_主力建面区间 = "sz_zljmqj";
+        public const string 上周_主力套内面积区间 = "sz_zltnqj";
+        public const string 上周_本周来电 = "sz_bzld";
+        
 
         public const string 上上周_新开套数 = "ssz_xkts";
         public const string 上上周_新开销售套数 = "ssz_xkxsts";
         public const string 上上周_新开建面均价 = "ssz_xkjmjj";
         public const string 上上周_新开套内均价 = "ssz_xktnjj";
-        public const string 上上周_套均总价 = "ssz_tjzj";
-        public const string 上上周_认购套数 = "ssz_rgts";
+        public const string 上上周_套均总价 = "sszrg_tjzj";
+        public const string 上上周_认购套数 = "sszrgts";
         public const string 上上周_认购套内均价 = "ssz_rgtnjj";
         public const string 上上周_认购建面均价 = "ssz_rgjmjj";
         public const string 上上周_认购套内体量 = "ssz_rgtntl";
         public const string 上上周_认购建面体量 = "ssz_rgjmtl";
         public const string 上上周_认购金额 = "ssz_rgje";
-
+        public const string 上上周_主力建面区间 = "ssz_zljmqj";
+        public const string 上上周_主力套内面积区间 = "ssz_zltnqj";
 
         public const string 上上上周_新开套数 = "sssz_xkts";
         public const string 上上上周_新开销售套数 = "sssz_xkxsts";
         public const string 上上上周_新开建面均价 = "sssz_xkjmjj";
         public const string 上上上周_新开套内均价 = "sssz_xktnjj";
-        public const string 上上上周_套均总价 = "sssz_tjzj";
-        public const string 上上上周_认购套数 = "sssz_rgts";
+        public const string 上上上周_套均总价 = "ssszrg_tjzj";
+        public const string 上上上周_认购套数 = "ssszrgts";
         public const string 上上上周_认购套内均价 = "sssz_rgtnjj";
         public const string 上上上周_认购建面均价 = "sssz_rgjmjj";
         public const string 上上上周_认购套内体量 = "sssz_rgtntl";
         public const string 上上上周_认购建面体量 = "sssz_rgjmtl";
         public const string 上上上周_认购金额 = "sssz_rgje";
+        public const string 上上上周_主力建面区间 = "sssz_zljmqj";
+        public const string 上上上周_主力套内面积区间 = "sssz_zltnqj";
 
 
 
-        public static string[] _认购数据 = {"xkts", "xkxsts", "zljmqj", "zltnqj", "xktnjj", "xkjmjj",
-                                            "bz_xkts","bz_xkxsts","bz_xkjmjj","bz_xktnjj","bz_tjzj","bz_rgts","bz_rgtnjj","bz_rgjmjj","bz_rgtntl","bz_rgjmtl","bz_rgje",
-                                            "sz_xkts","sz_xkxsts","sz_xkjmjj","sz_xktnjj","sz_tjzj","sz_rgts","sz_rgtnjj","sz_rgjmjj","sz_rgtntl","sz_rgjmtl","sz_rgje","sz_bzdfl",
-                                            "ssz_xkts","ssz_xkxsts","ssz_xkjmjj","ssz_xktnjj","ssz_tjzj","ssz_rgts","ssz_rgtnjj","ssz_rgjmjj","ssz_rgtntl","ssz_rgjmtl","ssz_rgje",
-                                            "sssz_xkts","sssz_xkxsts","sssz_xkjmjj","sssz_xktnjj","sssz_tjzj","sssz_rgts","sssz_rgtnjj","sssz_rgjmjj","sssz_rgtntl","sssz_rgjmtl","sssz_rgje",
+        public static string[] _认购数据 = {"xkts", "xkxsts", "bz_zljmqj", "bz_zltnqj", "xktnjj", "xkjmjj",
+                                            "bz_xkts","bz_xkxsts","bz_xkjmjj","bz_xktnjj","bzrg_tjzj","bz_rgts","bz_rgtnjj","bz_rgjmjj","bz_rgtntl","bz_rgjmtl","bz_rgje",
+                                            "sz_xkts","sz_xkxsts","sz_xkjmjj","sz_xktnjj","sszrg_tjzj","sz_rgts","sz_rgtnjj","sz_rgjmjj","sz_rgtntl","sz_rgjmtl","sz_rgje","sz_bzdfl","sz_zljmqj", "sz_zltnqj","sz_bzld",
+                                            "ssz_xkts","ssz_xkxsts","ssz_xkjmjj","ssz_xktnjj","sszrg_tjzj","ssz_rgts","ssz_rgtnjj","ssz_rgjmjj","ssz_rgtntl","ssz_rgjmtl","ssz_rgje","ssz_zljmqj", "ssz_zltnqj",
+                                            "sssz_xkts","sssz_xkxsts","sssz_xkjmjj","sssz_xktnjj","ssszrg_tjzj","sssz_rgts","sssz_rgtnjj","sssz_rgjmjj","sssz_rgtntl","sssz_rgjmtl","sssz_rgje","sssz_zljmqj", "sssz_zltnqj",
                                             "bz_cjtnhb", "bz_tnjjhb", "bz_bhyy", "bz_bzkc", "bz_bzld", "bz_bzdfl", "bz_yh", "bz_yxdz", "bz_hd", "bz_xzjtyj"
                                             };
 

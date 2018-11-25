@@ -126,6 +126,10 @@ namespace Calculation.JS
                         #region 竞品市场表现
 
                         var page3 = temp[2];
+
+                        IAutoShape text1 = (IAutoShape)page3.Shapes[3];
+                        text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.ytcs[0]);
+
                         DataTable dt_jpscbx = new DataTable();
                         dt_jpscbx.Columns.Add(Base_Config_Jzgj.竞争格局名称);
                         dt_jpscbx.Columns.Add(Base_Config_Jzgj.项目名称);
@@ -183,7 +187,7 @@ namespace Calculation.JS
                             dt1 = GET_JPXM_BX(dt1, item.jpxmlb);
                             Office_Tables.SetTable(page4, dt1, 1, null, null);
                         }
-                        t.AddClone(page3);
+                        t.AddClone(page4);
                         Base_Log.Log("近期动作开始");
 
 
@@ -346,14 +350,14 @@ namespace Calculation.JS
                 for (int i = 0; i < data4_0.Count; i++)
                 {
                     DataRow dr = dt4_0.NewRow();
-                    dr["pm"] = i;
+                    dr["pm"] = i+1;
                     dr["lpmc"] = data4_0[i].lpmc;
                     dr["qy"] = data4_0[i].qy;
                     dr["zt"] = data4_0[i].zt;
                     dr["cjts"] = data4_0[i].cjts;
-                    dr["jzmj"] = data4_0[i].jzmj;
-                    dr["cjje"] = data4_0[i].cjje;
-                    dr["jmjj"] = data4_0[i].jmjj;
+                    dr["jzmj"] = data4_0[i].jzmj.mj();
+                    dr["cjje"] = data4_0[i].cjje.je_wy();
+                    dr["jmjj"] = data4_0[i].jmjj.je_y();
                     dt4_0.Rows.Add(dr);
                 }
                 #endregion
@@ -391,7 +395,7 @@ namespace Calculation.JS
                     
                     if (item.jpxmlb != null && item.jpxmlb.Count > 0)
                     {
-                        data5_0 = GET_JPXM_BX(data5_0, item.jpxmlb);
+                        data5_0 = GET_JPXM_ZFX(data5_0, item.jpxmlb);
                         Office_Tables.SetJP_XIANGYU_ZHOUBAO_Table(page5, data5_0, 0, null, null);
                     }
                     IAutoShape text5_1 = (IAutoShape)page5.Shapes[1];
@@ -425,6 +429,66 @@ namespace Calculation.JS
                 return null;
             }
         }
+
+        public ISlideCollection _plus_jp_xiangyu_3(string str, int cjbh)
+        {
+            try
+            {
+
+                var param = Cache_param_zb._param_jp.Where(m => m.cjid == cjbh);
+                var p = new Presentation();
+                var t = p.Slides;
+                t.RemoveAt(0);
+                foreach (var item in param)
+                {
+                        var tp = new Presentation(str);
+                        var temp = tp.Slides;
+                        var page1 = temp[0];
+
+                        IAutoShape text1 = (IAutoShape)page1.Shapes[0];
+                        text1.TextFrame.Text = string.Format(text1.TextFrame.Text, item.bamc, item.ytcs[0]);
+
+                        DataTable dt_jpbasj = new DataTable();
+                        dt_jpbasj.Columns.Add(Base_Config_Jzgj.项目名称);
+                        dt_jpbasj.Columns.Add(Base_Config_Jzgj.业态);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba.本周_备案套数);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba.本周_建筑面积);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba.本周_建面均价);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba.本周_套均总价);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba_bh.本周_套数变化);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba.本周_备案套数环比);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba_bh.本周_价格变化);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba.本周_建面均价环比);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba.上周_备案套数);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba.上周_建筑面积);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba.上周_建面均价);
+                        dt_jpbasj.Columns.Add(Base_Config_Cjba.上周_套均总价);
+
+
+                        //获取本案数据
+                        dt_jpbasj = GET_JPBA_BX(dt_jpbasj, item);
+                        if (item.jpxmlb != null && item.jpxmlb.Count > 0)
+                        {
+                            //获取竞品项目数据
+                            dt_jpbasj = GET_JPXM_ZFX(dt_jpbasj, item.jpxmlb);
+                            Office_Tables.SetJP_XIANGYU_JINGPINGBEIAN_1_Table(page1, dt_jpbasj, 1, null, null);
+                            t.AddClone(page1);
+                        }
+
+
+                    }
+
+                return t;
+            }
+            catch (Exception e)
+            {
+                Base_Log.Log(e.Message);
+                return null;
+            }
+        }
+
+
+
         public System.Data.DataTable GET_JPXM_BX(System.Data.DataTable dt, List<JP_JPXM_INFO> jpxm)
         {
             foreach (var item in jpxm)
@@ -614,6 +678,120 @@ namespace Calculation.JS
 
 
 
+        public System.Data.DataTable GET_JPXM_ZFX(System.Data.DataTable dt, List<JP_JPXM_INFO> jpxm)
+        {
+            foreach (var item in jpxm)
+            {
+                if (item.ytcs == null || item.ytcs.Length <= 0)
+                {
+                    DataRow dr1 = dt.NewRow();
+
+                    #region 数据准备
+                    //竞品业态
+                 
+                    var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0]);
+                    var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0]);
+                    var temp_cjba_ssz = Cache_data_cjjl.ssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0]);
+                    var temp_cjba_sssz = Cache_data_cjjl.sssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0]);
+
+                   
+                    #endregion
+
+                    dt.Rows.Add(GET_ROW_JP_ZFX("", dr1, dt, temp_cjba_bz, temp_cjba_sz, temp_cjba_ssz, temp_cjba_sssz, item));
+                }
+                else if (item.ytcs[0] == "别墅")
+                {
+                    for (int i = 0; i < item.xfytcs.Length; i++)
+                    {
+
+                        DataRow dr1 = dt.NewRow();
+
+                        #region 数据准备
+                        //竞品业态
+                        var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+                        var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+                        var temp_cjba_ssz = Cache_data_cjjl.ssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+                        var temp_cjba_sssz = Cache_data_cjjl.sssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+                        //本周本案认购数据
+                        #endregion
+
+                        dt.Rows.Add(GET_ROW_JP_ZFX(item.xfytcs[i], dr1, dt, temp_cjba_bz, temp_cjba_sz, temp_cjba_ssz, temp_cjba_sssz, item));
+
+                    }
+                }
+                else if (item.ytcs[0] == "商务")
+                {
+                    if (item.hxcs != null && item.hxcs.Length > 0)
+                    {
+                        for (int i = 0; i < item.hxcs.Length; i++)
+                        {
+                            DataRow dr1 = dt.NewRow();
+
+                            #region 数据准备
+                            //竞品业态
+                            var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["hx"].ToString() == item.hxcs[i]);
+                            var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["hx"].ToString() == item.hxcs[i]);
+                            var temp_cjba_ssz = Cache_data_cjjl.ssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["hx"].ToString() == item.hxcs[i]);
+                            var temp_cjba_sssz = Cache_data_cjjl.sssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["hx"].ToString() == item.hxcs[i]);
+                            #endregion
+
+                            dt.Rows.Add(GET_ROW_JP_ZFX(item.hxcs[i], dr1, dt, temp_cjba_bz, temp_cjba_sz, temp_cjba_ssz, temp_cjba_sssz, item));
+                        }
+                    }
+                    else if(item.xfytcs != null && item.xfytcs.Length > 0)
+                    {
+                        for (int i = 0; i < item.hxcs.Length; i++)
+                        {
+                            DataRow dr1 = dt.NewRow();
+
+                            #region 数据准备
+                            //竞品业态
+                            var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+                            var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+                            var temp_cjba_ssz = Cache_data_cjjl.ssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+                            var temp_cjba_sssz = Cache_data_cjjl.sssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && m["xfyt"].ToString() == item.xfytcs[i]);
+                            #endregion
+
+                            dt.Rows.Add(GET_ROW_JP_ZFX(item.xfytcs[i], dr1, dt, temp_cjba_bz, temp_cjba_sz, temp_cjba_ssz, temp_cjba_sssz, item));
+                        }
+                    }
+                    else
+                    {
+
+                            DataRow dr1 = dt.NewRow();
+
+                            #region 数据准备
+                            //竞品业态
+                            var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && item.ytcs.Contains( m["yt"].ToString()));
+                            var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && item.ytcs.Contains(m["yt"].ToString()));
+                            var temp_cjba_ssz = Cache_data_cjjl.ssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && item.ytcs.Contains(m["yt"].ToString()));
+                            var temp_cjba_sssz = Cache_data_cjjl.sssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && item.ytcs.Contains(m["yt"].ToString()));
+                            #endregion
+
+                            dt.Rows.Add(GET_ROW_JP_ZFX(string.Join(",",item.ytcs), dr1, dt, temp_cjba_bz, temp_cjba_sz, temp_cjba_ssz, temp_cjba_sssz, item));
+                    }
+                }
+                else
+                {
+                    DataRow dr1 = dt.NewRow();
+
+                    #region 数据准备
+                    var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && item.ytcs.Contains(m["yt"].ToString()));
+                    var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && item.ytcs.Contains(m["yt"].ToString()));
+                    var temp_cjba_ssz = Cache_data_cjjl.ssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && item.ytcs.Contains(m["yt"].ToString()));
+                    var temp_cjba_sssz = Cache_data_cjjl.sssz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] && item.ytcs.Contains(m["yt"].ToString()));
+                    #endregion
+
+                    dt.Rows.Add(GET_ROW_JP_ZFX(string.Join(",", item.ytcs), dr1, dt, temp_cjba_bz, temp_cjba_sz, temp_cjba_ssz, temp_cjba_sssz, item));
+                }
+
+
+
+            }
+
+
+            return dt;
+        }
 
         public DataRow GET_ROW(string yt, DataRow dr1, System.Data.DataTable dt,
                                 DataRow temp_rg_bz,
@@ -849,7 +1027,142 @@ namespace Calculation.JS
             return dr1;
         }
 
+        public DataRow GET_ROW_JP_ZFX(string yt, DataRow dr1, System.Data.DataTable dt,
+                              EnumerableRowCollection<DataRow> temp_cj_bz,
+                              EnumerableRowCollection<DataRow> temp_cj_sz,
+                              EnumerableRowCollection<DataRow> temp_cj_ssz,
+                              EnumerableRowCollection<DataRow> temp_cj_sssz,
+                              JP_JPXM_INFO item)
+        {
+            for (int j = 0; j < dt.Columns.Count; j++)
+            {
+                if (Base_Config_Cjba._备案数据.Contains(dt.Columns[j].ColumnName)|| Base_Config_Cjba_bh._备案数据.Contains(dt.Columns[j].ColumnName))
+                {
+                    switch (dt.Columns[j].ColumnName)
+                    {
+                        case Base_Config_Cjba.本周_备案套数: { dr1[dt.Columns[j].ColumnName] = temp_cj_bz != null ? temp_cj_bz.Sum(m => m[Base_Config_Cjba.本周_备案套数._ConfigCjbaMc()].ints()) : 0; }; break;
+                        case Base_Config_Cjba.本周_建筑面积: { dr1[dt.Columns[j].ColumnName] = temp_cj_bz != null ? temp_cj_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].ints()) : 0; }; break;
+                        case Base_Config_Cjba.本周_成交金额: { dr1[dt.Columns[j].ColumnName] = temp_cj_bz != null ? temp_cj_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].ints()) : 0; }; break;
 
+                        case Base_Config_Cjba.本周_建面均价:
+                            {
+                                if ((temp_cj_bz != null && temp_cj_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls()) != 0))
+                                    dr1[dt.Columns[j].ColumnName] = (temp_cj_bz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cj_bz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
+                                else
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = "0";
+                                }
+                            }; break;
+                        case Base_Config_Cjba.本周_套均总价:
+                            {
+                                long bz_cjje = temp_cj_bz.Sum(m => m["cjje"].ints());
+                                long bz_ts = temp_cj_bz.Sum(m => m["ts"].ints());
+                                dr1[dt.Columns[j].ColumnName] = bz_ts != 0 ? (bz_cjje / bz_ts).je_wy() : 0 ;
+                            }; break;
+                        case Base_Config_Cjba_bh.本周_套数变化:
+                            {
+                                long bz_ts = temp_cj_bz.Sum(m => m["ts"].ints());
+                                long sz_ts = temp_cj_sz.Sum(m => m["ts"].ints());
+                                dr1[dt.Columns[j].ColumnName] = bz_ts - sz_ts;
+                            }; break;
+                        case Base_Config_Cjba.本周_备案套数环比:
+                            {
+                                dr1[dt.Columns[j].ColumnName] = temp_cj_sz.Sum(m => m["ts"].ints())!=0&& temp_cj_bz.Sum(m => m["ts"].ints())!=0 ? ((temp_cj_bz.Sum(m => m["ts"].ints()) - temp_cj_sz.Sum(m => m["ts"].ints())) / temp_cj_sz.Sum(m => m["ts"].doubls())).ss_bfb_sz()+"%":"—";
+                            }; break;
+                        case Base_Config_Cjba_bh.本周_价格变化:
+                            {
+                                long bz_je = temp_cj_bz.Sum(m => m["cjje"].ints());
+                                double bz_mj = temp_cj_bz.Sum(m => m["jzmj"].doubls());
+                                long sz_je = temp_cj_sz.Sum(m => m["cjje"].ints());
+                                double sz_mj = temp_cj_sz.Sum(m => m["jzmj"].doubls());
+                                if (sz_mj != 0 && bz_mj != 0)
+                                {
+
+                                    dr1[dt.Columns[j].ColumnName] = ((bz_je / bz_mj) - (sz_je / sz_mj)).je_y();
+                                }
+                                else
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = "—";
+                                }
+                               
+                            }; break;
+                        case Base_Config_Cjba.本周_建面均价环比:
+                            {
+                                long bz_je = temp_cj_bz.Sum(m => m["cjje"].longs());
+                                double bz_mj = temp_cj_bz.Sum(m => m["jzmj"].doubls());
+                                long sz_je = temp_cj_sz.Sum(m => m["cjje"].longs());
+                                double sz_mj = temp_cj_sz.Sum(m => m["jzmj"].doubls());
+                                if (sz_mj != 0&&bz_mj != 0 && sz_je != 0)
+                                {
+                                        dr1[dt.Columns[j].ColumnName] = (((bz_je / bz_mj) - (sz_je / sz_mj)) / (sz_je / sz_mj)).ss_bfb_sz();
+                                }
+                                else
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = "—";
+                                }
+
+                                
+                            }; break;
+                        case Base_Config_Cjba.上周_备案套数:
+                        case Base_Config_Cjba.上周_建筑面积:
+                            {
+                                dr1[dt.Columns[j].ColumnName] = temp_cj_sz != null ? temp_cj_sz.Sum(m => m[dt.Columns[j].ColumnName._ConfigCjbaMc()].ints()) : 0;
+                            }; break;
+                        case Base_Config_Cjba.上周_建面均价:
+                            {
+
+                                long sz_je = temp_cj_sz.Sum(m => m["cjje"].ints());
+                                long sz_mj = temp_cj_sz.Sum(m => m["jzmj"].ints());
+                                dr1[dt.Columns[j].ColumnName] = sz_mj != 0 ? (sz_je / sz_mj).je_y() : 0;
+                            }; break;
+                        case Base_Config_Cjba.上周_套均总价:
+                            {
+
+                                long sz_je = temp_cj_sz.Sum(m => m["cjje"].ints());
+                                long sz_ts = temp_cj_sz.Sum(m => m["ts"].ints());
+                                dr1[dt.Columns[j].ColumnName] = sz_ts != 0 ? (sz_je / sz_ts).je_wy() : 0;
+                            }; break;
+                        case Base_Config_Cjba.上上周_备案套数: { dr1[dt.Columns[j].ColumnName] = temp_cj_ssz != null ? temp_cj_ssz.Sum(m => m[Base_Config_Cjba.本周_备案套数._ConfigCjbaMc()].ints()) : 0; }; break;
+                        case Base_Config_Cjba.上上周_建面均价:
+                            {
+                                if ((temp_cj_ssz != null && temp_cj_ssz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls()) != 0))
+                                    dr1[dt.Columns[j].ColumnName] = (temp_cj_ssz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cj_ssz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
+                                else
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = "0";
+                                }
+                            }; break;
+                        case Base_Config_Cjba.上上上周_备案套数: { dr1[dt.Columns[j].ColumnName] = temp_cj_sssz != null ? temp_cj_sssz.Sum(m => m[Base_Config_Cjba.本周_备案套数._ConfigCjbaMc()].ints()) : 0; }; break;
+                        case Base_Config_Cjba.上上上周_建面均价:
+                            {
+                                if ((temp_cj_sssz != null && temp_cj_sssz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls()) != 0))
+                                    dr1[dt.Columns[j].ColumnName] = (temp_cj_sssz.Sum(m => m[Base_Config_Cjba.本周_成交金额._ConfigCjbaMc()].longs()) / temp_cj_sssz.Sum(m => m[Base_Config_Cjba.本周_建筑面积._ConfigCjbaMc()].doubls())).je_y();
+                                else
+                                {
+                                    dr1[dt.Columns[j].ColumnName] = "0";
+                                }
+                            }; break;
+                    }
+                }
+                
+                else if (Base_Config_Jzgj._竞争格局参数名称.Contains(dt.Columns[j].ColumnName))
+                {
+                    switch (dt.Columns[j].ColumnName)
+                    {
+                        case Base_Config_Jzgj.组团: { dr1[dt.Columns[j].ColumnName] = item.ztcs[0]; }; break;
+                        case Base_Config_Jzgj.项目名称: { dr1[dt.Columns[j].ColumnName] = item.lpcs[0]; }; break;
+                        case Base_Config_Jzgj.业态: { dr1[dt.Columns[j].ColumnName] = yt; }; break;
+                        case Base_Config_Jzgj.竞争格局名称: { dr1[dt.Columns[j].ColumnName] = "本案"; }; break;
+                        case Base_Config_Jzgj.竞争格局_主力面积区间: { dr1[dt.Columns[j].ColumnName] = item.zlmjqj; }; break;
+                        default: { dr1[dt.Columns[j].ColumnName] = ""; }; break;
+                    }
+
+                }
+
+            }
+
+            return dr1;
+        }
 
         public ISlideCollection _plus_jp_dyt_jzgj(ISlide sld, JP_BA_INFO item)
         {

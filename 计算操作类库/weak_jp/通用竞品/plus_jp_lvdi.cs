@@ -46,7 +46,7 @@ namespace Calculation.JS
                         dt.Columns.Add(Base_Config_Rgsj.本周_认购建面均价环比);
 
                         dt.Columns.Add("bzcl");
-                        dt.Columns.Add("bybats");
+                        dt.Columns.Add();
                         dt.Columns.Add("bybajmjj");
                         dt.Columns.Add(Base_Config_Rgsj.本周_营销动作);
 

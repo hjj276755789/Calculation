@@ -347,7 +347,7 @@ namespace Calculation.Base
             //series2.Labels.DefaultDataLabelFormat.ShowValue = true;
             //series2.Labels.DefaultDataLabelFormat.Position = LegendDataLabelPosition.Top;
         }
-
+  
         /// <summary>
         /// 竞品复地--第一个图表
         /// </summary>

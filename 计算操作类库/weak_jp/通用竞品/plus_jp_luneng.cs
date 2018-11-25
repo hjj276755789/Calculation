@@ -86,6 +86,72 @@ namespace Calculation.JS
             }
         }
 
+        public ISlideCollection _plus_jp_luneng_2(string str, int cjbh)
+        {
+            try
+            {
+
+                var param = Cache_param_zb._param_jp.Where(m => m.cjid == cjbh);
+                var p = new Presentation();
+                var t = p.Slides;
+                t.RemoveAt(0);
+                foreach (var item in param)
+                {
+                    var tp = new Presentation(str);
+                    var temp = tp.Slides;
+
+                    var page2 = temp[0];
+                    #region 格局统计
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add(Base_Config_Jzgj.竞争格局名称);
+                    dt.Columns.Add(Base_Config_Jzgj.项目名称);
+                    dt.Columns.Add(Base_Config_Jzgj.业态);
+
+                    dt.Columns.Add(Base_Config_Rgsj.本周_新开套数);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_新开销售套数);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_新开套内均价);
+
+                    dt.Columns.Add(Base_Config_Cjba.上周_备案套数);
+                    dt.Columns.Add(Base_Config_Cjba.上周_套内均价);
+
+                    dt.Columns.Add(Base_Config_Rgsj.上周_认购套数);
+                    dt.Columns.Add(Base_Config_Rgsj.上周_认购套内均价);
+
+
+                    dt.Columns.Add(Base_Config_Cjba.本周_备案套数);
+                    dt.Columns.Add(Base_Config_Cjba.本周_套内均价);
+
+                    dt.Columns.Add(Base_Config_Rgsj.本周_认购套数);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_认购套内均价);
+
+                    dt.Columns.Add(Base_Config_Rgsj.本周_成交套数环比);
+                    dt.Columns.Add(Base_Config_Rgsj.本周_套内均价环比);
+
+                    dt.Columns.Add(Base_Config_Rgsj.本周_变化原因);
+                    IAutoShape text2 = (IAutoShape)page2.Shapes[0];
+                    text2.TextFrame.Text = string.Format(text2.TextFrame.Text, item.bamc, item.ytcs[0]);
+
+                    dt = GET_JPBA_BX(dt, item);
+
+                    #endregion
+                    if (item.jpxmlb != null && item.jpxmlb.Count > 0)
+                    {
+                        dt = GET_JPXM_BX(dt, item.jpxmlb);
+                        Office_Tables.SetJP_LUNENG_2_Table(page2, dt, 1, null, null);
+                        t.AddClone(page2);
+                    }
+                
+                }
+                return t;
+            }
+            catch (Exception e)
+            {
+                Base_Log.Log(e.Message);
+                Base_Log.Log(e.StackTrace);
+                return null;
+            }
+        }
+
         public System.Data.DataTable GET_JPBA_BX(System.Data.DataTable dt, JP_BA_INFO item)
         {
             if (item.ytcs[0] == "别墅")

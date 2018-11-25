@@ -133,9 +133,9 @@ namespace Calculation.JS
                         #endregion
 
                         IAutoShape text0_1 = (IAutoShape)page1.Shapes[0];
-                        text0_1.TextFrame.Text = string.Format(text0_1.TextFrame.Text, item.ztcs[0], temp_spf[7].xzgyl.mj_wf(), temp_spf[7].cjmj.mj_wf(), temp_spf[7].jmjj.je_y());
+                        text0_1.TextFrame.Text = string.Format(text0_1.TextFrame.Text, item.ztcs[0], temp_spf[temp_spf.Count - 1].xzgyl.mj_wf(), temp_spf[temp_spf.Count-1].cjmj.mj_wf(), temp_spf[temp_spf.Count - 1].jmjj.je_y());
                         IAutoShape text0_2 = (IAutoShape)page1.Shapes[1];
-                        text0_2.TextFrame.Text = string.Format(text0_2.TextFrame.Text, item.ztcs[0], temp_zz[7].xzgyl.mj_wf(), temp_zz[7].cjmj.mj_wf(), temp_zz[7].jmjj.je_y());
+                        text0_2.TextFrame.Text = string.Format(text0_2.TextFrame.Text, item.ztcs[0], temp_zz[temp_zz.Count - 1].xzgyl.mj_wf(), temp_zz[temp_zz.Count - 1].cjmj.mj_wf(), temp_zz[temp_zz.Count-1].jmjj.je_y());
                         IAutoShape text0_3 = (IAutoShape)page1.Shapes[2];
                         text0_3.TextFrame.Text = string.Format(text0_3.TextFrame.Text, item.bamc);
                         t.AddClone(page1);
@@ -245,7 +245,7 @@ namespace Calculation.JS
                         {
 
                             var jbz_cjba_spf = (from a in Cache_data_cjjl.jbz.AsEnumerable()
-                                                where a["qy"].ToString() == item.qycs[0] && a["yt"].ToString() == item.ytcs[0] 
+                                                where a["yt"].ToString() == item.ytcs[0] 
                                                 group a by new { zc = a["zc"], zcmc = a["zcmc"] } into s
                                                 select new
                                                 {
@@ -255,7 +255,7 @@ namespace Calculation.JS
                                                     jzmj = s.Sum(a => a["jzmj"].doubls()),
                                                 }).OrderBy(m => m.zc).ToList();
                             var jbz_xzys_spf = (from a in Cache_data_xzys.jbz.AsEnumerable()
-                                                where a["tyyt"].ToString() == item.ytcs[0] && a["qy"].ToString() == item.qycs[0]
+                                                where a["tyyt"].ToString() == item.ytcs[0] 
                                                 group a by new { zc = a["zc"] } into s
                                                 select new
                                                 {
@@ -289,7 +289,7 @@ namespace Calculation.JS
 
                             Office_Charts.Chart_gxfx(page2, dt_spf, 1);
                             var bz_cjba_sw_pm = (from a in Cache_data_cjjl.jbz.AsEnumerable()
-                                                 where a["qy"].ToString() == item.qycs[0] && a["yt"].ToString() == item.ytcs[0] && a["zc"].ints() == Base_date.bz && a["nf"].ints() == Base_date.bn
+                                                 where a["yt"].ToString() == item.ytcs[0] && a["zc"].ints() == Base_date.bz && a["nf"].ints() == Base_date.bn
                                                  group a by new { lpmc = a["lpmc"], zt = a["zt"] } into s
                                                  select new
                                                  {
@@ -371,8 +371,25 @@ namespace Calculation.JS
         {
             foreach (var item in jpxm)
             {
+                if(item.ytcs== null)
+                {
+                    DataRow dr1 = dt.NewRow();
 
-                if (item.ytcs[0] == "别墅")
+                    #region 数据准备
+                    //竞品业态
+                    var temp_rgsj_bz = Cache_data_rgsj.bz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] );
+                    var temp_cjba_bz = Cache_data_cjjl.bz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] );
+
+                    var temp_rgsj_sz = Cache_data_rgsj.sz.AsEnumerable().Where(m => m["xm"].ToString() == item.lpcs[0] );
+                    var temp_cjba_sz = Cache_data_cjjl.sz.AsEnumerable().Where(m => m["lpmc"].ToString() == item.lpcs[0] );
+                    //本周本案认购数据
+                    var temp_ba_bz = temp_rgsj_bz.FirstOrDefault();
+                    var temp_ba_sz = temp_rgsj_sz.FirstOrDefault();
+                    #endregion
+
+                    dt.Rows.Add(GET_ROW("", dr1, dt, temp_ba_bz, temp_ba_sz, temp_cjba_bz, temp_cjba_sz, item));
+                }
+                else if (item.ytcs[0] == "别墅")
                 {
                     for (int i = 0; i < item.xfytcs.Length; i++)
                     {

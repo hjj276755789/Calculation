@@ -271,7 +271,8 @@ where c.rwid = @rwid and a.csid =@csid";
                         jpxm.xfytcs = xm["xfytcs"].ToString().Split(',');
                     };
                     jpxm.hxcs = xm["hxcs"] == null || string.IsNullOrEmpty(xm["hxcs"].ToString()) ? null : xm["hxcs"].ToString().Split(',');
-                    jpxm.zlmjqj = item["zlmjqj"] == null || string.IsNullOrEmpty(item["zlmjqj"].ToString()) ? null : item["zlmjqj"].ToString().Split(','); ;
+
+                    jpxm.zlmjqj = xm["zlmjqj"] == null || string.IsNullOrEmpty(xm["zlmjqj"].ToString()) ? null : xm["zlmjqj"].ToString().Split(','); ;
                     
                     jp.jpxmlb.Add(jpxm);
                 }
@@ -289,7 +290,7 @@ where c.rwid = @rwid and a.csid =@csid";
 
                 foreach (var item in list)
                 {
-                    string sql = "insert into calculation.xtgl_param_jpba (rwid,bamc,qycs,ztcs,lpcs,ytcs,xfytcs,hxcs,zlmjqj) values(@rwid,@bamc,@qycs,@ztcs,@lpcs,@ytcs,@xfytcs,@hxcs,@zlmjqj)";
+                    string sql = "insert into calculation.xtgl_param_jpba (rwid,bamc,qycs,kfs,ztcs,lpcs,ytcs,xfytcs,hxcs,zlmjqj,qtcs) values(@rwid,@bamc,@qycs,@kfs,@ztcs,@lpcs,@ytcs,@xfytcs,@hxcs,@zlmjqj,@qtcs)";
                     MySqlParameter[] p = { new MySqlParameter("rwid",rwid),
                                         new MySqlParameter("bamc",item.bamc),
                                         new MySqlParameter("qycs",item.qycs==null?"":string.Join(",", item.qycs)),

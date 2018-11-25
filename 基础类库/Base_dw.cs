@@ -85,6 +85,10 @@ namespace Calculation.Base
         {
             return Math.Round(target / 10000, 0);
         }
+        public static double je_wy_2(this double target)
+        {
+            return Math.Round(target / 10000, 2);
+        }
         public static double je_wy(this long target)
         {
             return Math.Round(target.doubls() / 10000, 0);
@@ -169,6 +173,14 @@ namespace Calculation.Base
         {
             return Math.Abs(Math.Round(target*100, 2)) + "%";
         }
-
+        /// <summary>
+        /// 百分比 数值
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static string ss_bfb_sz(this double target)
+        {
+            return Math.Round(target * 100, 2) + "%";
+        }
     }
 }

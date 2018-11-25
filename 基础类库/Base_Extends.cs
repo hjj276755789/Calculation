@@ -44,6 +44,19 @@ namespace Calculation.Base
                 return 0.0;
             }
         }
+        public static double dw_xs(this double target)
+        {
+         
+            try
+            {
+                return Math.Round(target, 2);
+            }
+            catch (Exception)
+            {
+                return 0.0;
+            }
+        }
+
 
         public static int ints(this object target)
         {
@@ -90,6 +103,28 @@ namespace Calculation.Base
                 return 0;
             }
         }
+
+        public static string  Join(this string [] target)
+        {
+            if (target == null)
+                return "—";
+            try
+            {
+                return string.Join("—", target);
+            }
+            catch (Exception)
+            {
+
+                return "—";
+            }
+        }
+        public static bool IsNotNull(this string [] target)
+        {
+            if (target != null && target.Length > 0)
+                return true;
+            else return false;
+        }
+
 
         public static string timeUpper(this DateTime target)
         {
