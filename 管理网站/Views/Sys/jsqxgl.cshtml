@@ -1,0 +1,57 @@
+﻿@using Calculation.Models
+@{
+    ViewBag.Title = "角色管理";
+}
+
+<h3>角色列表</h3>
+<div id="jslb" class="row">
+    @{
+        List<QXXX> qxlb = this.ViewBag.qxlb as List<QXXX>;
+        List<QXXX> jsqxlb = this.ViewBag.jsqxlb as List<QXXX>;
+        foreach (var item in qxlb)
+        {
+            string qxclassname = "btn btn-link ";
+            string qxid = "js" + item.id;
+            foreach (var qxitem in jsqxlb)
+            {
+                if (item.id == qxitem.id)
+                {
+                    qxclassname = "btn btn-link btn-success";
+                }
+            }
+            <a class='@qxclassname' id="@qxid" onclick='chouse(@item.id)'>@item.qxmc</a>
+
+
+        }
+    }
+</div>
+
+<script>
+    function chouse(a)
+    {
+        var obj = $("#js" + a);
+        if (obj.hasClass("btn-success")) {
+
+            $.ajax({
+                url: "/sys/Remove_JSQX",
+                type: "post",
+                data: { jsid: @this.ViewBag.jsid, gqxid:a },
+                success: function (data) {
+                    obj.removeClass("btn-success");
+                }
+            })
+        }
+        else {
+            $.ajax({
+                url: "/sys/ADD_JSQX",
+                type: "post",
+                data: { jsid: @this.ViewBag.jsid, gqxid:a },
+                success: function (data) {
+                    obj.addClass("btn-success");
+                }
+            })
+        }
+    }
+
+</script>
+

@@ -3,29 +3,53 @@
     ViewBag.Title = "TJJH";
 }
 
-<form action="/Data/ADD_JH">
-    <div class="form-group">
-        <label class="col-sm-2 control-label">选择任务年份</label>
-        <div class="col-sm-10">
-            <select class="form-control" name="nf">
-                <option>2015</option>
-                <option>2016</option>
-                <option>2017</option>
-                <option>2018</option>
-                <option>2019</option>
-                <option>2020</option>
-                <option>2021</option>
-                <option>2022</option>
-                <option>2023</option>
-                <option>2024</option>
-                <option>2025</option>
-                <option>2026</option>
-                <option>2027</option>
-                <option>2028</option>
-                <option>2029</option>
-                <option>2030</option>
-            </select>
-        </div>
-    </div>
-    <input type="submit"  value="确定" class="btn btn-block btn-lg"/>
-</form>
+<div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">选择任务年份</h3></div>
+        <div class="panel-body">
+   
+                <div class="form-group">
+                    <select class="form-control waves-effect waves-light" id="nf">
+                        <option>2015</option>
+                        <option>2016</option>
+                        <option>2017</option>
+                        <option>2018</option>
+                        <option>2019</option>
+                        <option>2020</option>
+                        <option>2021</option>
+                        <option>2022</option>
+                        <option>2023</option>
+                        <option>2024</option>
+                        <option>2025</option>
+                        <option>2026</option>
+                        <option>2027</option>
+                        <option>2028</option>
+                        <option>2029</option>
+                        <option>2030</option>
+                    </select>
+                </div>
+                <button class="btn btn-purple waves-effect waves-light btn-block" type="button" id="sub">确定</button>
+           
+        </div><!-- panel-body -->
+    </div> <!-- panel -->
+</div>
+<script>
+    $("#sub").click(function () {
+        $.ajax({
+            url: "/data/ADD_JH",
+            type: 'POST',
+            data: { 'nf': $("#nf").val() },
+            success: function (data) {
+                uploading = false;
+                if (data.IsSuccessful) {
+                    alert("提交计划成功！");
+                    $("#custom-width-modal").modal('hide');
+                }
+                else {
+                    alert(data.ErrMsg)
+                    $("#custom-width-modal").modal('hide');
+                }
+            },
+        })
+    })
+</script>

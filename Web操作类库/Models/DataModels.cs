@@ -52,6 +52,12 @@ namespace Calculation.Models
         public string zcmc { get; set; }
     }
 
+    public class Data_JHNF : Data_Item<Data_JHNF>
+    {
+       public int nf { get; set; }
+    }
 
-    
+
+
+
 }

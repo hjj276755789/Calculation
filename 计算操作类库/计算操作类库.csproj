@@ -64,7 +64,9 @@
     <Compile Include="weak_jp\单页竞品\plus_jp_xiangyu.cs" />
     <Compile Include="weak_jp\独立模板\plus_jp_chongqinggongsiyingxiaobu.cs" />
     <Compile Include="weak_jp\独立模板\plus_jp_jingdidichan.cs" />
+    <Compile Include="weak_jp\独立模板\plus_jp_jinkeshichangzhoubao.cs" />
     <Compile Include="weak_jp\独立模板\plus_jp_jinhuijianbao.cs" />
+    <Compile Include="weak_jp\独立模板\plus_jp_zhaoshangyiyunwan.cs" />
     <Compile Include="weak_jp\独立模板\plus_jp_zonglvquanzong.cs" />
     <Compile Include="weak_jp\竞品模板1\plus_jp_base_jpmb1.cs" />
     <Compile Include="weak_jp\竞品模板1\plus_jp_hejingfutai.cs" />

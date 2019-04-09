@@ -85,6 +85,10 @@ namespace Calculation.JS
         }
 
         /// <summary>
+        /// 本年
+        /// </summary>
+        public static DataTable bn { get; set; }
+        /// <summary>
         /// 本周
         /// </summary>
         public static DataTable bz{ get; set; }

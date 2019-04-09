@@ -1,9 +1,31 @@
-﻿
+﻿@using Calculation.Models
 @{
     ViewBag.Title = "CKJH";
 }
+<div class="row" style="margin:20px 0;">
+        <select class="form-control waves-effect waves-light" id="nf">
+            @{ foreach (Data_JHNF item in this.ViewBag.nf)
+                {
+                    if (DateTime.Now.Year == item.nf)
+                    {
+                        <option selected="selected">
+                            @item.nf
+                        </option>
+                    }
+                    else
+                    {
+                        <option>
+                            @item.nf
+                        </option>
+                    }
+                }
+            }
+        </select>
+</div>
+<div class="row">
+    <div id="rwxq" style="width: 100%; "></div>
+</div>
 
-<div id="rwxq" style="width: 100%; "></div>
 <DIV tabindex="-1" class="modal fade" id="custom-width-modal" role="dialog"
      aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
     <DIV class="modal-dialog" style="width: 55%;">
@@ -103,7 +125,7 @@
     function init1() {
         $.ajax({
             url: "/data/get_rwxq",
-            data: { "nf": 2018 },
+            data: { "nf": $("#nf").val() },
             type: "post",
             success: function (data) {
                 var d = [];
@@ -127,6 +149,10 @@
         init1();
     });
 
+    $("#nf").change(function () {
+        t.reflush(option);
+        init1();
+    })
 
 
 

@@ -18,7 +18,7 @@ namespace Calculation.JS
     public class plus_jp_beidaziyuan :plus_jp_base
     {
         private static DataTable byba;
-        private static DataTable bycj;
+        //private static DataTable bycj;
         public class Base_Config_Cjba_BY
         {
 

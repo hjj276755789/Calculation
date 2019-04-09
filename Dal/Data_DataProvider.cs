@@ -10,9 +10,15 @@ namespace Calculation.Dal
 {
     public class Data_DataProvider
     {
-        public int ADD_JH(int nf,List<int> zc)
+        public SResult ADD_JH(int nf, List<int> zc)
         {
-            
+            string sql1 = "select count(*) sl from xtgl_sjrwjhb where nf=@nf";
+            MySqlParameter[] p = { new MySqlParameter("nf", nf) };
+            object obj = MySqlDbhelper.ExecuteScalar(sql1, p);
+            if (Int32.Parse(obj.ToString()) > 0) {
+                return SResult.Error("计划已经提交");
+            }
+
             StringBuilder sb = new StringBuilder("insert into  calculation. xtgl_sjrwjhb (nf,zc) values ");
             string sql = "";
             foreach (int item in zc)
@@ -20,7 +26,7 @@ namespace Calculation.Dal
                 sb.Append(string.Format(@"('{0}','{1}'),", nf, item));
             }
             sql = sb.ToString();
-            return MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1));
+            return MySqlDbhelper.ExecuteNonQuery(sql.Substring(0, sql.Length - 1)) > 0 ? SResult.Success : SResult.Error("计划提交失败");
         }
         public List<Data_JHSQXQ> GET_JHXQ(int nf)
         {
@@ -36,11 +42,11 @@ left join (select nf,zc,count(*) sl from calculation.xtgl_data_zb_rgsj  group by
  where t1.nf = @nf
  order by t1.nf,t1.zc
 ";
-            MySqlParameter[] p = { new MySqlParameter("nf", nf)};
-            return Models.Modelhelper.类列表赋值(new Data_JHSQXQ(), MySqlDbhelper.GetDataSet(sql,p).Tables[0]);
+            MySqlParameter[] p = { new MySqlParameter("nf", nf) };
+            return Models.Modelhelper.类列表赋值(new Data_JHSQXQ(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
 
-        public Data_JHSQXQ GET_JHXQ(int nf,int zc)
+        public Data_JHSQXQ GET_JHXQ(int nf, int zc)
         {
             string sql = @"select jhbh,t1.nf,t1.zc,
 case when t2.sl is not null then t2.sl else 0 end cjjl ,
@@ -58,6 +64,13 @@ left join (select nf,zc,count(*) sl from calculation.xtgl_data_zb_rgsj  group by
             MySqlParameter[] p = { new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
             return Models.Modelhelper.类对象赋值(new Data_JHSQXQ(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
+
+        public List<Data_JHNF> GET_JH_NF()
+        {
+            string sql = "select distinct nf nf from xtgl_sjrwjhb";
+            return Modelhelper.类列表赋值<Data_JHNF>(new Data_JHNF(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
+        }
+
 
     }
 }

@@ -42,6 +42,7 @@ namespace 管理网站.Controllers
         /// <returns></returns>
         public ActionResult CKJH()
         {
+            this.ViewBag.nf = data.GET_JH_NF();
             return View();
         }
         /// <summary>
@@ -68,6 +69,7 @@ namespace 管理网站.Controllers
         {
             return Json(data.ADD_JH(nf, Base_date.GET_Z_OF_Y(nf)), JsonRequestBehavior.AllowGet);
         }
+
 
         /// <summary>
         /// 提交计划年份
@@ -122,7 +124,7 @@ namespace 管理网站.Controllers
             HttpPostedFileBase f = Request.Files["rgsj"];
             Workbook workbook = new Workbook(f.InputStream);
             Cells cs = workbook.Worksheets[0].Cells;
-            DataTable dt = cs.ExportDataTableAsString(1, 0, cs.MaxDataRow, cs.MaxDataColumn + 1);
+            DataTable dt = cs.ExportDataTableAsString(0, 0, cs.MaxDataRow+1, cs.MaxDataColumn + 1,true);
             if (Calculation.Dal.ZB_Data_RGSJ_DataProvider.Insert(dt, nf, zc, Base_date.GET_ZCMC(nf,zc)) > 0)
                 return Json(SResult.Success);
             else return Json(SResult.Error("上传文件失败，请检查EX"));

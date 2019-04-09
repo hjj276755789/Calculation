@@ -311,6 +311,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\fonts\o-0IIpQlx3QUlC5A4PNr5TRG.woff" />
+    <Content Include="Content\fonts\Material-Design-Iconic-Font.woff" />
+    <Content Include="Content\fonts\o-0IIpQlx3QUlC5A4PNr5TRA.woff2" />
     <None Include="Properties\PublishProfiles\铭腾报表.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

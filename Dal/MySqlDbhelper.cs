@@ -56,7 +56,7 @@ namespace Calculation.Dal
             {
                 return ExecuteNonQuery(sql, null);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return -1;
             }
