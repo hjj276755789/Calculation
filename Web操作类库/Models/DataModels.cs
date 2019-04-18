@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Calculation.Models
 {
 
-    public class Data_JHSQXQ
+    public class Data_JHSQXQ : Data_Item<Data_JHSQXQ>
     {
         public int jhbh { get; set; }
         public int nf { get; set; }

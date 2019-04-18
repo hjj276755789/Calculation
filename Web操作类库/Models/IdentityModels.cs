@@ -9,38 +9,46 @@ namespace Calculation.Models
 {
     public class YHXX
     {
-        public int id { get; set; }
-        public string yhm { get; set; }
-        public YH_LX yhlx { get; set; }
+        public int yhbh { get; set; }
+        public string yhmc { get; set; }
+        public string yhlx { get; set; }
+
     }
    
     public class JSXX
     {
-        public int id { get; set; }
+        public string jsbh { get; set; }
         public string jsmc { get; set; }
         public string jsms { get; set; }
-        
+
     }
     public class QXXX {
-        public int id { get; set; }
+        public string qxbh { get; set; }
         public string qxmc { get; set; }
         public string qxms { get; set; }
         public string qxkzq { get; set; }
         public string qxst { get; set; }
+        /// <summary>
+        /// 权限类型
+        /// </summary>
+        public string qxlx { get; set; }
+        public string fqxbh { get; set; }
+        public string tb { get; set; }
+        public List<QXXX> xjqx { get; set; }
 
     }
     public class YHJS
     {
-        public int yhid { get; set; }
+        public int yhbh { get; set; }
         public string yhm { get; set; }
-        public int jsid { get; set; }
+        public int jsbh { get; set; }
         public string jsmc { get; set; }
     }
     public class JSQX
     {
-        public int jsid { get; set; }
+        public int jsbh { get; set; }
         public string jsmc { get; set; }
-        public int qxid { get; set; }
+        public int qxbh { get; set; }
         public string qxmc { get; set; }
         public string qxkzq { get; set; }
         public string qxst { get; set; }

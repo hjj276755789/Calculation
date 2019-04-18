@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "add_kfs";
+}
+
+<div class="panel panel-border panel-success">
+    <div class="panel-heading"><h3 class="panel-title">添加开发商信息</h3></div>
+    <div class="panel-body">
+        <div class="form-group">
+            <label for="exampleInputEmail1">开发商名称</label>
+            <input class="form-control" id="kfsmc"  type="text">
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputPassword1">联系人</label>
+            <input class="form-control" id="kfslxr"  type="text" placeholder="开发商联系人" >
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">联系电话</label>
+            <input class="form-control" id="kfslxrdh"  type="text" placeholder="联系人电话号码">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">开发商备注</label>。
+            <input class="form-control" id="bz" type="text">
+        </div>
+        <button class="btn btn-success waves-effect waves-light" type="button" onclick="add_kfs()">提交</button>
+    </div>
+</div> <!-- panel -->
+
+<script>
+    function add_kfs() {
+
+        $.ajax({
+            url: "/sys/ADD_KFS",
+            type: "post",
+            data: { kfsmc: $("#kfsmc").val(), kfslxr: $("#kfslxr").val(), kfslxrdh: $("#kfslxrdh").val(), bz: $("#bz").val() },
+            success: function (data) {
+                if (data.IsSuccessful) {
+                    $('#tjkfs').modal('hide');
+                }
+                else {
+                    alert(data.ErrMsg);
+                }
+            }
+        })
+    }
+</script>

@@ -1,22 +1,31 @@
-﻿@using Calculation.Models;
-@using Calculation.Dal;
+﻿@using Calculation.Models
 <!DOCTYPE html>
 <html class="js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @{
-        var user = this.User as CurrentUser;
-        if (user != null)
+        try
         {
-            this.ViewBag.nav = new FW_QXGL_DataProvider().GET_YHQX(user.YHID);
+            this.ViewBag.nav = CurrentUser.GETPower((this.User as CurrentUser).YHBH);
         }
+        catch (Exception e)
+        {
+            Console.WriteLine("没有登陆");
+        }
+
     }
+    <style>
+        table tbody tr td {
+            line-height: 30px !important;
+        }
+    </style>
 </head>
+
 <body class="fixed-left widescreen">
 
 
@@ -50,7 +59,7 @@
         <div class="left side-menu">
             <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 854px;">
                 <div class="sidebar-inner slimscrollleft" style="overflow: hidden; width: auto; height: 854px;">
-                   
+
                     <div id="sidebar-menu">
                         <ul>
                             @{
@@ -59,13 +68,41 @@
                                 {
                                     foreach (var item in qxxx)
                                     {
-                                        string path = "/" + item.qxkzq + "/" + item.qxst;
-                                        <li>
-                                            <a href="@path" class="waves-effect waves-light active"><i class="md md-poll"></i><span> @item.qxmc </span></a>
-                                        </li>
-                                        }
-                                    }
-                                }
+                                        if (item.qxlx == "1")
+                                        {
+                                            string path = "/" + item.qxkzq + "/" + item.qxst;
+                                            <li>
+
+                                                @{
+                                                    if (item.xjqx != null && item.xjqx.Count > 0)
+                                                    {
+                                                        <a href="#" class="waves-effect waves-light"><i class="md @item.tb"></i><span> @item.qxmc </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                                        <ul class="list-unstyled">
+                                                            @{
+                                                                foreach (var lv2 in item.xjqx)
+                                                                {
+                                                                    if (lv2.qxlx == "1")
+                                                                    {
+                                                                        string path2 = "/" + lv2.qxkzq + "/" + lv2.qxst;
+                                                                        string path3 = lv2.qxkzq + lv2.qxst;
+                                                                        <li id="@path3">
+                                                                            <a href="@path2"><i class="md @lv2.tb"></i>@lv2.qxmc </a>
+                                                                        </li>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </ul>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a href="@path" class="waves-effect waves-light  has-sub"><i class="md @item.tb"></i><span> @item.qxmc </span></a>
+                                                                }
+                                                }
+                                            </li>
+                                                                        }
+                                                                    }
+                                                                }
+                            }
                         </ul>
                         <div class="clearfix"></div>
                     </div>
@@ -78,17 +115,12 @@
         <div class="content-page">
             <!-- Start content -->
             <div class="content">
-                
-                <div class="container">
-                    @RenderBody()
-                </div>
-            </div> 
-            <footer class="footer text-right">
-                2018 © 铭腾科技.
+                @RenderBody()
+            </div>
+            <footer class="footer text-right" id="test">
+                2018 © 银拓.
             </footer>
         </div>
-        
-
 
         <script src="~/Scripts/Moltran/jquery.min.js"></script>
         <script src="~/Scripts/Moltran/bootstrap.min.js"></script>
@@ -103,7 +135,14 @@
         <script src="~/Scripts/Moltran/jquery.app.js"></script>
         <div id="ascrail2000" class="nicescroll-rails" style="width: 7px; z-index: auto; cursor: default; position: absolute; top: 875px; left: 761px; height: 380px; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 296px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2000-hr" class="nicescroll-rails" style="height: 7px; z-index: auto; top: 1248px; left: 280px; position: absolute; cursor: default; display: none; width: 481px; opacity: 0;"><div style="position: relative; top: 0px; height: 5px; width: 488px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2001" class="nicescroll-rails" style="width: 7px; z-index: auto; cursor: default; position: absolute; top: 883px; left: 1308.66px; height: 330px; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 324px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2001-hr" class="nicescroll-rails" style="height: 7px; z-index: auto; top: 1206px; left: 827.656px; position: absolute; cursor: default; display: none; width: 481px; opacity: 0;"><div style="position: relative; top: 0px; height: 5px; width: 488px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2002" class="nicescroll-rails" style="width: 7px; z-index: auto; cursor: default; position: absolute; top: 915px; left: 1846.31px; height: 288px; display: block; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 216px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2002-hr" class="nicescroll-rails" style="height: 7px; z-index: auto; top: 1196px; left: 1385.31px; position: absolute; cursor: default; display: none; width: 461px; opacity: 0;"><div style="position: relative; top: 0px; height: 5px; width: 468px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2003" class="nicescroll-rails" style="width: 7px; z-index: 99; cursor: default; position: fixed; top: 70px; left: 2162px; height: 924px; display: none;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 0px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2003-hr" class="nicescroll-rails" style="height: 7px; z-index: 99; top: 987px; left: 1929px; position: fixed; cursor: default; display: none;"><div style="position: relative; top: 0px; height: 5px; width: 0px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div>
         <script>
-        var resizefunc = [];
+            var resizefunc = [];
+            var url = document.location.pathname.split("/");
+            var obj = $('#' + url[1] + url[2]);
+            var p = obj.parent().parent()
+            p.find(".waves-effect").addClass("active");
+            obj.addClass("active");
+            p.find(".waves-effect").click();
+
         </script>
 
 
@@ -111,6 +150,6 @@
 
 
 
-        </div>
+    </div>
 </body>
 </html>

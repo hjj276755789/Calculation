@@ -11,15 +11,15 @@
         foreach (var item in jslb)
         {
             string jsclassname = "btn btn-link ";
-            string jsid = "js" + item.id;
+            string jsbh = "js" + item.jsbh;
             foreach (var yhitem in yhjslb)
             {
-                if (item.id == yhitem.id)
+                if (item.jsbh == yhitem.jsbh)
                 {
                     jsclassname = "btn btn-link btn-primary";
                 }
             }
-            <a class='@jsclassname' id="@jsid" onclick='chouse(@item.id)'>@item.jsmc</a>
+            <a class='@jsclassname' id="@jsbh" onclick='chouse(@item.jsbh)'>@item.jsmc</a>
 
 
         }
@@ -35,7 +35,7 @@
             $.ajax({
                 url: "/sys/Remove_YHJS",
                 type: "post",
-                data: { yhid: @this.ViewBag.yhid, jsid:a },
+                data: { yhbh: @this.ViewBag.yhbh, jsbh:a },
                 success: function (data) {
                     obj.removeClass("btn-primary");
                 }
@@ -45,7 +45,7 @@
             $.ajax({
                 url: "/sys/ADD_YHJS",
                 type: "post",
-                data: { yhid: @this.ViewBag.yhid, jsid:a },
+                data: { yhbh: @this.ViewBag.yhbh, jsbh:a },
                 success: function (data) {
                     obj.addClass("btn-primary");
                 }

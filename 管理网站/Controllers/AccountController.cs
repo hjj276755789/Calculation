@@ -32,9 +32,10 @@ namespace 管理网站.Controllers
         [HttpPost]
         public ActionResult Login(string username, string password)
         {
-            if (gl.CHECK_LOGIN(username, password))
+            var obj = gl.CHECK_LOGIN(username, password);
+            if (obj!=null)
             {
-                CurrentUser.SignIn(username);
+                CurrentUser.SignIn(obj.yhbh.ToString());
                 return RedirectToAction("index","home");
             }
             else

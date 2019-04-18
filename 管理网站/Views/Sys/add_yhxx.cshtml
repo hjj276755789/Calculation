@@ -4,37 +4,47 @@
 }
 
 
+<div class="panel-body">
+    <div class="panel panel-border panel-primary">
+        <div class="panel-heading"><h3 class="panel-title">新增用户</h3></div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="exampleInputEmail1">用户名</label>
+                <input class="form-control" id="yhm" name="yhm" placeholder="用户名">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">密码</label>
+                <input class="form-control" id="yhmm" name="yhmm" placeholder="密码">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">重复密码</label>
+                <input class="form-control" id="cfmm" name="cfmm" placeholder="重复密码">
+            </div>
+            <input type="button" name="next" class="form-control btn-primary" value="确认添加" onclick="tt()" />
 
-
-            <h2 class="fs-title">新增用户</h2>
-            <h3 class="fs-subtitle">填写用户名密码</h3>
-            <input type="text" id="yhm" name="yhm" placeholder="用户名" />
-            <input type="password" id="yhmm" name="yhmm" placeholder="密码" />
-            <input type="password" id="cfmm" name="cfmm" placeholder="重复密码" />
-            <input type="button" name="next" class="action-button" value="确认添加" onclick="tt()" />
-
-
+        </div> <!-- panel -->
+    </div> <!-- col-->
+</div>
 <style>
     html {
-        background:none!important;
+        background: none !important;
     }
 </style>
 <script>
-    function tt(){
+                function tt() {
 
-        $.ajax({
-            url: "/sys/ADD_YHXX",
-            type: "post",
-            data: { yhm: $("#yhm").val(), yhmm: $("#yhmm").val(), cfmm: $("#cfmm").val() },
-            success: function (data) {
-                if (data.IsSuccessful) {
-                    $('#tjyh').modal('hide');
+                    $.ajax({
+                        url: "/sys/ADD_YHXX",
+                        type: "post",
+                        data: { yhm: $("#yhm").val(), yhmm: $("#yhmm").val(), cfmm: $("#cfmm").val() },
+                        success: function (data) {
+                            if (data.IsSuccessful) {
+                                $('#tjyh').modal('hide');
+                            }
+                            else {
+                                alert(data.ErrMsg);
+                            }
+                        }
+                    })
                 }
-                else
-                {
-                    alert(data.ErrMsg);
-                }
-            }
-        })
-    }
 </script>

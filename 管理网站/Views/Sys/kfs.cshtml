@@ -1,0 +1,227 @@
+﻿<div class="row" style="width: 90%; margin: 20px;">
+    <a class="btn btn-primary waves-effect waves-light" href="/Sys/add_kfs" data-toggle="modal" data-target="#tjkfs" onclick="cleardata('#tjkfs')">添加开发商</a>
+    <input type="text" id="cxtj" class="form-control" placeholder="请输入查询条件" /><input type="button" value="查询" onclick="Search()" class="btn btn-danger" />
+</div>
+
+<div id="kfslb" class="row" style="width: 90%; margin: 20px;"></div>
+
+<DIV tabindex="-1" class="modal fade" id="tjkfs" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+
+@section scripts{
+    <script>
+
+        var tj = "";
+        var pagesize = 10;
+        var pagenow = 1;
+
+        function Search() {
+            var tj = $("#cxtj").val();
+
+                pagesize = 10;
+                pagenow = 1;
+                $.ajax({
+                    url: "/sys/GET_KFSLB",
+                    data: { 'tj': tj, 'pagesize': pagesize, 'pagenow': pagenow },
+                    type: "post",
+                    success: function (data) {
+                        if (data) {
+                            var d = [];
+                            for (var i = 0; i < data.d.length; i++) {
+                                d.push([data.d[i].kfsbh, data.d[i].kfsmc,  data.d[i].kfslxr, data.d[i].kfslxrdh, data.d[i].kfscjsj, data.d[i].kfszt,data.d[i].bz,
+                                    '<a class="btn btn-link" onclick="del(' + data.d[i].ksfbh + ')">删除</a>']);
+                            };
+                            option.data = d;
+                            option.datacount = data.datacount;
+                            option.pagenow = data.pagenow;
+                            table.reflush(option);
+                            table.load(option);
+                        }
+                        else {
+                            alert("没有新的数据");
+                        }
+                    }
+                })
+
+        }
+        function del(a) {
+
+            $.ajax({
+                url: "/sys/del_kfs",
+                data: { 'ksfbh': a },
+                type: "post",
+                success: function (data) {
+                    confr
+                    if (data.IsSuccessful) {
+                        alert("删除成功");
+                        table.reflush(option);
+                        init1();
+                    }
+                    else alert(data.ErrMsg);
+
+                }
+            })
+
+        }
+
+        function sub() {
+            $.ajax({
+                url: "/zb/tgcssz",
+                data: { 'rwid': rwid },
+                type: "post",
+                success: function (data) {
+                    if (data.IsSuccessful) {
+                        alert("确认成功");
+                    }
+                    else alert(data.ErrMsg);
+
+                }
+            })
+
+        }
+
+
+
+
+
+
+        var table = new Table_bs($('#kfslb'));
+        function cleardata(a) {
+            $(a).on("hidden.bs.modal", function () {
+                $(this).removeData("bs.modal");
+            });
+        }
+        function Table_bs($box) {
+
+            var _init_bit = false;
+            var _box = $box;
+
+            this.init = function () {
+
+                _box.addClass('table-responsive');
+
+                var html = '';
+                html += '<table class="table table-bordered " style="text-align: center; ">';
+                html += '<thead style="font-weight: bold;">';
+                // html += '<tr>';
+                // html += '</tr>';
+                html += '</thead>';
+                html += '<tbody>';
+                // html += '<tr>';
+                // html += '</tr>';
+                html += '</tbody>';
+                html += '</table>';
+
+                _box.append($(html));
+
+                _init_bit = true;
+            }
+            this.load = function (option) {
+
+                if (!_init_bit) {
+                    this.init();
+                }
+
+                // 表头
+                var thead = option.colNames;
+
+                var html_thead = '';
+                html_thead += '<tr>';
+                for (var i = 0; i < thead.length; i++) {
+                    html_thead += '<td>' + thead[i] + '</td>';
+                }
+                html_thead += '</tr>';
+
+                _box.find('thead').append($(html_thead));
+
+                // 表身
+                var tbody = option.data;
+                var html_tbody = '';
+
+                for (var j1 = 0; j1 < tbody.length; j1++) {
+                    var buff = tbody[j1];
+
+                    html_tbody += '<tr>';
+                    for (var j2 = 0; j2 < buff.length; j2++) {
+                        html_tbody += '<td>' + buff[j2] + '</td>';
+                    }
+                    html_tbody += '</tr>';
+                }
+                _box.find('tbody').append($(html_tbody));
+                if (option.hasPage) {
+                    var html_page = "";
+                    html_page += "<ul class='pagination'><li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>上一页</a></li>";
+                    html_page += "<li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>" + option.datacount + "</a></li>";
+
+                    html_page += "<li tabindex='0' class='paginate_button next' id='datatable-fixed-header_next' aria-controls='datatable-fixed-header'><a href='#'>下一页</a></li></ul>";
+                    _box.append((html_page));
+                }
+            }
+            this.reflush = function (option) {
+                _box.empty();
+                this.init();
+                //option.data = [];
+                //this.load(option);
+            }
+        }
+
+
+
+        var option = {
+            colNames: ["编号", '开发商',  '联系人', '联系电话', '创建时间', '状态', '备注',"操作"],
+            data: [
+
+            ],
+            hasPage: true
+        }
+
+        $(function () {
+            init1();
+        });
+
+
+        function init1() {
+            var data = { 'tj': tj, 'pagesize': pagesize, 'pagenow': pagenow };
+            $.ajax({
+                url: "/sys/GET_KFSLB",
+                data: data,
+                type: "post",
+                success: function (data) {
+                    var d = [];
+                    for (var i = 0; i < data.d.length; i++) {
+                        d.push([data.d[i].kfsbh, data.d[i].kfsmc, data.d[i].kfslxr, data.d[i].kfslxrdh, data.d[i].kfscjsj, data.d[i].kfszt, data.d[i].bz,
+                                    '<a class="btn btn-link" onclick="del(' + data.d[i].ksfbh + ')">删除</a>']);
+                    };
+                    option.data = d;
+                    option.datacount = data.datacount;
+                    option.pagenow = data.pagenow;
+                    table.reflush(option);
+                    table.load(option);
+                }
+            })
+
+        }
+        function pre() {
+            if (option.pagenow > 1) {
+                option.pagenow -= 1;
+                init2();
+            }
+        }
+        function next() {
+            if (option.pagenow < (option.datacount / option.pagesize) + 1) {
+                option.pagenow += 1;
+                init2();
+            }
+        }
+    </script>
+}

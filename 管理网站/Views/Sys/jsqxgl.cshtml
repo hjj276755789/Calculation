@@ -11,15 +11,15 @@
         foreach (var item in qxlb)
         {
             string qxclassname = "btn btn-link ";
-            string qxid = "js" + item.id;
+            string qxid = "js" + item.qxbh;
             foreach (var qxitem in jsqxlb)
             {
-                if (item.id == qxitem.id)
+                if (item.qxbh == qxitem.qxbh)
                 {
                     qxclassname = "btn btn-link btn-success";
                 }
             }
-            <a class='@qxclassname' id="@qxid" onclick='chouse(@item.id)'>@item.qxmc</a>
+            <a class='@qxclassname' id="@qxid" onclick='chouse(@item.qxbh)'>@item.qxmc</a>
 
 
         }
@@ -35,7 +35,7 @@
             $.ajax({
                 url: "/sys/Remove_JSQX",
                 type: "post",
-                data: { jsid: @this.ViewBag.jsid, gqxid:a },
+                data: { jsbh: @this.ViewBag.jsbh, gqxid:a },
                 success: function (data) {
                     obj.removeClass("btn-success");
                 }
@@ -45,7 +45,7 @@
             $.ajax({
                 url: "/sys/ADD_JSQX",
                 type: "post",
-                data: { jsid: @this.ViewBag.jsid, gqxid:a },
+                data: { jsbh: @this.ViewBag.jsbh, gqxid:a },
                 success: function (data) {
                     obj.addClass("btn-success");
                 }

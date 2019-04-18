@@ -13,9 +13,11 @@ namespace 管理网站.Controllers
     public class SysController : BaseController
     {
         private FW_QXGL_DataProvider _fw;
+        private FW_KFS_DataProvider _kfs;
         public SysController()
         {
             _fw = new FW_QXGL_DataProvider();
+            _kfs = new FW_KFS_DataProvider();
         }
 
         #region 页面块
@@ -37,13 +39,18 @@ namespace 管理网站.Controllers
         {
             return PartialView();
         }
-
         [IdentityCheck]
-        public PartialViewResult yhjs(int yhid)
+        [HttpGet]
+        public PartialViewResult update_yhmm(string yhbh)
         {
-            this.ViewBag.yhid = yhid;
+            return PartialView();
+        }
+        [IdentityCheck]
+        public PartialViewResult yhjs(int yhbh)
+        {
+            this.ViewBag.yhbh = yhbh;
             this.ViewBag.jslb = _fw.GET_JSLB();
-            this.ViewBag.yhjslb = _fw.GET_JSLB(yhid);
+            this.ViewBag.yhjslb = _fw.GET_JSLB(yhbh);
             return PartialView();
         }
 
@@ -58,11 +65,21 @@ namespace 管理网站.Controllers
             return View();
         }
 
-        public PartialViewResult jsqxgl(int jsid)
+        public PartialViewResult jsqxgl(int jsbh)
         {
-            this.ViewBag.jsid = jsid;
+            this.ViewBag.jsbh = jsbh;
             this.ViewBag.qxlb = _fw.GET_GQXLB();
-            this.ViewBag.jsqxlb = _fw.GET_QXLB(jsid);
+            this.ViewBag.jsqxlb = _fw.GET_QXLB(jsbh);
+            return PartialView();
+        }
+
+        public ActionResult kfs()
+        {
+            return View();
+        }
+
+        public PartialViewResult add_kfs()
+        {
             return PartialView();
         }
         #endregion
@@ -72,9 +89,10 @@ namespace 管理网站.Controllers
         #region 用户块
         public JsonResult GET_YHLB()
         {
-            return Json(_fw.GET_YHLB());
+            var obj = _fw.GET_YHLB();
+            return Json(obj);
         }
-        #endregion
+        
 
         
 
@@ -93,15 +111,15 @@ namespace 管理网站.Controllers
             }
         }
         [HttpPost]
-        public JsonResult DEL_YHXX(string id)
+        public JsonResult DEL_YHXX(string yhbh)
         {
 
-                if (_fw.DEL_USER(id))
+                if (_fw.DEL_USER(yhbh))
                     return Json(SResult.Success);
                 else
                     return Json(SResult.Error("新增用户失败！"));
         }
-
+        #endregion
 
         #region 角色块
         public JsonResult GET_JSLB()
@@ -109,25 +127,25 @@ namespace 管理网站.Controllers
             return Json(_fw.GET_JSLB());
         }
 
-        public JsonResult Remove_YHJS(int yhid, int jsid)
+        public JsonResult Remove_YHJS(int yhbh, int jsbh)
         {
-            if (_fw.DEL_YHJS(yhid, jsid))
+            if (_fw.DEL_YHJS(yhbh, jsbh))
                 return Json(SResult.Success);
             else return Json(SResult.Error("设置失败"));
         }
 
-        public JsonResult ADD_YHJS(int yhid, int jsid)
+        public JsonResult ADD_YHJS(int yhbh, int jsbh)
         {
-            if (_fw.ADD_YHJS(yhid, jsid))
+            if (_fw.ADD_YHJS(yhbh, jsbh))
                 return Json(SResult.Success);
             else return Json(SResult.Error("设置失败"));
         }
         #endregion
 
         #region 权限块
-        public JsonResult ADD_JSQX(int jsid, int gqxid)
+        public JsonResult ADD_JSQX(int jsbh, int gqxid)
         {
-            if(_fw.ADD_JSQX(jsid, gqxid))
+            if(_fw.ADD_JSQX(jsbh, gqxid))
                 return Json(SResult.Success);
             else return Json(SResult.Error("设置失败"));
         }
@@ -137,7 +155,32 @@ namespace 管理网站.Controllers
                 return Json(SResult.Success);
             else return Json(SResult.Error("设置失败"));
         }
-        
+
+        #endregion
+
+        #region 开发商
+        public JsonResult GET_KFSLB(string tj, int pagesize, int pagenow)
+        {
+            var obj = _kfs.FIND_KFS_XX(tj,pagesize,pagenow);
+            var s = new
+            {
+                pagenow = obj.PageNumber,
+                datacount = obj.TotalPageCount,
+                d = obj
+            };
+            return Json(s);
+        }
+
+
+        [HttpPost]
+        public JsonResult ADD_KFS(string kfsmc, string kfslxr, string kfslxrdh, string bz)
+        {
+           
+                if (_kfs.ADD_KFS(kfsmc, kfslxr, kfslxrdh, bz))
+                    return Json(SResult.Success);
+                else
+                    return Json(SResult.Error("新增用户失败！"));
+        }
         #endregion
         #endregion
 

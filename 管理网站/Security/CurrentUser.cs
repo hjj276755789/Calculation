@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Calculation.Base;
+using Calculation.Dal;
+using Calculation.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -12,7 +15,7 @@ namespace 管理网站
         private IIdentity _identity;
 
         /// <summary>用户编号</summary>
-        public string YHID { get; private set; }
+        public string YHBH { get; private set; }
 
         /// <summary>
         /// 获有一个值，该值表示是否验证了用户
@@ -28,14 +31,14 @@ namespace 管理网站
             if (identity is FormsIdentity)
             {
                 string[] userData = ((FormsIdentity)identity).Ticket.UserData.Split(',');
-                this.YHID = userData[0];
+                this.YHBH = userData[0];
             }
         }
 
         public CurrentUser(string YHID)
         {
             this._identity = new System.Security.Principal.GenericIdentity(YHID);
-            this.YHID = YHID;
+            this.YHBH = YHID;
         }
 
         public static void SignIn(string YHID)
@@ -66,6 +69,16 @@ namespace 管理网站
             HttpContext.Current.Response.Cookies.Add(cookie);
 
         }
+        public static List<QXXX> GETPower(string YHID)
+        {
+            var list = new FW_QXGL_DataProvider().GET_YHQX(YHID);
+            var lv1 = list.Where(m => m.fqxbh.IsNull());
+            foreach (var i_1 in lv1)
+            {
+                i_1.GetChildNode(list);
+            }
+            return lv1.ToList();
+        }
 
         public static void SignOut()
         {
@@ -84,7 +97,13 @@ namespace 管理网站
                 return new CurrentUser("admin");
             }
         }
-
+        public  CurrentUser UserInfo
+        {
+            get
+            {
+                return this;
+            }
+        }
 
 
         IIdentity IPrincipal.Identity
@@ -97,4 +116,25 @@ namespace 管理网站
             throw new NotImplementedException();
         }
     }
+
+    #region 权限扩展方法
+    public static class EXTENDS_QXGL
+    {
+        /// <summary>
+        ///  扩展方法 生成下级权限
+        /// </summary>
+        /// <param name="target">当前节点</param>
+        /// <param name="list">权限目录</param>
+        /// <returns></returns>
+        public static QXXX GetChildNode(this QXXX target, List<QXXX> list)
+        {
+            List<QXXX> temp = new List<QXXX>();
+            var tree = list.Where(m => m.fqxbh == target.qxbh);
+            target.xjqx = new List<QXXX>();
+            target.xjqx.AddRange(tree);
+            return target;
+        }
+    }
+
+    #endregion
 }

@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="CJGL_DataProvider.cs" />
     <Compile Include="Data_DataProvider.cs" />
+    <Compile Include="FW_KFS_DataProvider.cs" />
     <Compile Include="FW_QXGL_DataProvider.cs" />
     <Compile Include="Jsjg_yb_DataProvider.cs" />
     <Compile Include="Jsjg_zb_DataProvider.cs" />

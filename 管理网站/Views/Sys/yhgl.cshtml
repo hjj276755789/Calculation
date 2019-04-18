@@ -2,11 +2,11 @@
 @{
     ViewBag.Title = "yhgl";
 }
-<div class="row">
+<div class="row"  style="width: 90%; margin: 20px;">
     <a class="btn btn-primary waves-effect waves-light" href="/Sys/add_yhxx" data-toggle="modal" data-target="#tjyh" onclick="cleardata('#tjyh')">添加用户</a>
 </div>
 
-<div id="yhlb" class="row" style="width: 100%;"></div>
+<div id="yhlb" class="row" style="width: 90%; margin: 20px;"></div>
 
 <DIV tabindex="-1" class="modal fade" id="tjyh" role="dialog"
      aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
@@ -116,7 +116,7 @@
         if (r == true) {
             $.ajax({
                 url: "/sys/DEL_YHXX",
-                data: { 'id': a },
+                data: { 'yhbh': a },
                 type: "post",
                 success: function (data) {
                     if (data.IsSuccessful) {
@@ -148,8 +148,8 @@
             success: function (data) {
                 var d = [];
                 for (var i = 0; i < data.length; i++) {
-                    d.push(['<input type="checkbox">', data[i].id, data[i].yhm, data[i].yhlx,
-                        '<a class="btn btn-primary waves-effect waves-light" href="/sys/yhjs?yhid=' + data[i].id + '" data-toggle="modal" data-target="#yhsq" onclick="cleardata(\'#yhsq\')">用户授权</a>', '<a class="btn-link" onclick="del_yh('+data[i].id+')">删除</a>']);
+                    d.push(['<input type="checkbox">', data[i].yhbh, data[i].yhmc, ini_yhlx(data[i].yhlx+""),
+                        '<a class="btn btn-primary waves-effect waves-light" href="/sys/yhjs?yhbh=' + data[i].yhbh + '" data-toggle="modal" data-target="#yhsq" onclick="cleardata(\'#yhsq\')">用户授权</a>', '<a class="btn-link" onclick="del_yh('+data[i].yhbh+')">删除</a>']);
                 }
                 option.data = d;
                 table.load(option);
@@ -165,5 +165,14 @@
         table.reflush(option);
         init1();
     });
+    function ini_yhlx(a)
+    {
+        console.log(a);
+        switch(a)
+        {
+            case "1": { return "默认管理员"; }
+            case "2": { return "普通用户"; }
+        }
+    }
 </script>
 }

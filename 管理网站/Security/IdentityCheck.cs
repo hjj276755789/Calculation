@@ -62,7 +62,7 @@ namespace 管理网站
             var user = filterContext.HttpContext.User as CurrentUser;
             if (user != null&&user.IsAuthenticated)
             {
-                var userid = user.YHID;
+                var userid = user.YHBH;
                 _qx = new FW_QXGL_DataProvider();
                 if (!_qx.HAS_POWER(userid, controllerName, actionName))
                 {

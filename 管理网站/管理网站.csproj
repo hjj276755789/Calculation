@@ -191,6 +191,7 @@
     <Content Include="Content\bootstrap-reboot.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\bootstrap-timepicker.min.css" />
     <Content Include="Content\bootstrap.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -546,6 +547,9 @@
     <Content Include="Views\Sys\qxgl.cshtml" />
     <Content Include="Views\Sys\jsqxgl.cshtml" />
     <Content Include="Views\Account\test.cshtml" />
+    <Content Include="Views\Sys\kfs.cshtml" />
+    <Content Include="Views\Sys\add_kfs.cshtml" />
+    <Content Include="Views\Sys\update_yhmm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

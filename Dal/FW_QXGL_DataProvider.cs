@@ -12,61 +12,61 @@ namespace Calculation.Dal
 {
     public class FW_QXGL_DataProvider
     {
-
         //登录
-        public bool CHECK_LOGIN(string yhm,string yhmm)
+        public YHXX CHECK_LOGIN(string yhmc, string yhmm)
         {
-            string sql = "select count(*) from calculation.fw_yhb where yhm=@yhm and yhmm=@yhmm";
-            MySqlParameter[] p = { new MySqlParameter("yhm", yhm), new MySqlParameter("yhmm", yhmm) };
-            return MySqlDbhelper.ExecuteScalar(sql, p).ints() > 0;
+            string sql = "select * from xtgl_fw_yh where yhmc=@yhmc and yhmm=@yhmm";
+            MySqlParameter[] p = { new MySqlParameter("yhmc", yhmc), new MySqlParameter("yhmm", yhmm) };
+            return Modelhelper.类对象赋值<YHXX>(new YHXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
 
-        
+
         public List<YHXX> GET_YHLB()
         {
-            string sql = "select * from calculation.fw_yhb";
-            return Models.Modelhelper.类列表赋值<YHXX>(new YHXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
+            string sql = "select * from xtgl_fw_yh";
+            return Modelhelper.类列表赋值<YHXX>(new YHXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
+        }
+
+        public bool ADD_USER(string yhmc,string yhmm,YH_LX yhlx)
+        {
+            string sql = "insert into xtgl_fw_yh(yhmc,yhmm,yhlx) values(@yhmc,@yhmm,@yhlx)";
+            MySqlParameter[] p = { new MySqlParameter("yhmc", yhmc), new MySqlParameter("yhmm", yhmm), new MySqlParameter("yhlx", yhlx.ints()) };
+            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
 
         //获取角色列表
         public List<JSXX> GET_JSLB()
         {
-            string sql = "select * from calculation.fw_jsb";
-            return Models.Modelhelper.类列表赋值<JSXX>(new JSXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
+            string sql = "select * from xtgl_fw_js";
+            return Modelhelper.类列表赋值<JSXX>(new JSXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
         }
-        public List<JSXX> GET_JSLB(string jsmc)
+        public List<JSXX> GET_JSLB(int yhbh)
         {
-            string sql = "select * from calculation.fw_jsb where jsmc like '%'||@jsmc||'%'";
-            MySqlParameter[] p = { new MySqlParameter("jsmc", jsmc) };
-            return Models.Modelhelper.类列表赋值<JSXX>(new JSXX(), MySqlDbhelper.GetDataSet(sql,p).Tables[0]);
-        }
-        public List<JSXX> GET_JSLB(int yhid)
-        {
-            string sql = "select * from calculation.fw_jsb t,calculation.fw_yhjsb t1 where t.id =t1.jsid and t1.yhid=@yhid ";
-            MySqlParameter[] p = { new MySqlParameter("yhid", yhid) };
-            return Models.Modelhelper.类列表赋值<JSXX>(new JSXX(), MySqlDbhelper.GetDataSet(sql,p).Tables[0]);
+            string sql = "select * from xtgl_fw_js t,xtgl_fw_yhjs t1 where t.jsbh =t1.jsbh and t1.yhbh=@yhbh ";
+            MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh) };
+            return Modelhelper.类列表赋值<JSXX>(new JSXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
         //获取权限列表
-        public List<QXXX> GET_QXLB(int jsid)
+        public List<QXXX> GET_QXLB(int jsbh)
         {
-            string sql = "select t.* from calculation.fw_qxb t,calculation.fw_jsqxb t1 where t.id =t1.qxid  and t1.jsid=@jsid";
-            MySqlParameter[] p = { new MySqlParameter("jsid", jsid) };
-            return Models.Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql,p).Tables[0]);
+            string sql = "select t.* from xtgl_fw_qxxx t,xtgl_fw_jsqx t1 where t.qxbh =t1.qxbh  and t1.jsbh=@jsbh";
+            MySqlParameter[] p = { new MySqlParameter("jsbh", jsbh) };
+            return Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
         /// <summary>
         /// 获取根权限列表
         /// </summary>
         public List<QXXX> GET_GQXLB()
         {
-            string sql = "select * from fw_qxb where fid is null";
-            return Models.Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
+            string sql = "select * from xtgl_fw_qxxx where fqxbh is null";
+            return Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
         }
         //获取权限列表
         public List<QXXX> GET_GQXLB(int jsid)
         {
             string sql = "select t.* from calculation.fw_qxb t,calculation.fw_jsqxb t1 where t.id =t1.qxid  and t1.jsid=@jsid and t.fid is null";
             MySqlParameter[] p = { new MySqlParameter("jsid", jsid) };
-            return Models.Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
+            return Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
         /// <summary>
         /// 获取所有权限列表
@@ -75,42 +75,48 @@ namespace Calculation.Dal
         public List<QXXX> GET_QXLB()
         {
             string sql = "select * from calculation.fw_qxb";
-            return Models.Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
+            return Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
         }
+
+
+
+
+
         //获取用户角色权限
-        public List<QXXX> GET_YHQX(string yhm)
+        public List<QXXX> GET_YHQX(string yhbh)
         {
-            string sql = @"select distinct e.id,e.qxmc,e.qxkzq,e.qxst from fw_yhb a,fw_jsb b,fw_yhjsb c,fw_jsqxb d,fw_qxb e
-where a.id=c.yhid and b.id =c.jsid and d.jsid=b.id and  e.id=d.qxid
-and a.yhm=@yhm and e.fid is null";
-            MySqlParameter[] p = { new MySqlParameter("yhm", yhm) };
-            return Models.Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
+            string sql = @"select  distinct e.qxbh,e.qxmc,e.qxkzq,e.qxst,e.fqxbh,e.qxlx,e.tb
+from xtgl_fw_yh a,xtgl_fw_js b,xtgl_fw_yhjs c,xtgl_fw_jsqx d,xtgl_fw_qxxx e
+where a.yhbh=c.yhbh and b.jsbh =c.jsbh and d.jsbh=b.jsbh and  e.qxbh=d.qxbh
+and a.yhbh=@yhbh";
+            MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh) };
+            return Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
         //设置用户角色
-        public bool ADD_YHJS(int yhid,int jsid)
+        public bool ADD_YHJS(int yhbh, int jsbh)
         {
-            string sql = "insert into fw_yhjsb values(@yhid,@jsid)";
-            MySqlParameter[] p = { new MySqlParameter("yhid", yhid), new MySqlParameter("jsid", jsid) };
-           return MySqlDbhelper.ExecuteNonQuery(sql, p)>0;
+            string sql = "insert into xtgl_fw_yhjs values(@yhbh,@jsbh)";
+            MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh), new MySqlParameter("jsbh", jsbh) };
+            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
-        public bool DEL_YHJS(int yhid, int jsid)
+        public bool DEL_YHJS(int yhbh, int jsbh)
         {
-            string sql = "delete from fw_yhjsb where yhid=@yhid and jsid=@jsid";
-            MySqlParameter[] p = { new MySqlParameter("yhid", yhid), new MySqlParameter("jsid", jsid) };
+            string sql = "delete from xtgl_fw_yhjs where yhbh=@yhbh and jsbh=@jsbh";
+            MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh), new MySqlParameter("jsbh", jsbh) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
 
         //设置角色权限
-        public bool ADD_JSQX(int jsid,int fid)
+        public bool ADD_JSQX(int jsbh, int fqxbh)
         {
-            string sql = @"insert into fw_jsqxb select @jsid,@fid union select @jsid,id from fw_qxb where fid = @fid";
-            MySqlParameter[] p = { new MySqlParameter("jsid", jsid), new MySqlParameter("fid", fid) };
+            string sql = @"insert into xtgl_fw_jsqx select @jsbh,@fqxbh union select @jsbh,qxbh from xtgl_fw_qxxx where fqxbh = @fqxbh";
+            MySqlParameter[] p = { new MySqlParameter("jsbh", jsbh), new MySqlParameter("fqxbh", fqxbh) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
-        public bool DEL_JSQX(int jsid, int fid)
+        public bool DEL_JSQX(int jsbh, int fqxbh)
         {
-            string sql = @"DELETE FROM fw_jsqxb WHERE  JSID=@JSID AND qxid in (select id from fw_qxb where fid = @fid or id=@fid)";
-            MySqlParameter[] p = { new MySqlParameter("jsid", jsid), new MySqlParameter("fid", fid) };
+            string sql = @"DELETE FROM xtgl_fw_jsqx WHERE  jsbh=@jsbh AND qxbh in (select qxbh from xtgl_fw_qxxx where fqxbh = @fqxbh or qxbh=@fqxbh)";
+            MySqlParameter[] p = { new MySqlParameter("jsbh", jsbh), new MySqlParameter("fqxbh", fqxbh) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
 
@@ -124,15 +130,15 @@ and a.yhm=@yhm and e.fid is null";
         /// <param name="actionName"></param>
         /// <returns></returns>
 
-        public bool HAS_POWER(string yhm, string qxkzq, string qxst)
+        public bool HAS_POWER(string yhid, string qxkzq, string qxst)
         {
-            string sql = @"select count(t1.id) from calculation.fw_yhb t1
-join calculation.fw_yhjsb t2 on t1.id=t2.yhid
-join calculation.fw_jsb t3 on t2.yhid= t1.id
-join calculation.fw_jsqxb t4 on t3.id =t4.jsid
-join calculation.fw_qxb t5 on t4.qxid =t5.id 
-where t1.yhm=@yhm and t5.qxkzq =@qxkzq and t5.qxst = @qxst";
-            MySqlParameter[] p = { new MySqlParameter("yhm", yhm), new MySqlParameter("qxkzq", qxkzq), new MySqlParameter("qxst", qxst) };
+            string sql = @"select count(t1.yhbh) ct from xtgl_fw_yh t1
+join xtgl_fw_yhjs t2 on t1.yhbh=t2.yhbh
+join xtgl_fw_js t3 on t3.jsbh= t2.jsbh
+join xtgl_fw_jsqx t4 on t3.jsbh =t4.jsbh
+join xtgl_fw_qxxx t5 on t4.qxbh =t5.qxbh 
+where t1.yhbh=@yhbh and t5.qxkzq =@qxkzq and t5.qxst = @qxst";
+            MySqlParameter[] p = { new MySqlParameter("yhbh", yhid), new MySqlParameter("qxkzq", qxkzq), new MySqlParameter("qxst", qxst) };
             var obj = MySqlDbhelper.ExecuteScalar(sql, p);
             if (obj != null)
                 return int.Parse(obj.ToString()) > 0;
@@ -142,16 +148,11 @@ where t1.yhm=@yhm and t5.qxkzq =@qxkzq and t5.qxst = @qxst";
 
 
 
-        public bool ADD_USER(string yhm,string yhmm, YH_LX yhlx)
+
+        public bool DEL_USER(string yhbh)
         {
-            string sql = "insert into calculation.fw_yhb (yhm,yhmm,yhlx) values (@yhm,@yhmm,@yhlx)";
-            MySqlParameter[] p = { new MySqlParameter("yhm", yhm), new MySqlParameter("yhmm", yhmm), new MySqlParameter("yhlx", yhlx) };
-            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
-        }
-        public bool DEL_USER(string id)
-        {
-            string sql = "delete from calculation.fw_yhb where id=@id";
-            MySqlParameter[] p = { new MySqlParameter("id", id)};
+            string sql = "delete from xtgl_fw_yh where yhbh=@yhbh";
+            MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
     }

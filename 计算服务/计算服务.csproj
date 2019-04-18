@@ -95,6 +95,7 @@
     <Compile Include="Service.Designer.cs">
       <DependentUpon>Service.cs</DependentUpon>
     </Compile>
+    <Compile Include="SocketStore.cs" />
     <Compile Include="管理.cs">
       <SubType>Form</SubType>
     </Compile>
