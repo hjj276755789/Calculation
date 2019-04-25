@@ -37,8 +37,39 @@
         }
 
 
-
-
+        function del_yhfzkfs(b)
+        {
+            $.ajax({
+                url: "/sys/del_yhfzkfs",
+                type: "post",
+                data: { 'yhbh': '@this.ViewBag.yhbh', kfsbh:b },
+                success: function (data) {
+                    if (data.IsSuccessful) {
+                        $('#tjkfs').modal('hide');
+                        init();
+                    }
+                    else {
+                        alert(data.ErrMsg);
+                    }
+                }
+            })
+        }
+        function add_yhfzkfs(b) {
+            $.ajax({
+                url: "/sys/add_yhfzkfs",
+                type: "post",
+                data: { 'yhbh': '@this.ViewBag.yhbh', kfsbh: b },
+                success: function (data) {
+                    if (data.IsSuccessful) {
+                        $('#tjkfs').modal('hide');
+                        init();
+                    }
+                    else {
+                        alert(data.ErrMsg);
+                    }
+                }
+            })
+        }
 
         var table = new Table_bs($('#list'));
         function cleardata(a) {
@@ -155,7 +186,7 @@
                     if (data) {
                         var d = [];
                         for (var i = 0; i < data.d.length; i++) {
-                            d.push([data.d[i].kfsbh, data.d[i].kfsmc, data.d[i].kfslxr, data.d[i].kfslxrdh, ini_pfzt(data.d[i].sffp, data.d[i].kfsbh), '<a class="btn btn-primary waves-effect waves-light" onclick=del_yhfzkfs("' + data.d[i].yhbh + '","' + data.d[i].kfsbh + '")>删除授权</a>']);
+                            d.push([data.d[i].kfsbh, ini_data(data.d[i].kfsmc), ini_data(data.d[i].kfslxr), ini_data(data.d[i].kfslxrdh), ini_pfzt(data.d[i].sffp, data.d[i].kfsbh), ini_sq(data.d[i].yhbh, data.d[i].kfsbh, data.d[i].sffp)]);
                         };
                         option.data = d;
                         option.datacount = data.datacount;
@@ -173,9 +204,25 @@
         function ini_pfzt(a,b)
         {
             if(a==0)
-                return "<span class='label label-default'>未授权</span>"   
+                return "<span class='label label-default'>未授权</span>"
             else
                 return "<span class='label label-success'>已授权</span>"
+        }
+        function ini_sq(a,b,c)
+        {
+            if(c==0){
+                return '<a class="btn btn-primary waves-effect waves-light" onclick="add_yhfzkfs(\'' + b + '\')">授予权限</a>'
+            }
+            else
+            {
+                return '<a class="btn btn-primary waves-effect waves-light" onclick="del_yhfzkfs(\'' + b + '\')">删除授权</a>'
+            }
+        }
+        function ini_data(a) {
+            if (a == undefined || a == null)
+                return "";
+            else
+                return a;
         }
     </script>
 }

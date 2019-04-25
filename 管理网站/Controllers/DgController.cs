@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calculation.Dal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +13,7 @@ namespace 管理网站.Controllers
     /// </summary>
     public class DgController : Controller
     {
+        Dg_DataProvider _dd = new Dg_DataProvider();
         #region 页面
 
        
@@ -24,9 +26,16 @@ namespace 管理网站.Controllers
 
         #region 数据
 
-        public JsonResult DG_Grid(string tj,int pagesize,int pagenow)
+        public JsonResult DG_Grid(string tj,string nf,string zc,int pagesize,int pagenow)
         {
-            return Json("");
+            var obj = _dd.GET_DG(tj, nf, zc, pagesize, pagenow);
+            var s = new
+            {
+                pagenow = obj.PageNumber,
+                datacount = obj.TotalPageCount,
+                d = obj
+            };
+            return Json(s);
         }
         #endregion
     }

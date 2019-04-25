@@ -10,7 +10,7 @@ namespace Calculation.Models
 {
     public class YHXX:Data_Item<YHXX>
     {
-        public string yhbh { get; set; }
+        public int yhbh { get; set; }
         public string yhmc { get; set; }
         public string yhlx { get; set; }
 

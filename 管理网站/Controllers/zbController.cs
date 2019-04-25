@@ -104,7 +104,7 @@ namespace 管理网站.Controllers
        
         public JsonResult get_zbmblx(int pagesize, int pagenow,string mbmc)
         {
-            return Json(rwgl.GET_ZB_LB(pagesize, pagenow,mbmc));
+            return Json(rwgl.GET_ZB_LB(this.CurrentUser.YHBH,pagesize, pagenow,mbmc));
         }
         /// <summary>
         /// 获取后保任务列表

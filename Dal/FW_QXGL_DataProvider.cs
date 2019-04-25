@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Calculation.Base;
 using Calculation.Models.Enums;
+using System.Data;
 
 namespace Calculation.Dal
 {
@@ -17,7 +18,12 @@ namespace Calculation.Dal
         {
             string sql = "select * from xtgl_fw_yh where yhmc=@yhmc and yhmm=@yhmm";
             MySqlParameter[] p = { new MySqlParameter("yhmc", yhmc), new MySqlParameter("yhmm", yhmm) };
-            return Modelhelper.类对象赋值<YHXX>(new YHXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
+            DataTable dt = MySqlDbhelper.GetDataSet(sql, p).Tables[0];
+            if (dt != null&&dt.Rows.Count>0)
+            {
+                return Modelhelper.类对象赋值<YHXX>(new YHXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
+            }
+            else return null;
         }
 
 

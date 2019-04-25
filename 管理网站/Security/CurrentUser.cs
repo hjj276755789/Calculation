@@ -77,7 +77,7 @@ namespace 管理网站
             {
                 i_1.GetChildNode(list);
             }
-            return lv1.ToList();
+            return lv1.OrderBy(m=>m.qxbh).ToList();
         }
 
         public static void SignOut()

@@ -5,7 +5,6 @@
 <div class="row"  style="width: 90%; margin: 20px;">
     <a class="btn btn-primary waves-effect waves-light" href="/Sys/add_yhxx" data-toggle="modal" data-target="#tjyh" onclick="cleardata('#tjyh')">添加用户</a>
     <input type="text" id="cxtj" class="form-control" placeholder="请输入查询条件" /><input type="button" value="查询" onclick="Search()" class="btn btn-danger" />
-    <input type="button" value="修改密码" onclick="Update()" class="btn btn-danger" />
 </div>
 
 <div id="yhlb" class="row" style="width: 90%; margin: 20px;"></div>
@@ -178,7 +177,7 @@
         }
     }
     var option = {
-        colNames: ['选择',"用户编号", "用户名", "用户类别", "操作",""],
+        colNames: ['选择',"用户编号", "用户名", "用户类别", "操作"],
         data: [
 
         ],
@@ -216,8 +215,10 @@
                 var d = [];
                 for (var i = 0; i < data.d.length; i++) {
                     d.push(['<input type="checkbox">', data.d[i].yhbh, data.d[i].yhmc, ini_yhlx(data.d[i].yhlx + ""),
-                       '<a class="btn btn-primary waves-effect waves-light" href="/sys/yhjs?yhbh=' + data.d[i].yhbh + '" data-toggle="modal" data-target="#yhsq" onclick="cleardata(\'#yhsq\')">授予角色</a><a class="btn btn-primary waves-effect waves-light" href="/sys/fzkfs?yhbh=' + data.d[i].yhbh + '">负责开发商</a>',
-                       '<a class="btn btn-primary waves-effect waves-light" href="/sys/update_yhmm?yhbh=' + data.d[i].yhbh + '" data-toggle="modal" data-target="#xgmm" onclick="cleardata(\'#xgmm\')">修改密码</a><a class="btn-link" onclick="del_yh(' + data.d[i].yhbh + ')">删除</a>']);
+                       '<a class="on-default" title="授予角色"  href="/sys/yhjs?yhbh=' + data.d[i].yhbh + '" data-toggle="modal" data-target="#yhsq" onclick="cleardata(\'#yhsq\')" ><i class="fa  fa-certificate"></i></a></a>&nbsp;&nbsp;'
+                       + '<a class="on-default" title="负责开发商" href="/sys/fzkfs?yhbh=' + data.d[i].yhbh + '"><i class="fa fa-bell"></i></a></a>&nbsp;&nbsp;'
+                       + '<a class="on-default" title="修改用户密码" href="/sys/update_yhmm?yhbh=' + data.d[i].yhbh + '" data-toggle="modal" data-target="#xgmm" onclick="cleardata(\'#xgmm\')"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;'
+                       + '<a class="on-default" title="删除用户" onclick="del_yh(' + data.d[i].yhbh + ')"><i class="fa fa-trash-o"></i></a>']);
                 };
                 option.data = d;
                 option.datacount = data.datacount;

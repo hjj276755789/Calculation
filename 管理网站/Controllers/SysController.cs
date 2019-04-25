@@ -196,7 +196,6 @@ namespace 管理网站.Controllers
                 return Json(SResult.Success);
             else return Json(SResult.Error("设置失败"));
         }
-
         #endregion
 
         #region 开发商
@@ -255,6 +254,20 @@ namespace 管理网站.Controllers
                 d = obj
             };
             return Json(s);
+        }
+        public JsonResult del_yhfzkfs(string yhbh,string kfsbh)
+        {
+            if (_kfs.DEL_KFS_YHFZKFS(yhbh, kfsbh))
+                return Json(SResult.Success);
+            else return Json(SResult.Error("删除授权失败"));
+
+        }
+        public JsonResult add_yhfzkfs(string yhbh, string kfsbh)
+        {
+            if (_kfs.ADD_KFS_YHFZKFS(yhbh, kfsbh))
+                return Json(SResult.Success);
+            else return Json(SResult.Error("删除授权失败"));
+
         }
         #endregion
         #endregion

@@ -33,19 +33,21 @@ namespace Calculation.Dal
         public List<Rw_List> GET_ZB_RWLB(int mbid, int pagesize,int pagenow)
         {
             string sql = @"select * from calculation.xtgl_bbrw where mbid=@mbid limit @f,@e";
-            MySqlParameter[] p = { new MySqlParameter("mbid", mbid), new MySqlParameter("f", pagesize * (pagenow - 1)), new MySqlParameter("e", pagesize * pagesize) };
+            MySqlParameter[] p = { new MySqlParameter("mbid", mbid), new MySqlParameter("f", pagesize * (pagenow - 1)), new MySqlParameter("e", pagesize * pagenow) };
             return Modelhelper.类列表赋值(new Rw_List(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
-        public List<Zb_Item_Model> GET_ZB_LB(int pagesize, int pagenow,string mbmc)
+        public List<Zb_Item_Model> GET_ZB_LB(string yhbh,int pagesize, int pagenow,string mbmc)
         {
+            string sql = @"select t4.* from xtgl_fw_yhfzkfs t1,xtgl_kfs_xx t2,xtgl_kfs_kfsmb t3 ,xtgl_bbmb t4
+where t1.kfsbh = t2.kfsbh and t2.kfsbh = t3.kfsbh and t3.mbbh = t4.mbid and t1.yhbh = @yhbh";
             if (!string.IsNullOrEmpty(mbmc)) { 
-                string sql = @"select * from calculation.xtgl_bbmb where mblx = @mblx and mbmc like @mbmc   limit @f,@e";
-                MySqlParameter[] p = { new MySqlParameter("f", pagesize * (pagenow - 1)), new MySqlParameter("e", pagesize * pagesize), new MySqlParameter("mblx", MB_Enums.周报), new MySqlParameter("mbmc", "%" + mbmc + "%") };
+                sql += @" and mblx = @mblx and mbmc like @mbmc   limit @f,@e";
+                MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh), new MySqlParameter("f", pagesize * (pagenow - 1)), new MySqlParameter("e", pagesize * pagenow), new MySqlParameter("mblx",(int) MB_Enums.周报), new MySqlParameter("mbmc", "%" + mbmc + "%") };
                 return Modelhelper.类列表赋值(new Zb_Item_Model(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
             }
             else{
-                string sql = @"select * from calculation.xtgl_bbmb where mblx = @mblx   limit @f,@e";
-                MySqlParameter[] p = { new MySqlParameter("f", pagesize * (pagenow - 1)), new MySqlParameter("e", pagesize * pagesize), new MySqlParameter("mblx", MB_Enums.周报)};
+                sql += @" and mblx = @mblx   limit @f,@e";
+                MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh),new MySqlParameter("f", pagesize * (pagenow - 1)), new MySqlParameter("e", pagesize * pagenow), new MySqlParameter("mblx",(int) MB_Enums.周报)};
                 return Modelhelper.类列表赋值(new Zb_Item_Model(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
             }
         }

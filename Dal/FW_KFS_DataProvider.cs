@@ -102,5 +102,17 @@ namespace Calculation.Dal
             }
 
         }
+        public bool DEL_KFS_YHFZKFS(string yhbh,string kfsbh)
+        {
+            string sql = "delete from xtgl_fw_yhfzkfs where yhbh =@yhbh and  kfsbh =@kfsbh";
+            MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh) ,new MySqlParameter("kfsbh", kfsbh) };
+            return ExecuteNonQuery(sql, p) > 0;
+        }
+        public bool ADD_KFS_YHFZKFS(string yhbh, string kfsbh)
+        {
+            string sql = "insert into xtgl_fw_yhfzkfs (yhbh,kfsbh) values(@yhbh,@kfsbh)";
+            MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh), new MySqlParameter("kfsbh", kfsbh) };
+            return ExecuteNonQuery(sql, p) > 0;
+        }
     }
 }
