@@ -10,7 +10,7 @@ using Calculation.Models.Enums;
 
 namespace Calculation.Dal
 {
-    public class FW_QXGL_DataProvider
+    public class FW_QXGL_DataProvider: MySqlDbhelper
     {
         //登录
         public YHXX CHECK_LOGIN(string yhmc, string yhmm)
@@ -21,10 +21,20 @@ namespace Calculation.Dal
         }
 
 
-        public List<YHXX> GET_YHLB()
+        public IPageList<YHXX> GET_YHLB(string tj ,int pagesize,int pagenow)
         {
             string sql = "select * from xtgl_fw_yh";
-            return Modelhelper.类列表赋值<YHXX>(new YHXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
+            if (!tj.IsNull())
+            {
+                sql += " where yhmc like @yhmc ";
+                MySqlParameter[] p = { new MySqlParameter("yhmc", "%" + tj + "%") };
+                return GetPagedList<YHXX>(sql, p, pagesize, pagenow);
+            }
+            else
+            {
+                return GetPagedList<YHXX>(sql, null, pagesize, pagenow);
+            }
+
         }
 
         public bool ADD_USER(string yhmc,string yhmm,YH_LX yhlx)
@@ -46,6 +56,12 @@ namespace Calculation.Dal
             MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh) };
             return Modelhelper.类列表赋值<JSXX>(new JSXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
+        public bool ADD_JSXX(string jsmc,string jsms)
+        {
+            string sql = "insert into xtgl_fw_js (jsmc,jsms) values(@jsmc,@jsms)";
+            MySqlParameter[] p = { new MySqlParameter("jsmc", jsmc),new MySqlParameter("jsms", jsms) };
+            return ExecuteNonQuery(sql, p) > 0;
+        }
         //获取权限列表
         public List<QXXX> GET_QXLB(int jsbh)
         {
@@ -58,7 +74,7 @@ namespace Calculation.Dal
         /// </summary>
         public List<QXXX> GET_GQXLB()
         {
-            string sql = "select * from xtgl_fw_qxxx where fqxbh is null";
+            string sql = "select * from xtgl_fw_qxxx where fqxbh is null or fqxbh = ''";
             return Modelhelper.类列表赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
         }
         //获取权限列表
@@ -109,7 +125,9 @@ and a.yhbh=@yhbh";
         //设置角色权限
         public bool ADD_JSQX(int jsbh, int fqxbh)
         {
-            string sql = @"insert into xtgl_fw_jsqx select @jsbh,@fqxbh union select @jsbh,qxbh from xtgl_fw_qxxx where fqxbh = @fqxbh";
+            string sql = @"insert into xtgl_fw_jsqx select @jsbh,@fqxbh 
+                        union select @jsbh,qxbh from xtgl_fw_qxxx where fqxbh = @fqxbh
+                        union select @jsbh,qxbh from xtgl_fw_qxxx where fqxbh in (select qxbh from xtgl_fw_qxxx where fqxbh = @fqxbh)";
             MySqlParameter[] p = { new MySqlParameter("jsbh", jsbh), new MySqlParameter("fqxbh", fqxbh) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
@@ -153,6 +171,12 @@ where t1.yhbh=@yhbh and t5.qxkzq =@qxkzq and t5.qxst = @qxst";
         {
             string sql = "delete from xtgl_fw_yh where yhbh=@yhbh";
             MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh) };
+            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
+        }
+        public bool update_yhmm_xx(string yhbh,string yhmm)
+        {
+            string sql = "update xtgl_fw_yh set yhmm =@yhmm where yhbh = @yhbh";
+            MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh) , new MySqlParameter("yhmm", yhmm) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
     }

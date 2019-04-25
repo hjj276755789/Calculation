@@ -1,7 +1,47 @@
 ﻿
 @{
-    ViewBag.Title = "update_yhmm";
+    ViewBag.Title = "add_kfs";
 }
-
-<h2>update_yhmm</h2>
+<div class="panel panel-border panel-success col-lg-6 col-md-6 col-sm-6 col-xs-6">
+    <div class="panel-heading"><h3 class="panel-title">修改用户密码</h3></div>
+    <div class="panel-body">
+        <div class="form-group">
+            <label for="exampleInputEmail1">填写新密码</label>
+            <input class="form-control" id="yhmm" type="text">
+        </div>
+        <button class="btn btn-success waves-effect waves-light" type="button" onclick="update_yhmm()">提交</button>
+    </div>
+</div> <!-- panel -->
+<div class="panel panel-border panel-success  col-lg-6 col-md-6 col-sm-6 col-xs-6">
+    <div class="panel-heading"><h3 class="panel-title">重置用户密码</h3></div>
+    <div class="panel-body">
+        <button class="btn btn-success waves-effect waves-light" type="button" onclick="update_yhmm('000000')">重置为6个0</button>
+    </div>
+</div>
+<script>
+    function update_yhmm(a) {
+        if (a == null || a == undefined)
+        {
+            a = $("#yhmm").val();
+            if (a == null || a == undefined) {
+                alert("请输入新密码或点击重置密码");
+                return;
+            }
+        }
+        $.ajax({
+            url: "/sys/Update_yhmm_xx",
+            type: "post",
+            data: { yhbh: @ViewBag.yhbh,  yhmm: a },
+            success: function (data) {
+                if (data.IsSuccessful) {
+                    $('#xgmm').modal('hide');
+                    init();
+                }
+                else {
+                    alert(data.ErrMsg);
+                }
+            }
+        })
+    }
+</script>
 

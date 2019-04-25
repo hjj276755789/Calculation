@@ -19,4 +19,21 @@ namespace Calculation.Models.Models
         public string bz { get; set; }
 
     }
+    public class KFSMBModels :Data_Item<KFSMBModels>
+    {
+        public string kfsbh { get; set; }
+        public string mbbh { get; set; }
+        public string mbmc { get; set; }
+        public string rwcs { get; set; }
+    }
+    public class YHFZKFSModels : Data_Item<YHFZKFSModels>
+    {
+        public string kfsbh { get; set; }
+
+        public string kfsmc { get; set; }
+        public string kfsxr { get; set; }
+        public string kfslxrdh { get; set; }
+
+        public string sffp { get; set; }
+    }
 }

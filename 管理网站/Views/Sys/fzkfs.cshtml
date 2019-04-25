@@ -1,9 +1,8 @@
 ﻿<div class="row" style="width: 90%; margin: 20px;">
-    <a class="btn btn-primary waves-effect waves-light" href="/Sys/add_kfs" data-toggle="modal" data-target="#tjkfs" onclick="cleardata('#tjkfs')">添加开发商</a>
+    <a class="btn btn-primary waves-effect waves-light" onclick="cleardata('#tjkfs')">返回</a>
     <input type="text" id="cxtj" class="form-control" placeholder="请输入查询条件" /><input type="button" value="查询" onclick="Search()" class="btn btn-danger" />
 </div>
-
-<div id="kfslb" class="row" style="width: 90%; margin: 20px;"></div>
+<div id="list" class="row" style="width: 90%; margin: 20px;"></div>
 
 <DIV tabindex="-1" class="modal fade" id="tjkfs" role="dialog"
      aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
@@ -13,7 +12,7 @@
             <DIV class="modal-body">
 
             </DIV>
-
+          
         </DIV><!-- /.modal-content -->
     </DIV><!-- /.modal-dialog -->
 </DIV><!-- /.modal -->
@@ -27,46 +26,21 @@
         var pagenow = 1;
 
         function Search() {
-            var tj = $("#cxtj").val();
             option.pagesize = 10;
             option.pagenow = 1;
-            data = { 'tj': tj, 'pagesize': option.pagesize, 'pagenow':option.pagenow }
+            tj = $("#cxtj").val();
+            init();
+        }
+        function init() {
+            var data = { 'tj': tj, 'yhbh': '@this.ViewBag.yhbh', 'pagesize': option.pagesize, 'pagenow': option.pagenow };
             dopage(data);
         }
-        function del(a) {
-            $.ajax({
-                type: "post",
-                url: "/sys/del_kfs",
-                data: { "kfsbh": a },
-                success: function (data) {
-                    if (data.IsSuccessful) {
-                        pagesize = 10;
-                        pagenow = 1;
-                        init1();
 
-                       
-                    }
-                },
-            
-            })
-        }
-        function sub() {
-            $.ajax({
-                url: "/zb/tgcssz",
-                data: { 'rwid': rwid },
-                type: "post",
-                success: function (data) {
-                    if (data.IsSuccessful) {
-                        alert("确认成功");
-                    }
-                    else alert(data.ErrMsg);
 
-                }
-            })
 
-        }
 
-        var table = new Table_bs($('#kfslb'));
+
+        var table = new Table_bs($('#list'));
         function cleardata(a) {
             $(a).on("hidden.bs.modal", function () {
                 $(this).removeData("bs.modal");
@@ -145,60 +119,63 @@
                 //this.load(option);
             }
         }
-
-
-
         var option = {
-            colNames: ["编号", '开发商',  '联系人', '联系电话', '创建时间',  '备注',"操作"],
+            colNames: ["开发商编号", '开发商名称', '联系人', '联系人电话','是否分配', '操作'],
             data: [
 
             ],
             hasPage: true
         }
-
         $(function () {
             option.pagenow = pagenow;
             option.pagesize = pagesize;
-            init1();
+            init();
         });
-
-        function init1() {
-            var data = { 'tj': tj, 'pagesize': option.pagesize, 'pagenow': option.pagenow };
-            dopage(data);
-
-        }
-
-        function dopage(data)
-        {
-            $.ajax({
-                url: "/sys/GET_KFSLB",
-                data: data,
-                type: "post",
-                success: function (data) {
-                    var d = [];
-                    for (var i = 0; i < data.d.length; i++) {
-                        d.push([data.d[i].kfsbh, data.d[i].kfsmc, data.d[i].kfslxr, data.d[i].kfslxrdh, data.d[i].kfscjsj, data.d[i].bz,
-                                    '<a class="btn btn-link" href="/sys/kfs_mb?kfsbh=' + data.d[i].kfsbh + '">查看模板</a><a class="btn btn-link" onclick="del(\'' + data.d[i].kfsbh + '\')">删除</a>']);
-                    };
-                    option.data = d;
-                    option.datacount = data.datacount;
-                    option.pagenow = data.pagenow;
-                    table.reflush(option);
-                    table.load(option);
-                }
-            })
-        }
         function pre() {
             if (option.pagenow > 1) {
                 option.pagenow -= 1;
-                init1();
+                init();
             }
         }
         function next() {
-            if (option.pagenow < option.datacount) {
+            if (option.pagenow < option.datacount ) {
                 option.pagenow += 1;
-                init1();
+                init();
             }
+        }
+
+
+
+        function dopage(data) {
+            $.ajax({
+                url: "/sys/GET_YHFZKFSLB",
+                data: data,
+                type: "post",
+                success: function (data) {
+                    if (data) {
+                        var d = [];
+                        for (var i = 0; i < data.d.length; i++) {
+                            d.push([data.d[i].kfsbh, data.d[i].kfsmc, data.d[i].kfslxr, data.d[i].kfslxrdh, ini_pfzt(data.d[i].sffp, data.d[i].kfsbh), '<a class="btn btn-primary waves-effect waves-light" onclick=del_yhfzkfs("' + data.d[i].yhbh + '","' + data.d[i].kfsbh + '")>删除授权</a>']);
+                        };
+                        option.data = d;
+                        option.datacount = data.datacount;
+                        option.pagenow = data.pagenow;
+                        table.reflush(option);
+                        table.load(option);
+                    }
+                    else {
+                        alert("没有新的数据");
+                    }
+                }
+            })
+        }
+
+        function ini_pfzt(a,b)
+        {
+            if(a==0)
+                return "<span class='label label-default'>未授权</span>"   
+            else
+                return "<span class='label label-success'>已授权</span>"
         }
     </script>
 }

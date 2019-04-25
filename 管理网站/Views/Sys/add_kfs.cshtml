@@ -37,6 +37,7 @@
             success: function (data) {
                 if (data.IsSuccessful) {
                     $('#tjkfs').modal('hide');
+                    init1();
                 }
                 else {
                     alert(data.ErrMsg);

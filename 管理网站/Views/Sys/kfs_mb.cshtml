@@ -1,0 +1,193 @@
+﻿
+<div id="list" class="row" style="width: 90%; margin: 20px;"></div>
+
+<DIV tabindex="-1" class="modal fade" id="tjkfs" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+
+@section scripts{
+
+    <script>
+
+        var tj = "";
+        var pagesize = 10;
+        var pagenow = 1;
+
+        function Search() {
+
+                pagesize = 10;
+                pagenow = 1;
+                $.ajax({
+                    url: "/sys/GET_KFSMBLB",
+                    data: { 'kfsbh': @this.ViewBag.kfsbh, 'pagesize': pagesize, 'pagenow': pagenow },
+                    type: "post",
+                    success: function (data) {
+                        if (data) {
+                            var d = [];
+                            for (var i = 0; i < data.d.length; i++) {
+                                d.push([data.d[i].mbbh, data.d[i].mbmc,data.d[i].rwcs
+                                   ]);
+                            };
+                            option.data = d;
+                            option.datacount = data.datacount;
+                            option.pagenow = data.pagenow;
+                            table.reflush(option);
+                            table.load(option);
+                        }
+                        else {
+                            alert("没有新的数据");
+                        }
+                    }
+                })
+
+        }
+
+
+
+
+
+
+        var table = new Table_bs($('#list'));
+        function cleardata(a) {
+            $(a).on("hidden.bs.modal", function () {
+                $(this).removeData("bs.modal");
+            });
+        }
+        function Table_bs($box) {
+
+            var _init_bit = false;
+            var _box = $box;
+
+            this.init = function () {
+
+                _box.addClass('table-responsive');
+
+                var html = '';
+                html += '<table class="table table-bordered " style="text-align: center; ">';
+                html += '<thead style="font-weight: bold;">';
+                // html += '<tr>';
+                // html += '</tr>';
+                html += '</thead>';
+                html += '<tbody>';
+                // html += '<tr>';
+                // html += '</tr>';
+                html += '</tbody>';
+                html += '</table>';
+
+                _box.append($(html));
+
+                _init_bit = true;
+            }
+            this.load = function (option) {
+
+                if (!_init_bit) {
+                    this.init();
+                }
+
+                // 表头
+                var thead = option.colNames;
+
+                var html_thead = '';
+                html_thead += '<tr>';
+                for (var i = 0; i < thead.length; i++) {
+                    html_thead += '<td>' + thead[i] + '</td>';
+                }
+                html_thead += '</tr>';
+
+                _box.find('thead').append($(html_thead));
+
+                // 表身
+                var tbody = option.data;
+                var html_tbody = '';
+
+                for (var j1 = 0; j1 < tbody.length; j1++) {
+                    var buff = tbody[j1];
+
+                    html_tbody += '<tr>';
+                    for (var j2 = 0; j2 < buff.length; j2++) {
+                        html_tbody += '<td>' + buff[j2] + '</td>';
+                    }
+                    html_tbody += '</tr>';
+                }
+                _box.find('tbody').append($(html_tbody));
+                if (option.hasPage) {
+                    var html_page = "";
+                    html_page += "<ul class='pagination'><li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>上一页</a></li>";
+                    html_page += "<li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>" + option.datacount + "</a></li>";
+
+                    html_page += "<li tabindex='0' class='paginate_button next' id='datatable-fixed-header_next' aria-controls='datatable-fixed-header'><a href='#'>下一页</a></li></ul>";
+                    _box.append((html_page));
+                }
+            }
+            this.reflush = function (option) {
+                _box.empty();
+                this.init();
+                //option.data = [];
+                //this.load(option);
+            }
+        }
+
+
+
+        var option = {
+            colNames: ["编号", '模板名称', '任务次数'],
+            data: [
+
+            ],
+            hasPage: true
+        }
+
+        $(function () {
+            init1();
+        });
+
+
+        function init1() {
+            var data = { 'kfsbh': @this.ViewBag.kfsbh, 'pagesize': pagesize, 'pagenow': pagenow };
+            $.ajax({
+                url: "/sys/GET_KFSMBLB",
+                data: data,
+                type: "post",
+                success: function (data) {
+                    if (data) {
+                        var d = [];
+                        for (var i = 0; i < data.d.length; i++) {
+                            d.push([data.d[i].mbbh, data.d[i].mbmc, data.d[i].rwcs,
+                            ]);
+                        };
+                        option.data = d;
+                        option.datacount = data.datacount;
+                        option.pagenow = data.pagenow;
+                        table.reflush(option);
+                        table.load(option);
+                    }
+                    else {
+                        alert("没有新的数据");
+                    }
+                }
+            })
+
+        }
+        function pre() {
+            if (option.pagenow > 1) {
+                option.pagenow -= 1;
+                init2();
+            }
+        }
+        function next() {
+            if (option.pagenow < (option.datacount / option.pagesize) + 1) {
+                option.pagenow += 1;
+                init2();
+            }
+        }
+    </script>
+}

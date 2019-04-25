@@ -46,6 +46,7 @@
     <Compile Include="HttpHelper.cs" />
     <Compile Include="Modelhelper.cs" />
     <Compile Include="Models\DataModels.cs" />
+    <Compile Include="Models\DGModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IPageList.cs" />
     <Compile Include="Models\KfsModels.cs" />

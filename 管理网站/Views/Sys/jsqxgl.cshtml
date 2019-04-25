@@ -35,7 +35,7 @@
             $.ajax({
                 url: "/sys/Remove_JSQX",
                 type: "post",
-                data: { jsbh: @this.ViewBag.jsbh, gqxid:a },
+                data: { jsbh: @this.ViewBag.jsbh, fqxbh:a },
                 success: function (data) {
                     obj.removeClass("btn-success");
                 }
@@ -45,7 +45,7 @@
             $.ajax({
                 url: "/sys/ADD_JSQX",
                 type: "post",
-                data: { jsbh: @this.ViewBag.jsbh, gqxid:a },
+                data: { jsbh: @this.ViewBag.jsbh, fqxbh:a },
                 success: function (data) {
                     obj.addClass("btn-success");
                 }

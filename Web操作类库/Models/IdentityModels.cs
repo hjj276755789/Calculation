@@ -1,4 +1,5 @@
-﻿using Calculation.Models.Enums;
+﻿using Calculation.Base;
+using Calculation.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,22 +8,23 @@ using System.Threading.Tasks;
 
 namespace Calculation.Models
 {
-    public class YHXX
+    public class YHXX:Data_Item<YHXX>
     {
-        public int yhbh { get; set; }
+        public string yhbh { get; set; }
         public string yhmc { get; set; }
         public string yhlx { get; set; }
 
     }
    
-    public class JSXX
+    public class JSXX : Data_Item<JSXX>
     {
         public string jsbh { get; set; }
         public string jsmc { get; set; }
         public string jsms { get; set; }
 
     }
-    public class QXXX {
+    public class QXXX:Data_Item<QXXX>
+    {
         public string qxbh { get; set; }
         public string qxmc { get; set; }
         public string qxms { get; set; }
@@ -37,14 +39,14 @@ namespace Calculation.Models
         public List<QXXX> xjqx { get; set; }
 
     }
-    public class YHJS
+    public class YHJS : Data_Item<YHJS>
     {
         public int yhbh { get; set; }
         public string yhm { get; set; }
         public int jsbh { get; set; }
         public string jsmc { get; set; }
     }
-    public class JSQX
+    public class JSQX : Data_Item<JSQX>
     {
         public int jsbh { get; set; }
         public string jsmc { get; set; }

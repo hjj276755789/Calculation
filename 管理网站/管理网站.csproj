@@ -166,6 +166,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DataController.cs" />
+    <Compile Include="Controllers\DgController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SysController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
@@ -314,6 +315,7 @@
     <Content Include="Content\fonts\o-0IIpQlx3QUlC5A4PNr5TRG.woff" />
     <Content Include="Content\fonts\Material-Design-Iconic-Font.woff" />
     <Content Include="Content\fonts\o-0IIpQlx3QUlC5A4PNr5TRA.woff2" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
     <None Include="Properties\PublishProfiles\铭腾报表.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -550,6 +552,10 @@
     <Content Include="Views\Sys\kfs.cshtml" />
     <Content Include="Views\Sys\add_kfs.cshtml" />
     <Content Include="Views\Sys\update_yhmm.cshtml" />
+    <Content Include="Views\Sys\kfs_mb.cshtml" />
+    <Content Include="Views\Sys\fzkfs.cshtml" />
+    <Content Include="Views\Dg\Index.cshtml" />
+    <Content Include="Views\Sys\add_js.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

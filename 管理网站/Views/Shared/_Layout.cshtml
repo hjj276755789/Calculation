@@ -19,6 +19,7 @@
         }
 
     }
+
     <style>
         table tbody tr td {
             line-height: 30px !important;
@@ -122,6 +123,9 @@
             </footer>
         </div>
 
+
+        <script src="~/Scripts/Moltran/sweetalert.min.js"></script>
+
         <script src="~/Scripts/Moltran/jquery.min.js"></script>
         <script src="~/Scripts/Moltran/bootstrap.min.js"></script>
         <script src="~/Scripts/Moltran/detect.js"></script>
@@ -139,17 +143,18 @@
             var url = document.location.pathname.split("/");
             var obj = $('#' + url[1] + url[2]);
             var p = obj.parent().parent()
-            p.find(".waves-effect").addClass("active");
-            obj.addClass("active");
-            p.find(".waves-effect").click();
-
+            try {
+                p.find(".waves-effect").addClass("active");
+                obj.addClass("active");
+                
+                var level2 = p.find(".waves-effect");
+                if (level2 != null)
+                    level2.click();
+            } catch (e) {
+                console.log("3级页面");
+            }
         </script>
-
-
         @RenderSection("scripts", required: false)
-
-
-
     </div>
 </body>
 </html>

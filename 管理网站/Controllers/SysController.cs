@@ -39,10 +39,11 @@ namespace 管理网站.Controllers
         {
             return PartialView();
         }
+
         [IdentityCheck]
-        [HttpGet]
         public PartialViewResult update_yhmm(string yhbh)
         {
+            this.ViewBag.yhbh = yhbh;
             return PartialView();
         }
         [IdentityCheck]
@@ -65,6 +66,18 @@ namespace 管理网站.Controllers
             return View();
         }
 
+        [IdentityCheck]
+        public ActionResult fzkfs(string yhbh)
+        {
+            this.ViewBag.yhbh = yhbh;
+            return View();
+        }
+        public PartialViewResult add_js()
+        {
+            return PartialView();
+        }
+
+
         public PartialViewResult jsqxgl(int jsbh)
         {
             this.ViewBag.jsbh = jsbh;
@@ -82,15 +95,27 @@ namespace 管理网站.Controllers
         {
             return PartialView();
         }
+
+        public ActionResult kfs_mb(string kfsbh)
+        {
+            this.ViewBag.kfsbh = kfsbh;
+            return View();
+        }
         #endregion
 
 
         #region 数据块
         #region 用户块
-        public JsonResult GET_YHLB()
+        public JsonResult GET_YHLB(string tj,int pagesize,int pagenow)
         {
-            var obj = _fw.GET_YHLB();
-            return Json(obj);
+            var obj = _fw.GET_YHLB(tj,pagesize, pagenow);
+            var s = new
+            {
+                pagenow = obj.PageNumber,
+                datacount = obj.TotalPageCount,
+                d = obj
+            };
+            return Json(s);
         }
         
 
@@ -119,12 +144,28 @@ namespace 管理网站.Controllers
                 else
                     return Json(SResult.Error("新增用户失败！"));
         }
+        [IdentityCheck]
+        [HttpPost]
+        public JsonResult Update_yhmm_xx(string yhbh,string yhmm)
+        {
+
+            if (_fw.update_yhmm_xx(yhbh, yhmm))
+                return Json(SResult.Success);
+            else
+                return Json(SResult.Error("修改密码失败！"));
+        }
         #endregion
 
         #region 角色块
         public JsonResult GET_JSLB()
         {
             return Json(_fw.GET_JSLB());
+        }
+        public JsonResult ADD_JSXX(string jsmc,string jsms)
+        {
+            if (_fw.ADD_JSXX(jsmc, jsms))
+                return Json(SResult.Success);
+            else return Json(SResult.Error("添加失败！"));
         }
 
         public JsonResult Remove_YHJS(int yhbh, int jsbh)
@@ -143,15 +184,15 @@ namespace 管理网站.Controllers
         #endregion
 
         #region 权限块
-        public JsonResult ADD_JSQX(int jsbh, int gqxid)
+        public JsonResult ADD_JSQX(int jsbh, int fqxbh)
         {
-            if(_fw.ADD_JSQX(jsbh, gqxid))
+            if(_fw.ADD_JSQX(jsbh, fqxbh))
                 return Json(SResult.Success);
             else return Json(SResult.Error("设置失败"));
         }
-        public JsonResult Remove_JSQX(int jsid,int gqxid)
+        public JsonResult Remove_JSQX(int jsbh,int fqxbh)
         {
-            if (_fw.DEL_JSQX(jsid, gqxid))
+            if (_fw.DEL_JSQX(jsbh, fqxbh))
                 return Json(SResult.Success);
             else return Json(SResult.Error("设置失败"));
         }
@@ -180,6 +221,40 @@ namespace 管理网站.Controllers
                     return Json(SResult.Success);
                 else
                     return Json(SResult.Error("新增用户失败！"));
+        }
+        [HttpPost]
+        public JsonResult DEL_KFS(string kfsbh)
+        {
+            _kfs.DEL_KFS_YHFZKFS(kfsbh);
+            _kfs.DEL_KFS_FZR(kfsbh);
+            if (_kfs.DEL_KFS(kfsbh))
+                return Json(SResult.Success);
+            else
+                return Json(SResult.Error("新增用户失败！"));
+        }
+
+        public JsonResult GET_KFSMBLB(string kfsbh,int pagesize,int pagenow)
+        {
+            var obj = _kfs.FIND_KFS_MB(kfsbh, pagesize, pagenow);
+            var s = new
+            {
+                pagenow = obj.PageNumber,
+                datacount = obj.TotalPageCount,
+                d = obj
+            };
+            return Json(s);
+        }
+
+        public JsonResult GET_YHFZKFSLB(string tj,string yhbh,int pagesize,int pagenow)
+        {
+            var obj = _kfs.FIND_YHFZKFSBH(yhbh, tj, pagesize, pagenow);
+            var s = new
+            {
+                pagenow = obj.PageNumber,
+                datacount = obj.TotalPageCount,
+                d = obj
+            };
+            return Json(s);
         }
         #endregion
         #endregion

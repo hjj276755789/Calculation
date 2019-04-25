@@ -46,7 +46,6 @@
         $(a).on("hidden.bs.modal", function () {
             $(this).removeData("bs.modal");
         });
-
     }
 
     function Table_bs($box) {
@@ -108,7 +107,6 @@
             _box.find('tbody').append($(html_tbody));
         }
     }
-
     var option = {
         colNames: ['角色编号',"角色名称","角色描述","操作"],
         data: [
@@ -127,7 +125,7 @@
             success: function (data) {
                 var d =[];
                 for (var i = 0; i < data.length; i++) {
-                    d.push([data[i].jsbh, data[i].jsmc, data[i].jsms, '<a class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#jsqx"  href="/sys/jsqxgl?jsbh=' + data[i].jsbh + '">角色授权</a>']);
+                    d.push([data[i].jsbh, data[i].jsmc, data[i].jsms, '<a class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#jsqx"  href="/sys/jsqxgl?jsbh=' + data[i].jsbh + '" onclick = "cleardata(\'#jsqx\')" >角色授权</a>']);
                 }
                 option.data = d;
                 t.load(option);

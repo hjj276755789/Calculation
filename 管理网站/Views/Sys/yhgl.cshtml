@@ -4,6 +4,8 @@
 }
 <div class="row"  style="width: 90%; margin: 20px;">
     <a class="btn btn-primary waves-effect waves-light" href="/Sys/add_yhxx" data-toggle="modal" data-target="#tjyh" onclick="cleardata('#tjyh')">添加用户</a>
+    <input type="text" id="cxtj" class="form-control" placeholder="请输入查询条件" /><input type="button" value="查询" onclick="Search()" class="btn btn-danger" />
+    <input type="button" value="修改密码" onclick="Update()" class="btn btn-danger" />
 </div>
 
 <div id="yhlb" class="row" style="width: 90%; margin: 20px;"></div>
@@ -34,16 +36,74 @@
     </DIV><!-- /.modal-dialog -->
 </DIV><!-- /.modal -->
 
+<DIV tabindex="-1" class="modal fade" id="xgmm" role="dialog"
+     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
+    <DIV class="modal-dialog" style="width: 55%;">
+        <DIV class="modal-content">
+
+            <DIV class="modal-body">
+
+            </DIV>
+
+        </DIV><!-- /.modal-content -->
+    </DIV><!-- /.modal-dialog -->
+</DIV><!-- /.modal -->
+
 
 @section scripts{
    <script>
+    var tj = "";
+    var pagesize = 10;
+    var pagenow = 1;
 
     var table = new Table_bs($('#yhlb'));
+
+    $('#yhsq').on('hide.bs.modal', function () {
+        table.reflush(option);
+        init();
+    });
+    $('#tjyh').on('hide.bs.modal', function () {
+        table.reflush(option);
+        init();
+    });
+    $('#xgmm').on('hide.bs.modal', function () {
+        table.reflush(option);
+        init();
+    });
+    function del_yh(a) {
+           var r = confirm("确认删除用户");
+           if (r == true) {
+               $.ajax({
+                   url: "/sys/DEL_YHXX",
+                   data: { 'yhbh': a },
+                   type: "post",
+                   success: function (data) {
+                       if (data.IsSuccessful) {
+                           alert("删除成功");
+                           table.reflush(option);
+                           init1();
+                       }
+                       else alert(data.ErrMsg);
+                   }
+               });
+           }
+
+
+    }
+    function Search() {
+        var tj = $("#cxtj").val();
+        option.pagesize = 10;
+        option.pagenow = 1;
+        data = { 'tj': tj, 'pagesize': option.pagesize, 'pagenow': option.pagenow }
+        dopage(data);
+    }
+
+
     function cleardata(a) {
-            $(a).on("hidden.bs.modal", function () {
-                $(this).removeData("bs.modal");
-            });
-        }
+        $(a).on("hidden.bs.modal", function () {
+            $(this).removeData("bs.modal");
+        });
+    }
     function Table_bs($box) {
 
         var _init_bit = false;
@@ -101,70 +161,42 @@
                 html_tbody += '</tr>';
             }
             _box.find('tbody').append($(html_tbody));
+            if (option.hasPage) {
+                var html_page = "";
+                html_page += "<ul class='pagination'><li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a onclick='pre()'>上一页</a></li>";
+                html_page += "<li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>" + option.pagenow + "/" + option.datacount + "</a></li>";
+
+                html_page += "<li tabindex='0' class='paginate_button next' id='datatable-fixed-header_next' aria-controls='datatable-fixed-header'><a onclick='next()'>下一页</a></li></ul>";
+                _box.append((html_page));
+            }
         }
-        this.reflush =function(option)
-        {
+        this.reflush = function (option) {
             _box.empty();
             this.init();
             //option.data = [];
             //this.load(option);
         }
     }
-
-    function del_yh(a) {
-        var r = confirm("确认删除用户");
-        if (r == true) {
-            $.ajax({
-                url: "/sys/DEL_YHXX",
-                data: { 'yhbh': a },
-                type: "post",
-                success: function (data) {
-                    if (data.IsSuccessful) {
-                        alert("删除成功");
-                        table.reflush(option);
-                        init1();
-                    }
-                    else alert(data.ErrMsg);
-                }
-            });
-        }
-
-
-    }
     var option = {
         colNames: ['选择',"用户编号", "用户名", "用户类别", "操作",""],
         data: [
 
-        ]
+        ],
+        hasPage: true
     }
 
     $(function () {
-        init1();
+        option.pagenow = pagenow;
+        option.pagesize = pagesize;
+        init();
     });
-    function init1() {
-        $.ajax({
-            url: "/sys/GET_YHLB",
-            type: "post",
-            success: function (data) {
-                var d = [];
-                for (var i = 0; i < data.length; i++) {
-                    d.push(['<input type="checkbox">', data[i].yhbh, data[i].yhmc, ini_yhlx(data[i].yhlx+""),
-                        '<a class="btn btn-primary waves-effect waves-light" href="/sys/yhjs?yhbh=' + data[i].yhbh + '" data-toggle="modal" data-target="#yhsq" onclick="cleardata(\'#yhsq\')">用户授权</a>', '<a class="btn-link" onclick="del_yh('+data[i].yhbh+')">删除</a>']);
-                }
-                option.data = d;
-                table.load(option);
-            }
-
-        });
+    function init() {
+        var data = { 'tj': tj, 'pagesize': option.pagesize, 'pagenow': option.pagenow };
+        dopage(data);
     }
-    $('#yhsq').on('hide.bs.modal', function () {
-        table.reflush(option);
-        init1();
-    });
-    $('#tjyh').on('hide.bs.modal', function () {
-        table.reflush(option);
-        init1();
-    });
+
+
+  
     function ini_yhlx(a)
     {
         console.log(a);
@@ -174,5 +206,39 @@
             case "2": { return "普通用户"; }
         }
     }
+
+    function dopage(data) {
+        $.ajax({
+            url: "/sys/GET_YHLB",
+            data: data,
+            type: "post",
+            success: function (data) {
+                var d = [];
+                for (var i = 0; i < data.d.length; i++) {
+                    d.push(['<input type="checkbox">', data.d[i].yhbh, data.d[i].yhmc, ini_yhlx(data.d[i].yhlx + ""),
+                       '<a class="btn btn-primary waves-effect waves-light" href="/sys/yhjs?yhbh=' + data.d[i].yhbh + '" data-toggle="modal" data-target="#yhsq" onclick="cleardata(\'#yhsq\')">授予角色</a><a class="btn btn-primary waves-effect waves-light" href="/sys/fzkfs?yhbh=' + data.d[i].yhbh + '">负责开发商</a>',
+                       '<a class="btn btn-primary waves-effect waves-light" href="/sys/update_yhmm?yhbh=' + data.d[i].yhbh + '" data-toggle="modal" data-target="#xgmm" onclick="cleardata(\'#xgmm\')">修改密码</a><a class="btn-link" onclick="del_yh(' + data.d[i].yhbh + ')">删除</a>']);
+                };
+                option.data = d;
+                option.datacount = data.datacount;
+                option.pagenow = data.pagenow;
+                table.reflush(option);
+                table.load(option);
+            }
+        })
+    }
+    function pre() {
+        if (option.pagenow > 1) {
+            option.pagenow -= 1;
+            init();
+        }
+    }
+    function next() {
+        if (option.pagenow < option.datacount) {
+            option.pagenow += 1;
+            init();
+        }
+    }
+
 </script>
 }
