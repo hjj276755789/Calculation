@@ -60,11 +60,6 @@ namespace 管理网站.Controllers
         {
             return View();
         }
-        [IdentityCheck]
-        public ActionResult qxgl()
-        {
-            return View();
-        }
 
         [IdentityCheck]
         public ActionResult fzkfs(string yhbh)

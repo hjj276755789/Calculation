@@ -5,11 +5,10 @@
 }
 
     <div class="row" style="width: 90%; margin: 20px;">
-            <input type="text" id="mbmc" class="form-control" /><input type="button" value="收索" onclick="search()" class="btn btn-danger" /><a class="btn btn-primary waves-effect waves-light" href="/zb/upload_jpxmtgtp" data-toggle="modal" data-target="#tgtp" onclick="cleardata('#tgtp')">推广图片 </a>
-
+            <input type="text" id="cxtj" class="form-control" /><input type="button" value="收索" onclick="search()" class="btn btn-danger" /><a class="btn btn-primary waves-effect waves-light" href="/zb/upload_jpxmtgtp" data-toggle="modal" data-target="#tgtp" onclick="cleardata('#tgtp')">推广图片 </a>
     </div>
 
-<div id="zblb" style="width: 90%; margin: 20px;">
+<div id="kfslb" style="width: 90%; margin: 20px;">
 
 </div>
 
@@ -27,34 +26,29 @@
 </DIV><!-- /.modal -->
 @section scripts{
 <script>
+
+
+    var tj = "";
+    var pagesize = 10;
+    var pagenow = 1;
+
+
+
     function search()
     {
-        var t = new Table_bs($('#zblb'));
-
-        $.ajax({
-            url: "/zb/get_zbmblx",
-            data: { "pagesize": 30, "pagenow": 1, "mbmc": $('#mbmc').val() },
-            type: "post",
-            success: function (data) {
-                var d = [];
-                for (var i = 0; i < data.length; i++) {
-                    d.push(['<input type="checkbox">', data[i].mbid, data[i].mbmc, '<a class="btn btn-primary waves-effect waves-light" href="/zb/zb_rwlb?mbid=' + data[i].mbid + '&mbmc=' + data[i].mbmc + '&xflx=' + data[i].xflx + '">发起任务</a>']);
-                }
-                option.data = d;
-                option.datacount = data.datacount;
-                option.pagenow = data.pagenow;
-                t.reflush(option);
-                t.load(option);
-            }
-        })
+        var tj = $("#cxtj").val();
+        option.pagesize = 10;
+        option.pagenow = 1;
+        data = { 'tj': tj, 'pagesize': option.pagesize, 'pagenow': option.pagenow }
+        dopage(data);
     }
+
+    var table = new Table_bs($('#kfslb'));
     function cleardata(a) {
         $(a).on("hidden.bs.modal", function () {
             $(this).removeData("bs.modal");
         });
-
     }
-
     function Table_bs($box) {
 
         var _init_bit = false;
@@ -112,6 +106,14 @@
                 html_tbody += '</tr>';
             }
             _box.find('tbody').append($(html_tbody));
+            if (option.hasPage) {
+                var html_page = "";
+                html_page += "<ul class='pagination'><li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a onclick='pre()'>上一页</a></li>";
+                html_page += "<li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>" + option.pagenow + "/" + option.datacount + "</a></li>";
+
+                html_page += "<li tabindex='0' class='paginate_button next' id='datatable-fixed-header_next' aria-controls='datatable-fixed-header'><a onclick='next()'>下一页</a></li></ul>";
+                _box.append((html_page));
+            }
         }
         this.reflush = function (option) {
             _box.empty();
@@ -121,17 +123,61 @@
         }
     }
 
+
     var option = {
-        colNames: ['选择',"模板编号","模板名称","操作"],
+        colNames: ["开发商", "联系人", "联系人电话",  "操作"],
         data: [
            
-        ]
+        ],
+        hasPage: true
         
     }
-
+    
 
     $(function () {
-        search();
+        option.pagenow = pagenow;
+        option.pagesize = pagesize;
+        init();
     });
+
+    function init() {
+        var data = { 'tj': tj, 'pagesize': option.pagesize, 'pagenow': option.pagenow };
+        dopage(data);
+
+    }
+
+    function dopage(data) {
+
+        $.ajax({
+            url: "/zb/get_kfslb",
+            data: data,
+            type: "post",
+            success: function (data) {
+                var d = [];
+                for (var i = 0; i < data.d.length; i++) {
+                    d.push([data.d[i].kfsmc, data.d[i].kfslxr, data.d[i].kfslxrdh, 
+                         '<a class="btn btn-link" href="/zb/zblb?kfsbh=' + data.d[i].kfsbh + '">周报管理</a>'
+                    ]);
+                };
+                option.data = d;
+                option.datacount = data.datacount;
+                option.pagenow = data.pagenow;
+                table.reflush(option);
+                table.load(option);
+            }
+        })
+    }
+    function pre() {
+        if (option.pagenow > 1) {
+            option.pagenow -= 1;
+            init1();
+        }
+    }
+    function next() {
+        if (option.pagenow < option.datacount) {
+            option.pagenow += 1;
+            init1();
+        }
+    }
 </script>
     }

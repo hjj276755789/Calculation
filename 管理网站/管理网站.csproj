@@ -546,7 +546,6 @@
     <Content Include="Views\zb\add_mbdg.cshtml" />
     <Content Include="Views\zb\upload_jpxmtgtp.cshtml" />
     <Content Include="Views\jp_zb\Jcjzcs.cshtml" />
-    <Content Include="Views\Sys\qxgl.cshtml" />
     <Content Include="Views\Sys\jsqxgl.cshtml" />
     <Content Include="Views\Account\test.cshtml" />
     <Content Include="Views\Sys\kfs.cshtml" />
@@ -556,6 +555,7 @@
     <Content Include="Views\Sys\fzkfs.cshtml" />
     <Content Include="Views\Dg\Index.cshtml" />
     <Content Include="Views\Sys\add_js.cshtml" />
+    <Content Include="Views\zb\zblb.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,4 +1,5 @@
-﻿using Calculation.Models.Enums;
+﻿using Calculation.Base;
+using Calculation.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Calculation.Models
 {
-    public class Zb_Item_Model
+    public class Zb_Item_Model:Data_Item<Zb_Item_Model>
     {
         public int mbid { get; set; }
         public string mbmc { get; set; }
@@ -16,7 +17,7 @@ namespace Calculation.Models
         public MB_XFLX xflx { get; set; }
     }
 
-    public class Zb_Jp_Tgtp_Model
+    public class Zb_Jp_Tgtp_Model : Data_Item<Zb_Jp_Tgtp_Model>
     {
         public string xmmc { get; set; }
         public Image img { get; set; }

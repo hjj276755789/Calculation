@@ -2,12 +2,15 @@
 @{
     ViewBag.Title = "yhgl";
 }
+<style>
+    table a.icon{font-size:20px;}
+</style>
 <div class="row"  style="width: 90%; margin: 20px;">
     <a class="btn btn-primary waves-effect waves-light" href="/Sys/add_yhxx" data-toggle="modal" data-target="#tjyh" onclick="cleardata('#tjyh')">添加用户</a>
     <input type="text" id="cxtj" class="form-control" placeholder="请输入查询条件" /><input type="button" value="查询" onclick="Search()" class="btn btn-danger" />
 </div>
 
-<div id="yhlb" class="row" style="width: 90%; margin: 20px;"></div>
+<div id="yhlb" class="row table" style="width: 90%; margin: 20px;"></div>
 
 <DIV tabindex="-1" class="modal fade" id="tjyh" role="dialog"
      aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
@@ -38,7 +41,7 @@
 <DIV tabindex="-1" class="modal fade" id="xgmm" role="dialog"
      aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
     <DIV class="modal-dialog" style="width: 55%;">
-        <DIV class="modal-content">
+        <DIV class="modal-content" style="height:300px;">
 
             <DIV class="modal-body">
 
@@ -215,10 +218,10 @@
                 var d = [];
                 for (var i = 0; i < data.d.length; i++) {
                     d.push(['<input type="checkbox">', data.d[i].yhbh, data.d[i].yhmc, ini_yhlx(data.d[i].yhlx + ""),
-                       '<a class="on-default" title="授予角色"  href="/sys/yhjs?yhbh=' + data.d[i].yhbh + '" data-toggle="modal" data-target="#yhsq" onclick="cleardata(\'#yhsq\')" ><i class="fa  fa-certificate"></i></a></a>&nbsp;&nbsp;'
-                       + '<a class="on-default" title="负责开发商" href="/sys/fzkfs?yhbh=' + data.d[i].yhbh + '"><i class="fa fa-bell"></i></a></a>&nbsp;&nbsp;'
-                       + '<a class="on-default" title="修改用户密码" href="/sys/update_yhmm?yhbh=' + data.d[i].yhbh + '" data-toggle="modal" data-target="#xgmm" onclick="cleardata(\'#xgmm\')"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;'
-                       + '<a class="on-default" title="删除用户" onclick="del_yh(' + data.d[i].yhbh + ')"><i class="fa fa-trash-o"></i></a>']);
+                        '<a class="on-default icon" title="授予角色"  href="/sys/yhjs?yhbh=' + data.d[i].yhbh + '" data-toggle="modal" data-target="#yhsq" onclick="cleardata(\'#yhsq\')" ><i class="fa  fa-certificate"></i></a></a>&nbsp;&nbsp;'
+                       + '<a class="on-default icon" title="负责开发商" href="/sys/fzkfs?yhbh=' + data.d[i].yhbh + '"><i class="fa fa-bell"></i></a></a>&nbsp;&nbsp;'
+                       + '<a class="on-default icon" title="修改用户密码" href="/sys/update_yhmm?yhbh=' + data.d[i].yhbh + '" data-toggle="modal" data-target="#xgmm" onclick="cleardata(\'#xgmm\')"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;'
+                       + '<a class="on-default icon" title="删除用户" onclick="del_yh(' + data.d[i].yhbh + ')"><i class="fa fa-trash-o"></i></a>']);
                 };
                 option.data = d;
                 option.datacount = data.datacount;

@@ -16,25 +16,35 @@ namespace 管理网站.Controllers
 {
     public class zbController : BaseController
     {
+        private FW_KFS_DataProvider kfs;
         private RWGL_DataProvider rwgl;
         private CJGL_DataProvider cjgl;
         private Param_DataProvider pagl;
         public zbController()
         {
+            kfs = new FW_KFS_DataProvider();
             rwgl = new RWGL_DataProvider();
             cjgl = new CJGL_DataProvider();
             pagl = new Param_DataProvider();
+
         }
         // GET: zb
         #region 页面块
 
+
         /// <summary>
-        /// 周报主页
+        /// 周报主页 ---负责开发商
         /// </summary>
         /// <returns></returns>
         [IdentityCheck]
         public ActionResult index()
         {
+            return View();
+        }
+
+        public ActionResult zblb(string kfsbh)
+        {
+            this.ViewBag.kfsbh = kfsbh;
             return View();
         }
         /// <summary>
@@ -98,6 +108,19 @@ namespace 管理网站.Controllers
         #endregion
 
         #region 数据接口块
+
+        ///获取开发商列表
+        public JsonResult get_kfslb(string tj,int pagesize,int pagenow)
+        {
+            var obj = kfs.FIND_YHFZKFSBH(this.CurrentUser.YHBH, tj, pagesize, pagenow);
+            var s = new
+            {
+                pagenow = obj.PageNumber,
+                datacount = obj.TotalPageCount,
+                d = obj
+            };
+            return Json(s);
+        }
 
         ///获取周报模板类型
         [HttpPost]

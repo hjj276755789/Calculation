@@ -1,30 +1,19 @@
 ﻿
 @{
-    ViewBag.Title = "角色管理";
+    ViewBag.Title = "Index";
+
 }
+
 <div class="row" style="width: 90%; margin: 20px;">
-    <input type="text" id="角色名称" class="form-control" /><input type="button" value="收索" onclick="search()" class="btn btn-danger" />
-    <a class="btn btn-primary waves-effect waves-light" href="/sys/add_js" data-toggle="modal" data-target="#tjjs" onclick="cleardata('#tjjs')">添加角色 </a>
+    <input type="text" id="mbmc" class="form-control" /><input type="button" value="收索" onclick="search()" class="btn btn-danger" /><a class="btn btn-primary waves-effect waves-light" href="/zb/upload_jpxmtgtp" data-toggle="modal" data-target="#tgtp" onclick="cleardata('#tgtp')">推广图片 </a>
 
 </div>
 
-<div id="jslb" class="table" style="width: 90%; margin: 20px;">
+<div id="zblb" style="width: 90%; margin: 20px;">
 
 </div>
 
-<DIV tabindex="-1" class="modal fade" id="tjjs" role="dialog"
-     aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
-    <DIV class="modal-dialog" style="width: 55%;">
-        <DIV class="modal-content">
-
-            <DIV class="modal-body">
-
-            </DIV>
-
-        </DIV><!-- /.modal-content -->
-    </DIV><!-- /.modal-dialog -->
-</DIV><!-- /.modal -->
-<DIV tabindex="-1" class="modal fade" id="jsqx" role="dialog"
+<DIV tabindex="-1" class="modal fade" id="tgtp" role="dialog"
      aria-hidden="true" aria-labelledby="custom-width-modalLabel" style="display: none;">
     <DIV class="modal-dialog" style="width: 55%;">
         <DIV class="modal-content">
@@ -40,12 +29,30 @@
     <script>
     function search()
     {
-        alert($('#mbmc').val());
+        var t = new Table_bs($('#zblb'));
+
+        $.ajax({
+            url: "/zb/get_zbmblx",
+            data: { "pagesize": 30, "pagenow": 1, "mbmc": $('#mbmc').val() },
+            type: "post",
+            success: function (data) {
+                var d = [];
+                for (var i = 0; i < data.length; i++) {
+                    d.push(['<input type="checkbox">', data[i].mbid, data[i].mbmc, '<a class="btn btn-primary waves-effect waves-light" href="/zb/zb_rwlb?mbid=' + data[i].mbid + '&mbmc=' + data[i].mbmc + '&xflx=' + data[i].xflx + '">发起任务</a>']);
+                }
+                option.data = d;
+                option.datacount = data.datacount;
+                option.pagenow = data.pagenow;
+                t.reflush(option);
+                t.load(option);
+            }
+        })
     }
     function cleardata(a) {
         $(a).on("hidden.bs.modal", function () {
             $(this).removeData("bs.modal");
         });
+
     }
 
     function Table_bs($box) {
@@ -106,34 +113,25 @@
             }
             _box.find('tbody').append($(html_tbody));
         }
+        this.reflush = function (option) {
+            _box.empty();
+            this.init();
+            //option.data = [];
+            //this.load(option);
+        }
     }
+
     var option = {
-        colNames: ['角色编号',"角色名称","角色描述","操作"],
+        colNames: ['选择',"模板编号","模板名称","操作"],
         data: [
 
         ]
 
     }
 
+
     $(function () {
-        var t = new Table_bs($('#jslb'));
-
-        $.ajax({
-            url: "/sys/GET_JSLB",
-            data: { },
-            type:"post",
-            success: function (data) {
-                var d =[];
-                for (var i = 0; i < data.length; i++) {
-                    d.push([data[i].jsbh, data[i].jsmc, data[i].jsms,
-                        '<a class="on-default icon" title="授予角色权限"  data-toggle="modal" data-target="#jsqx"  href="/sys/jsqxgl?jsbh=' + data[i].jsbh + '" onclick = "cleardata(\'#jsqx\')" "><i class="fa fa-bars"></i></a>'
-                    ]);
-                }
-                option.data = d;
-                t.load(option);
-            }
-        })
-
+        search();
     });
     </script>
 }
