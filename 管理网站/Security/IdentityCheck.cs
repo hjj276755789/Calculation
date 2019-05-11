@@ -28,7 +28,7 @@ namespace 管理网站
                     return false;
                 }
                 else
-                {
+                { 
                     return true;
                 }
             }
@@ -56,10 +56,10 @@ namespace 管理网站
         }
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-           
             var actionName = filterContext.ActionDescriptor.ActionName;
             var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
             var user = filterContext.HttpContext.User as CurrentUser;
+ 
             if (user != null&&user.IsAuthenticated)
             {
                 var userid = user.YHBH;
@@ -71,9 +71,7 @@ namespace 管理网站
                 }
             }
             base.OnAuthorization(filterContext);
-
         }
-
         private bool IsAuthorized(HttpContextBase actionContext)
         {
             return true;

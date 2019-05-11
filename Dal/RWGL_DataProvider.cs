@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Calculation.Dal
 {
+    
     public class RWGL_DataProvider
     {
         #region 周报
@@ -134,6 +135,19 @@ on t1.rwid = t2.rwid where t1.rwid=@rwid and  t1.nf = @nf and t1.zc=@zc";
             string sql = "select * from  calculation.xtgl_bbrw where rwid=@rwid";
             MySqlParameter[] p = { new MySqlParameter("rwid", rwid) };
             return Modelhelper.类对象赋值<Rw_Item_Model>(new Rw_Item_Model(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
+        }
+        public Rw_Item_Model GET_RWXQ(int mbid,int nf,int zc)
+        {
+            string sql = "select * from  calculation.xtgl_bbrw where mbid= @mbid and nf=@nf and zc=@zc";
+            MySqlParameter[] p = { new MySqlParameter("mbid", mbid), new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
+            return Modelhelper.类对象赋值<Rw_Item_Model>(new Rw_Item_Model(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
+        }
+
+        public ZB_ZJ_CS GET_ZJ_ZB_CS(int mbid)
+        {
+            string sql = "select rwid,nf,zc,mbid from xtgl_bbrw where (zt = 3 or zt =4) and mbid =@mbid order by nf desc,zc desc limit 1";
+            MySqlParameter[] p = { new MySqlParameter("mbid", mbid) };
+            return Modelhelper.类对象赋值<ZB_ZJ_CS>(new ZB_ZJ_CS(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
         }
         #endregion
     }

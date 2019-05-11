@@ -14,6 +14,7 @@ using System.Web.Mvc;
 
 namespace 管理网站.Controllers
 {
+    [IdentityCheck]
     public class zbController : BaseController
     {
         private FW_KFS_DataProvider kfs;
@@ -36,7 +37,7 @@ namespace 管理网站.Controllers
         /// 周报主页 ---负责开发商
         /// </summary>
         /// <returns></returns>
-        [IdentityCheck]
+        
         public ActionResult index()
         {
             return View();
@@ -54,7 +55,7 @@ namespace 管理网站.Controllers
         /// <param name="mbmc"></param>
         /// <param name="xflx"></param>
         /// <returns></returns>
-        [IdentityCheck]
+       
         public ActionResult zb_rwlb(int mbid, string mbmc, MB_XFLX xflx)
         {
             this.ViewBag.mbid = mbid;
@@ -71,6 +72,9 @@ namespace 管理网站.Controllers
         public PartialViewResult add_zbrw(int mbid)
         {
             this.ViewBag.mbid = mbid;
+            this.ViewBag.zjcs = rwgl.GET_ZJ_ZB_CS(mbid);
+            this.ViewBag.bn =  DateTime.Now.Year;
+            this.ViewBag.bz = Base_date.GET_Z_of_Y(DateTime.Now);
             return PartialView();
         }
         /// <summary>
@@ -104,7 +108,15 @@ namespace 管理网站.Controllers
         {
             return PartialView();
         }
-
+        public PartialViewResult sczb(int mbid,int nf,int zc)
+        {
+            this.ViewBag.serverpath = ConfigurationManager.AppSettings["SerPath"];
+            this.ViewBag.serverpoint = ConfigurationManager.AppSettings["SerPoint"];
+            this.ViewBag.mbid = mbid;
+            this.ViewBag.nf = nf;
+            this.ViewBag.zc = zc;
+            return PartialView();
+        }
         #endregion
 
         #region 数据接口块
@@ -112,7 +124,7 @@ namespace 管理网站.Controllers
         ///获取开发商列表
         public JsonResult get_kfslb(string tj,int pagesize,int pagenow)
         {
-            var obj = kfs.FIND_YHFZKFSBH(this.CurrentUser.YHBH, tj, pagesize, pagenow);
+            var obj = kfs.FIND_YHFZKFS(this.CurrentUser.YHBH, tj, pagesize, pagenow);
             var s = new
             {
                 pagenow = obj.PageNumber,
@@ -151,10 +163,17 @@ namespace 管理网站.Controllers
         /// <param name="zc">周次</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult add_zbrw(string rwmc, int mbid, int nf, int zc)
+        public JsonResult add_zbrw(string rwmc, int mbid, int nf, int zc,int zjcs_nf,int zjcs_zc)
         {
             if (rwgl.Add_ZB(rwmc, mbid, nf, zc))
+            {
+                var t = rwgl.GET_RWXQ(mbid,nf,zc);
+                if (Param_DataProvider.jcszsz(t.rwid, mbid, zjcs_nf, zjcs_zc).IsSuccessful)
+                {
+                    rwgl.SET_RWZT(t.rwid, RW_ZT.文档生成中);
+                }
                 return Json(SResult.Success);
+            }
             else
             {
                 return Json(SResult.Error("发布任务失败"));
@@ -226,6 +245,7 @@ namespace 管理网站.Controllers
         {
             return Json(Param_DataProvider.DEL_RWCJCS(id) ? SResult.Success : SResult.Error("删除失败"));
         }
+
         /// <summary>
         /// 通过参数状态
         /// </summary>
@@ -235,6 +255,8 @@ namespace 管理网站.Controllers
         {
             return Json(rwgl.SET_RWZT(rwid, RW_ZT.文档生成中) ? SResult.Success : SResult.Error("设置失败"));
         }
+
+
         /// <summary>
         /// 添加文件参数
         /// </summary>
@@ -355,10 +377,12 @@ namespace 管理网站.Controllers
     /// 周报—竞品
     /// </summary>
     public class jp_zbController : BaseController {
+        private RWGL_DataProvider rwgl;
         #region 页面
         public ActionResult Index(int rwid,int mbid)
         {
             RWGL_DataProvider rw = new RWGL_DataProvider();
+            rwgl = new RWGL_DataProvider();
             this.ViewBag.rwxq = rw.GET_RWXQ(rwid);
             this.ViewBag.mbid = mbid;
             return View();

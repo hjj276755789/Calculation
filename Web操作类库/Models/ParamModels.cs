@@ -162,4 +162,14 @@ namespace Calculation.Models
         public string qtcs { get; set; }
 
     }
+    /// <summary>
+    /// 周报最近参数
+    /// </summary>
+    public class ZB_ZJ_CS
+    {
+        public int rwid { get; set; }
+        public int mbid { get; set; }
+        public int nf { get; set; }
+        public int zc { get; set; }
+    }
 }

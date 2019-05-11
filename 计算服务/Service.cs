@@ -29,9 +29,13 @@ namespace Calculation
         {
             this.FormClosed += Service_FormClosed;
             InitializeComponent();
-            init();
+            sm = new SocketStoreManager();
+            //init();
             init1();
         }
+        #region MyRegion
+
+       
         private static bool islistening = false;
         private static HttpListener listerner;
         private static int jsqq = 0;
@@ -209,15 +213,29 @@ namespace Calculation
             timer1.Stop();
         }
 
+
+        #endregion
+
+        #region 时间及队列显示
         private void timer1_Tick(object sender, EventArgs e)
         {
+            sm.Initialization();
             this.label1.Text = "运行时长：" + sj();
             this.label2.Text = "接受请求：" + jsqq + "次";
             tm.execute_rw();
-            if(TemplateManage.rwlb!=null&&TemplateManage.rwlb.Count>0)
+            if (TemplateManage.keys != null && TemplateManage.keys.Count > 0)
             { 
-                if(TemplateManage.dqrw!=null)
-                    this.label3.Text = "任务队列：" + TemplateManage.rwlb.Count + "****当前任务："+TemplateManage.dqrw.mbid+"***任务状态："+TemplateManage.dqrw.zt;
+                foreach (var item in TemplateManage.keys)
+                {
+                   var ss= SocketStoreManager.Find(item);
+                    ss.sc.Send(PackData("3"));
+                }
+                TemplateManage.keys.Clear();
+            }
+            if (TemplateManage.rwlb != null && TemplateManage.rwlb.Count > 0)
+            {
+                if (TemplateManage.dqrw != null)
+                    this.label3.Text = "任务队列：" + TemplateManage.rwlb.Count + "****当前任务：" + TemplateManage.dqrw.mbid + "***任务状态：" + TemplateManage.dqrw.zt;
             }
             else
             {
@@ -228,7 +246,7 @@ namespace Calculation
 
         #region 时间显示
 
-     
+
         /// <summary>
         /// 年
         /// </summary>
@@ -253,20 +271,20 @@ namespace Calculation
         public static string sj()
         {
             m++;
-            if(m>=60)
+            if (m >= 60)
             {
                 f++;
                 m = 0;
                 if (f >= 60)
-                { 
+                {
                     f = 0;
                     s++;
-                    if(s>=24)
+                    if (s >= 24)
                     {
                         s = 0;
                         r++;
                         if (r >= 360)
-                        { 
+                        {
                             r = 0;
                             n++;
                         }
@@ -285,8 +303,8 @@ namespace Calculation
 
         private void Service_FormClosed(object sender, FormClosedEventArgs e)
         {
-           
-            if(th!=null&&th.IsAlive)
+
+            if (th != null && th.IsAlive)
             {
                 th.DisableComObjectEagerCleanup();
             }
@@ -308,6 +326,7 @@ namespace Calculation
 
         }
 
+        #endregion
 
         #region websocket
         SocketStoreManager sm;
@@ -320,6 +339,7 @@ namespace Calculation
 
         void init1()
         {
+            tm = TemplateManage.ini();
             this.timer1.Start();
             islistening = true;
             if (th1 == null)
@@ -346,7 +366,7 @@ namespace Calculation
                         SocketStore ss = new SocketStore();
                         ss.key = sc.RemoteEndPoint.ToString();
                         ss.sc = sc;
-                        ss.time = Base_date.ConvertDateTimeInt(DateTime.Now);
+                        ss.time = DateTime.Now;
                         SocketStoreManager.Add(ss);
                         this.sc = sc;
                         Console.WriteLine("接受到了客户端：" + sc.RemoteEndPoint.ToString() + "连接....");
@@ -356,6 +376,7 @@ namespace Calculation
                         //sc.Send();
                         //sc.Send(PackData("alskdjfsk"));
                         sc.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(Recieve), sc);
+                        sc.Send(PackData("0"));
                     }
                 }
                 catch (Exception ex)
@@ -365,6 +386,8 @@ namespace Calculation
 
             }
         }
+
+
         private static byte[] PackHandShakeData(string secKeyAccept)
         {
             var responseBuilder = new StringBuilder();
@@ -535,26 +558,81 @@ namespace Calculation
             return contentBytes;
         }
 
-
         /// <summary>
         /// 处理客户端发送的消息，接收成功后加入到msgPool，等待广播
         /// </summary>
         /// <param name="result">Result.</param>
         private void Recieve(IAsyncResult result)
         {
+
             Socket client = result.AsyncState as Socket;
-
             byte[] buffer = new byte[1024];
-
-            var sc = SocketStoreManager.pool.FirstOrDefault(m => m.key.Contains(client.RemoteEndPoint.ToString()));
-            if (sc == null)
+            try
             {
-                return;
+                client.Receive(buffer);
             }
-            sc.time = Base_date.ConvertDateTimeInt(DateTime.Now);
+            catch (Exception e)
+            {
+                Console.WriteLine("获取消息出错！" + e.Message);
+            }
+            string str = AnalyticData(buffer, buffer.Length);
+            Console.WriteLine("*********************接到信息*****************");
+            Console.WriteLine(str);
+            Console.WriteLine("**********************************************");
+            Console.WriteLine("心跳亲求到达" + client.RemoteEndPoint + "||" + str);
+           
+            lock (SocketStoreManager.s_lock)
+            {
+                var sc = SocketStoreManager.pool.FirstOrDefault(m => m.key.Contains(client.RemoteEndPoint.ToString()));
+                if (sc == null)
+                {
+                    Console.WriteLine("未找到匹配socket连接");
+                    return;
+                }
+                Console.WriteLine("找到匹配项" + sc.key);
+                sc.time = DateTime.Now;
+                try
+                {
+                    if (par(str, sc.key))
+                    {
+                        client.Send(PackData("2"));
+                    }
+                    else client.Send(PackData("1"));
+                    Console.WriteLine("找到socket连接并修改时间，同时发送返回信息");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("发送回执出错！" + e.Message);
+                }
+                try
+                {
+                    client.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(Recieve), client);
+                }
+                catch (Exception)
+                {
+
+                    Console.WriteLine("连接关闭");
+                }
+            }
+
+
         }
 
         #endregion
 
+        public bool  par(string str,string key)
+        {
+            var par = str.Split(',');
+            if(par.Length==3)
+            {
+                TemplateManage.add_rw(str,key);
+                Base_Log.Log("任务已经加入队列");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@
         try
         {
             this.ViewBag.nav = CurrentUser.GETPower((this.User as CurrentUser).YHBH);
+            this.ViewBag.activityPath = CurrentUser.IniNav(ViewContext.RouteData.Values["controller"].ToString(), ViewContext.RouteData.Values["action"].ToString());
         }
         catch (Exception e)
         {
@@ -125,7 +126,6 @@
 
 
         <script src="~/Scripts/Moltran/sweetalert.min.js"></script>
-
         <script src="~/Scripts/Moltran/jquery.min.js"></script>
         <script src="~/Scripts/Moltran/bootstrap.min.js"></script>
         <script src="~/Scripts/Moltran/detect.js"></script>
@@ -139,20 +139,27 @@
         <script src="~/Scripts/Moltran/jquery.app.js"></script>
         <div id="ascrail2000" class="nicescroll-rails" style="width: 7px; z-index: auto; cursor: default; position: absolute; top: 875px; left: 761px; height: 380px; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 296px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2000-hr" class="nicescroll-rails" style="height: 7px; z-index: auto; top: 1248px; left: 280px; position: absolute; cursor: default; display: none; width: 481px; opacity: 0;"><div style="position: relative; top: 0px; height: 5px; width: 488px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2001" class="nicescroll-rails" style="width: 7px; z-index: auto; cursor: default; position: absolute; top: 883px; left: 1308.66px; height: 330px; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 324px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2001-hr" class="nicescroll-rails" style="height: 7px; z-index: auto; top: 1206px; left: 827.656px; position: absolute; cursor: default; display: none; width: 481px; opacity: 0;"><div style="position: relative; top: 0px; height: 5px; width: 488px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2002" class="nicescroll-rails" style="width: 7px; z-index: auto; cursor: default; position: absolute; top: 915px; left: 1846.31px; height: 288px; display: block; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 216px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2002-hr" class="nicescroll-rails" style="height: 7px; z-index: auto; top: 1196px; left: 1385.31px; position: absolute; cursor: default; display: none; width: 461px; opacity: 0;"><div style="position: relative; top: 0px; height: 5px; width: 468px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2003" class="nicescroll-rails" style="width: 7px; z-index: 99; cursor: default; position: fixed; top: 70px; left: 2162px; height: 924px; display: none;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 0px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div><div id="ascrail2003-hr" class="nicescroll-rails" style="height: 7px; z-index: 99; top: 987px; left: 1929px; position: fixed; cursor: default; display: none;"><div style="position: relative; top: 0px; height: 5px; width: 0px; background-color: rgb(157, 158, 165); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 0px;"></div></div>
         <script>
+
+            @{
+                var actqx = this.ViewBag.activityPath as QXXX;
+                }
             var resizefunc = [];
-            var url = document.location.pathname.split("/");
-            var obj = $('#' + url[1] + url[2]);
+
+            //var url = document.location.pathname.split("/");
+            //var obj = $('#' + url[1] + url[2]);
+            var obj = $("#" + '@actqx.qxkzq'+'@actqx.qxst' )
             var p = obj.parent().parent()
             try {
                 p.find(".waves-effect").addClass("active");
                 obj.addClass("active");
-                
+
                 var level2 = p.find(".waves-effect");
                 if (level2 != null)
                     level2.click();
             } catch (e) {
                 console.log("3级页面");
             }
+
         </script>
         @RenderSection("scripts", required: false)
     </div>

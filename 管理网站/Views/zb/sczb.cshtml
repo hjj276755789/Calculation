@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.Title = "sczb";
+}
+
+<h2><a><i class="fa fa-spin fa-spinner"></i><span id="msg">正在连接周报服务器</span></a></h2>
+<div class="modal fade" id="errorModel">
+    <div style="width: 200px;height:20px; z-index: 20000; position: absolute; text-align: center; left: 50%; top: 50%;margin-left:-100px;margin-top:-10px">
+        <div class="progress progress-striped active" style="margin-bottom: 0;">
+            <div class="progress-bar" style="width: 100%;"></div>
+        </div>
+        <h5 style="color:black"> <strong id="msg_error">与服务器连接断开。。重连中</strong> </h5>
+    </div>
+</div>
+
+<script>
+    function wbs(a, b) {
+        this.host = a;
+        this.point = b;
+        this.count = 0;
+        //this.lockReconnect = false;
+        this.isheart = false;
+
+        this.webSocket = null;
+        this.ini = function () {
+            try {
+                this.webSocket = new WebSocket('ws://' + this.host + ":" + this.point);
+                this.webSocket.onopen = function connect() {
+                    $("#loadingModal").modal('hide');
+                    heartCheck.reset().start();//连接建立 启动心跳
+                }
+                this.webSocket.onmessage = function send(msg) {
+
+                    if (msg.data != "1") {
+                        if (wb.isheart)
+                        {
+                            heartCheck.reset().start();//接收任何消息 重启心跳
+                        }
+                        if (msg.data == 2) {
+                            $("#msg").text("正在生成报表");
+                        }
+                        else if (msg.data == 3) {
+                            $("#msg").text("报表生成完毕");
+                            wb.close();
+                            setTimeout(function () {  $('#sczb').modal('hide'); }, 3 * 1000);
+                        }
+                        else if(msg.data==0)
+                        {
+                            //sendmsg('@this.ViewBag.mbid' + ',' + '@this.ViewBag.nf' + ',' + '@this.ViewBag.zc');
+                            sendmsg("9");
+                        }
+                        else {
+                            $("#msg").text("报表生成异常");
+                            wb.close();
+                            setTimeout(function () { $('#sczb').modal('hide'); }, 3 * 1000);
+                        }
+                    }
+                    else {
+                        console.log("接到心跳回执信息")
+                        heartCheck.reset().start();
+                    }
+
+                }
+                this.webSocket.onclose = function () {
+                    console.log("连接断开，重新连接")
+
+                    try {
+                        if (!lockReconnect) {
+                            heartCheck.reset().start();
+                            //$("#errorModel").modal('show');
+                            reconnect();
+                        }
+                    } catch (e) {
+                        this.count += 1;
+                        $("#msg_error").val("与服务器连接断开。。" + this.count + "重连中");
+                        //setTimeout(function () { $("#errorModel").modal('hide'); }, 5 * 1000);
+                        heartCheck.reset().start();
+                        reconnect();
+                    }
+                }
+
+            }
+            catch (exception) {
+                alert("<p>有错误发生</p>" + exception);
+            }
+        }
+        this.reconnect = function () {
+            if (lockReconnect) return;
+            lockReconnect = true; setTimeout(function () {
+                //没连接上会一直重连，设置延迟避免请求过多
+                wb.ini();
+                lockReconnect = false;
+                console.log("重启服务");
+            }, 2000);
+        }
+        this.close =function() {
+            this.webSocket.close();
+            lockReconnect = true;
+        }
+    }
+    var wb = new wbs('@this.ViewBag.serverpath', '@this.ViewBag.serverpoint');
+    wb.isheart = true;
+    wb.ini();
+
+
+    var heartCheck = {
+        timeout: 5000, //9分钟发一次心跳
+        timeoutObj: null,
+        serverTimeoutObj: null,
+        reset: function () {
+            clearTimeout(this.timeoutObj);
+            clearTimeout(this.serverTimeoutObj);
+            return this;
+        },
+        start: function () {
+            console.log("开始心跳");
+            var self = this;
+            this.timeoutObj = setTimeout(function () {
+                //这里发送一个心跳，后端收到后，返回一个心跳消息，
+                //onmessage拿到返回的心跳就说明连接正常
+                wb.webSocket.send("1");
+            }, this.timeout)
+        }
+    }
+    var lockReconnect = false;
+
+    function reconnect() {
+        if (lockReconnect) return;
+        lockReconnect = true; setTimeout(function () {
+            //没连接上会一直重连，设置延迟避免请求过多
+            wb.ini();
+            lockReconnect = false;
+            console.log("重启服务");
+        }, 5000);
+    }
+
+    function sendmsg(a) {
+        try {
+            //if (wb.webSocket != null) {
+            //    if (wb.webSocket.readyState == 1)
+            //    {
+            //        console.log("wbs准备完毕："+a);
+            //        wb.webSocket.send(a);
+            //    }
+            //    else
+            //    {
+            //        console.log("wbs状态未完成：" + a)
+            //        setTimeout(function () { console.log(a); sendmsg(a) }, 500);
+            //    }
+            //}
+            //else
+            //{
+            //    setTimeout(function () { console.log(a); sendmsg(a) }, 500);
+            //    console.log("wbs初始化失败" + a)
+            //}
+            wb.webSocket.send(a);
+        } catch (e) {
+            console.log("失效")
+        }
+
+    }
+
+</script>

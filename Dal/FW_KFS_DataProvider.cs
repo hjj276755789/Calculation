@@ -100,8 +100,24 @@ namespace Calculation.Dal
                 MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh) };
                 return GetPagedList<YHFZKFSModels>(sql, p, pagesize, pagenow);
             }
-
         }
+        public IPageList<YHFZKFSModels> FIND_YHFZKFS(string yhbh, string tj, int pagesize, int pagenow)
+        {
+            string sql = @"select t1.* from xtgl_kfs_xx t1, xtgl_fw_yhfzkfs t2 where t1.kfsbh = t2.kfsbh and t2.yhbh= @yhbh ";
+            if (!tj.IsNull())
+            {
+                sql += " where kfsmc like @kfsmc ";
+                MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh), new MySqlParameter("kfsmc", "%" + tj + "%") };
+                return GetPagedList<YHFZKFSModels>(sql, p, pagesize, pagenow);
+            }
+            else
+            {
+                MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh) };
+                return GetPagedList<YHFZKFSModels>(sql, p, pagesize, pagenow);
+            }
+        }
+   
+
         public bool DEL_KFS_YHFZKFS(string yhbh,string kfsbh)
         {
             string sql = "delete from xtgl_fw_yhfzkfs where yhbh =@yhbh and  kfsbh =@kfsbh";

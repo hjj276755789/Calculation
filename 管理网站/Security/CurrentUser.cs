@@ -17,6 +17,8 @@ namespace 管理网站
         /// <summary>用户编号</summary>
         public string YHBH { get; private set; }
 
+        public QXXX activityPath { get; set; }
+
         /// <summary>
         /// 获有一个值，该值表示是否验证了用户
         /// </summary>
@@ -44,7 +46,6 @@ namespace 管理网站
         public static void SignIn(string YHID)
         {
             DateTime now = DateTime.Now;
-
             var ticket = new FormsAuthenticationTicket(
                 1,
                 YHID,
@@ -54,7 +55,6 @@ namespace 管理网站
                 string.Format("{0}", YHID),
                 FormsAuthentication.FormsCookiePath
                 );
-
             var encryptedTicket = FormsAuthentication.Encrypt(ticket);
             var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
             cookie.HttpOnly = true;
@@ -88,8 +88,6 @@ namespace 管理网站
             }
         }
 
-
-
         public static CurrentUser Test
         {
             get
@@ -114,6 +112,11 @@ namespace 管理网站
         bool IPrincipal.IsInRole(string role)
         {
             throw new NotImplementedException();
+        }
+
+        public static QXXX IniNav(string ctr,string act)
+        {
+            return  new FW_QXGL_DataProvider().GET_YHQX(ctr, act);
         }
     }
 

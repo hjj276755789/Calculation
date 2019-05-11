@@ -72,10 +72,10 @@ between unix_timestamp('" + first.ToString("yyyy/MM/dd") + "') and unix_timestam
 between unix_timestamp('" + first.ToString("yyyy/MM/dd") + "') and unix_timestamp('" + end.ToString("yyyy/MM/dd") + "')";
             return MySqlDbhelper.GetDataSet(sql).Tables[0];
         }
-        public static DataTable GET_JBZ(int dqz)
+        public static DataTable GET_JBZ(int nf,int dqz)
         {
-            string sql = @"select * from calculation.xtgl_data_zb_cjba where zc between (@dqz - 7) and @dqz";
-            MySqlParameter[] p = {  new MySqlParameter("dqz", dqz) };
+            string sql = @"select * from calculation.xtgl_data_zb_cjba where nf = @nf and zc between (@dqz - 7) and @dqz";
+            MySqlParameter[] p = { new MySqlParameter("nf", nf),new MySqlParameter("dqz", dqz) };
             return MySqlDbhelper.GetDataSet(sql,p).Tables[0];
         }
 

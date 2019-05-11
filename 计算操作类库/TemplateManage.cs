@@ -23,6 +23,8 @@ namespace Calculation.JS
         public static List<Rw_Zxrw_ITEM> rwlb { get; set; }
 
         public static Rw_Zxrw_ITEM dqrw { get; set; }
+        
+        public static List<string> keys { get; set; }
 
         public static void add_rw(int mbid, int year, int zc)
         {
@@ -44,7 +46,38 @@ namespace Calculation.JS
             }
            
         }
+        public static void add_rw(string str,string key)
+        {
+            Rw_Zxrw_ITEM rw = new Rw_Zxrw_ITEM();
+            var par = str.Split(',');
+            if (par.Length == 3)
+            {
+                
+                rw.mbid = Int32.Parse(par[0]);
+                rw.nf = Int32.Parse(par[1]);
+                rw.zc = Int32.Parse(par[2]);
+                rw.zt = Models.Enums.ZX_ZT.未开始;
+                rw.key = key;
+            }
+            else
+            {
 
+            }
+           
+          
+            try
+            {
+                if (rwlb == null)
+                    rwlb = new List<Rw_Zxrw_ITEM>();
+                rwlb.Add(rw);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
         public static TemplateManage ini()
         {
 
@@ -156,12 +189,14 @@ namespace Calculation.JS
         {
             try
             {
-                if ((dqrw == null || dqrw.zt == Models.Enums.ZX_ZT.生成完毕) && rwlb != null && rwlb.Count > 0)
+                if (rwlb != null && rwlb.Count > 0)
                 {
-
-                    dqrw = rwlb.FirstOrDefault();
-                    lock (rwlb) {
-                        rwlb.Remove(dqrw);
+                    if (dqrw == null|| dqrw.zt == Models.Enums.ZX_ZT.生成完毕)
+                    { 
+                        dqrw = rwlb.FirstOrDefault();
+                        lock (rwlb) {
+                            rwlb.Remove(dqrw);
+                        }
                     }
                 }
                 if (dqrw != null)
@@ -177,20 +212,24 @@ namespace Calculation.JS
                         }
                         catch (Exception)
                         {
+                            if (keys == null)
+                                keys = new List<string>();
+                            keys.Add(dqrw.key);
                             dqrw.zt = Models.Enums.ZX_ZT.生成完毕;
                         }
 
                     }
                     else if(dqrw.zt== Models.Enums.ZX_ZT.生成完毕)
                     {
-                       
+                        if (keys == null)
+                            keys = new List<string>();
+                        keys.Add(dqrw.key);
                         dqrw = null;
                     }
 
                 }
-
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
                 throw;

@@ -556,6 +556,7 @@
     <Content Include="Views\Dg\Index.cshtml" />
     <Content Include="Views\Sys\add_js.cshtml" />
     <Content Include="Views\zb\zblb.cshtml" />
+    <Content Include="Views\zb\sczb.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

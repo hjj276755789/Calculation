@@ -12,7 +12,8 @@ namespace Calculation
         public string key { get; set; }
         public Socket sc { get; set; }
 
-        public int time { get; set; }
+        public DateTime time { get; set; }
+        public int gqbz { get; set; }
     }
     /// <summary>
     /// WebSocket线程池
@@ -76,9 +77,9 @@ namespace Calculation
             }
         }
 
-        public static SocketStore Find(string key )
+        public static SocketStore Find(string key)
         {
-            lock(s_lock)
+            lock (s_lock)
             {
                 if (pool != null)
                     return pool.FirstOrDefault(m => m.key == key);
@@ -92,44 +93,32 @@ namespace Calculation
         {
             lock (s_lock)
             {
-                var d1 =DateTime.Now;
+                Console.WriteLine("开始刷新");
                 if (pool != null)
                 {
-                    List<SocketStore> temp = new List<SocketStore>();
+                    List<SocketStore> temp = new List<SocketStore>(); ;
                     foreach (var item in pool)
                     {
-                        try
-                        {
-                            if (item.sc.Poll(-1, SelectMode.SelectRead))
-                            {
-                                byte[] buffer = new byte[1024];
-                                int nRead = item.sc.Receive(buffer);
-                                if (nRead == 0)
-                                {
-                                    temp.Add(item);
-                                }
-                            }
-                        }
-                        catch (Exception)
+                        int s = (int)(DateTime.Now - item.time).TotalSeconds;
+                        Console.WriteLine(item.key + ":" + s);
+                        if (s > 40)
                         {
                             temp.Add(item);
                         }
-
                     }
                     if (temp != null)
                     {
-
-                        foreach (var item in temp)
+                        foreach (var item in temp.ToArray())
                         {
+                            Console.WriteLine("超时连接：" + item.key + "：当前时常" + (int)(DateTime.Now - item.time).TotalSeconds);
+                            item.gqbz = 1;
                             pool.Remove(item);
                         }
                     }
                     temp = null;
                 }
-                var d2 = DateTime.Now;
-                Console.WriteLine(d2.Subtract(d1).TotalMilliseconds);
             }
         }
-        
+
     }
 }

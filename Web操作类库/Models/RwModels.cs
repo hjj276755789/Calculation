@@ -63,5 +63,6 @@ namespace Calculation.Models
             get; set;
         }
         public ZX_ZT zt { get; set; }
+        public string key { get; set; }
     }
 }

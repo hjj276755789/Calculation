@@ -144,7 +144,13 @@ and a.yhbh=@yhbh";
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
 
-
+        public QXXX GET_YHQX(string qxkzq,string qxst)
+        {
+            string sql = @"select qxbh,fqxbh,qxmc,qxkzq,qxst from xtgl_fw_qxxx where qxbh =
+(select substr(qxbh, 1, 4) from xtgl_fw_qxxx where qxkzq = @qxkzq and qxst = @qxst)";
+            MySqlParameter[] p = { new MySqlParameter("qxkzq", qxkzq), new MySqlParameter("qxst", qxst) };
+            return Modelhelper.类对象赋值<QXXX>(new QXXX(), MySqlDbhelper.GetDataSet(sql, p).Tables[0]);
+        }
 
         /// <summary>
         /// 是否拥有权限

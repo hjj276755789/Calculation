@@ -36,7 +36,7 @@ namespace Calculation.JS
             if (uniqueInstance == null)
             {
                 uniqueInstance = new Cache_data_cjjl();
-                jbz = ZB_Data_CJBA_DataProvider.GET_JBZ(Base_date.bz);
+                jbz = ZB_Data_CJBA_DataProvider.GET_JBZ(Base_date.bn,Base_date.bz);
                 var bztemp = jbz.Select("zc=" + Base_date.bz);
                 bz = bztemp.Count() != 0 ? bztemp.CopyToDataTable():new DataTable();
                 var sztemp = jbz.Select("zc=" + (Base_date.bz - 1));
@@ -52,7 +52,7 @@ namespace Calculation.JS
             {
                 if (nowdatetask != null && (nowdatetask.nf != Base_date.bn || nowdatetask.zc !=Base_date.bz))
                 {
-                    jbz = ZB_Data_CJBA_DataProvider.GET_JBZ(Base_date.bz);
+                    jbz = ZB_Data_CJBA_DataProvider.GET_JBZ(Base_date.bn, Base_date.bz);
                     var bztemp = jbz.Select("zc=" + Base_date.bz);
                     bz = bztemp.Count() != 0 ? bztemp.CopyToDataTable() : new DataTable();
                     var sztemp = jbz.Select("zc=" + (Base_date.bz - 1));

@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Calculation.Base
 {
     public class Base_date
@@ -154,6 +153,13 @@ namespace Calculation.Base
 
         }
 
+        public static int GET_Z_of_Y(DateTime dt)
+        {
+            GregorianCalendar gc = new GregorianCalendar();
+            int week = gc.GetWeekOfYear(dt, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+            return week;
+        }
+
         public static string GET_ZCMC(int year,int weak)
         {
             DateTime dt_first = CalcWeekDay_first(year, weak);
@@ -199,8 +205,6 @@ namespace Calculation.Base
             DateTime dt=  CalcWeekDay_first(year, weak);
             return dt.Month;
         }
-
-
 
         private static string numtoUpper(int num)
         {
@@ -296,4 +300,7 @@ namespace Calculation.Base
 
     }
 
+
+   
+         
 }
