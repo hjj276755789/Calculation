@@ -1,228 +1,39 @@
 ﻿using Calculation.Base;
 using Calculation.JS;
-using Calculation.Models.Enums;
-using Calculation.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
 using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Forms;
+
+
 
 namespace Calculation
 {
     public partial class Service : Form
     {
+
+
         public Service()
         {
             this.FormClosed += Service_FormClosed;
             InitializeComponent();
             sm = new SocketStoreManager();
-            //init();
-            init1();
-        }
-        #region MyRegion
-
-       
-        private static bool islistening = false;
-        private static HttpListener listerner;
-        private static int jsqq = 0;
-        private static Thread th;
-        private static TemplateManage tm;
-
-      
-
-
-
-
-        void init()
-        {
             tm = TemplateManage.ini();
-            if (listerner == null)
-                listerner = new HttpListener();
-            islistening = true;
-            this.timer1.Start();
-            if (th == null) { 
-                th = new Thread(new ThreadStart(thread2));
-                th.IsBackground = true;
-            }
-            th.Start();
-            this.button1.Enabled = false;
-            this.button2.Enabled = true;
-        }
-
-
-        private  void thread2()
-        {
-            while (islistening)
-            {
-                try
-                {
-                    listerner.AuthenticationSchemes = AuthenticationSchemes.Anonymous;//指定身份验证 Anonymous匿名访问
-                    listerner.Prefixes.Add("http://127.0.0.1:8000/ss/");
-                    listerner.Start();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("服务启动失败..."+ex.Message);
-                    break;
-                }
-                Console.WriteLine("服务器启动成功.......");
-
-                //线程池
-                int minThreadNum;
-                int portThreadNum;
-                int maxThreadNum;
-                ThreadPool.GetMaxThreads(out maxThreadNum, out portThreadNum);
-                ThreadPool.GetMinThreads(out minThreadNum, out portThreadNum);
-                Base_Log.Log(string.Format("最大线程数：{0}", maxThreadNum));
-                Base_Log.Log(string.Format("最小空闲线程数：{0}", minThreadNum));
-                //ThreadPool.QueueUserWorkItem(new WaitCallback(TaskProc1), x);
-
-                Console.WriteLine("\n\n等待客户连接中。。。。");
-                while (true)
-                {
-                    try
-                    {
-                        //等待请求连接
-                        //没有请求则GetContext处于阻塞状态
-                        HttpListenerContext ctx = listerner.GetContext();
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TaskProc), ctx);
-                    }
-                    catch (Exception e)
-                    {
-
-                        Base_Log.Log("线程问题：" + e.Message);
-                    }
-
-                }
-                //listerner.Stop();
-            }
-        }
-        private void button1_Click(object sender, EventArgs e)
-        {
             init();
         }
 
-        private   void TaskProc(object o)
-        {
-            HttpListenerContext ctx = (HttpListenerContext)o;
-
-            ctx.Response.StatusCode = 200;//设置返回给客服端http状态代码
-            jsqq++;
-            //接收Get参数
-            try
-            {
-                int nf = Int32.Parse(ctx.Request.QueryString["nf"]);
-                int zc = Int32.Parse(ctx.Request.QueryString["zc"]);
-                int mbid = Int32.Parse(ctx.Request.QueryString["mbid"]);
-
-                //进行处理
-                dateTask dt = new dateTask(mbid, nf, null, zc);
-                //接收POST参数
-                Stream stream = ctx.Request.InputStream;
-                System.IO.StreamReader reader = new System.IO.StreamReader(stream, Encoding.UTF8);
-                String body = reader.ReadToEnd();
-                Console.WriteLine("收到POST数据:" + HttpUtility.UrlDecode(body));
-
-
-                //使用Writer输出http响应代码,UTF8格式
-                using (StreamWriter writer = new StreamWriter(ctx.Response.OutputStream, Encoding.UTF8))
-                {
-
-                    Thread th = new Thread(new ParameterizedThreadStart(tt));
-                    th.Start(dt);
-                    writer.Write("{ isSucessfull: true,Msg=任务已经启动}");
-                    writer.Close();
-                    ctx.Response.Close();
-
-                }
-            }
-            catch (Exception e)
-            {
-                Base_Log.Log("准备阶段" + e.Message);
-            }
-           
-        }
-
-        
-
-        public void tt(object zc)
-        {
-            try
-            {
-                dateTask dt = zc as dateTask;
-                TemplateManage.add_rw(dt.mbid, dt.nf, dt.zc);
-                Base_Log.Log("任务已经加入队列");
-                //string xzdz= tm.Create_zb(dt.mbid,dt.nf, dt.zc);
-                //if (!string.IsNullOrEmpty(xzdz))
-                //{
-                //    if (!new Dal.RWGL_DataProvider().SET_RWZT(dt.mbid, dt.nf, dt.zc, RW_ZT.完成可下载, xzdz))
-                //        Base_Log.Log("创建文件成功，插入数据失败");
-                //    }
-                //else
-                //{
-                //    Base_Log.Log("生成失败：下载地址并未生成并返回！");
-                //    return;
-                //}
-                //Base_Log.Log("生成成功\n");
-            }
-            catch (Exception e)
-            {
-                Base_Log.Log("生成失败：" + e.Message);
-                //关闭线程
-                Process.GetCurrentProcess().Kill();
-                
-            }
-  
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            ini();
-        }
-
-        public void ini()
-        {
-            n = 0;
-            r = 0;
-            s = 0;
-            f = 0;
-            m = 0;
-            islistening = false;
-            if (listerner == null)
-                return;
-            if (listerner.IsListening)
-            {
-                listerner.Stop();
-            }
-            this.button1.Enabled = true;
-            this.button2.Enabled = false;
-            timer1.Stop();
-        }
-
-
-        #endregion
 
         #region 时间及队列显示
         private void timer1_Tick(object sender, EventArgs e)
         {
             sm.Initialization();
-            this.label1.Text = "运行时长：" + sj();
-            this.label2.Text = "接受请求：" + jsqq + "次";
             tm.execute_rw();
+
             if (TemplateManage.keys != null && TemplateManage.keys.Count > 0)
             { 
                 foreach (var item in TemplateManage.keys)
@@ -329,27 +140,30 @@ namespace Calculation
         #endregion
 
         #region websocket
+
+
+        private static int jsqq = 0;
         SocketStoreManager sm;
         Socket sc = null; //当前socket实体
-        private static Thread th1;    //端口监听线程            
-
+        private static Thread th;    //端口监听线程            
+        private static bool islistening = false;
         private static int port = 12345; //监听端口
         private Socket listener1 = new Socket(new IPEndPoint(IPAddress.Any, port).Address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        private static TemplateManage tm;
 
-
-        void init1()
+        void init()
         {
-            tm = TemplateManage.ini();
+
             this.timer1.Start();
             islistening = true;
-            if (th1 == null)
+            if (th == null)
             {
-                th1 = new Thread(new ThreadStart(thread3));
-                th1.IsBackground = true;
-                th1.Start();
+                th = new Thread(new ThreadStart(thread));
+                th.IsBackground = true;
+                th.Start();
             }
         }
-        private void thread3()
+        private void thread()
         {
             while (islistening)
             {
@@ -373,10 +187,7 @@ namespace Calculation
 
                         int length = sc.Receive(buffer);//接受客户端握手信息
                         sc.Send(PackHandShakeData(GetSecKeyAccetp(buffer, length)));
-                        //sc.Send();
-                        //sc.Send(PackData("alskdjfsk"));
                         sc.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(Recieve), sc);
-                        sc.Send(PackData("0"));
                     }
                 }
                 catch (Exception ex)
@@ -576,11 +387,7 @@ namespace Calculation
                 Console.WriteLine("获取消息出错！" + e.Message);
             }
             string str = AnalyticData(buffer, buffer.Length);
-            Console.WriteLine("*********************接到信息*****************");
-            Console.WriteLine(str);
-            Console.WriteLine("**********************************************");
-            Console.WriteLine("心跳亲求到达" + client.RemoteEndPoint + "||" + str);
-           
+            Console.WriteLine("************" + str + "*************8");
             lock (SocketStoreManager.s_lock)
             {
                 var sc = SocketStoreManager.pool.FirstOrDefault(m => m.key.Contains(client.RemoteEndPoint.ToString()));

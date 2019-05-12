@@ -1,8 +1,8 @@
 ﻿<div class="row" style="width: 90%; margin: 20px;">
-    <input type="text" id="cxtj" class="form-control" placeholder="请输入查询条件" /><input type="button" value="查询" onclick="Search()" class="btn btn-danger" />
+    <input type="text" id="cxtj" class="form-control" placeholder="请输入查询条件" /><input type="text" id="nf" class="form-control" placeholder="年份" value="@this.ViewBag.bn" /><input type="text" id="zc" class="form-control" placeholder="周次" value="@this.ViewBag.bz" /><input type="button" value="查询" onclick="Search()" class="btn btn-danger" />
 </div>
 
-<div id="kfslb" class="row" style="width: 90%; margin: 20px;"></div>>
+<div id="kfslb" class="row" style="width: 90%; margin: 20px;"></div>
 
 @section scripts{
 
@@ -14,10 +14,9 @@
 
         function Search() {
             var tj = $("#cxtj").val();
-            option.pagesize = 10;
+            option.pagesize = 20;
             option.pagenow = 1;
-            data = { 'tj': tj ,'nf':2018,'zc':30,'pagesize': option.pagesize, 'pagenow':option.pagenow }
-            dopage(data);
+            init();
         }
 
 
@@ -115,9 +114,8 @@
         });
 
         function init() {
-            var data = { 'tj': tj,'nf':2018,'zc':30, 'pagesize': option.pagesize, 'pagenow': option.pagenow };
+            data = { 'tj': tj ,'nf':$("#nf").val(),'zc':$('#zc').val(),'pagesize': option.pagesize, 'pagenow':option.pagenow }
             dopage(data);
-
         }
 
         function dopage(data)
@@ -129,8 +127,8 @@
                 success: function (data) {
                     var d = [];
                     for (var i = 0; i < data.d.length; i++) {
-                        d.push([data.d[i].nf, data.d[i].zc, data.d[i].kfsmc, data.d[i].mbmc, data.d[i].rwmc, 
-                                    '<a class="btn btn-link" href="' + data.d[i].dzdz2 + '">查看模板</a>']);
+                        d.push([data.d[i].nf, data.d[i].zc, data.d[i].kfsmc, data.d[i].mbmc, data.d[i].rwmc, ini_kfxz(data.d[i].kfxz, data.d[i].rwid),
+                                    ]);
                     };
                     option.data = d;
                     option.datacount = data.datacount;
@@ -151,6 +149,14 @@
                 option.pagenow += 1;
                 init();
             }
+        }
+        function ini_kfxz(a,b)
+        {
+            if(a=='1')
+            { 
+                return '<a style="color:green;" href="/zb/export_dg?rwid='+b+'">可以下载</a>'
+            }
+            else return '<a style="color:gray;">未上传</a>'
         }
     </script>
 } 

@@ -1,4 +1,5 @@
-﻿using Calculation.Dal;
+﻿using Calculation.Base;
+using Calculation.Dal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace 管理网站.Controllers
         // GET: Dg
         public ActionResult Index()
         {
+            this.ViewBag.bn = DateTime.Now.Year;
+            this.ViewBag.bz = Base_date.GET_Z_of_Y(DateTime.Now);
             return View();
         }
         #endregion

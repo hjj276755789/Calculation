@@ -9,6 +9,7 @@ namespace Calculation.Models.Models
 {
     public class DGModels : Data_Item<DGModels>
     {
+        public string rwid { get; set; }
         public string nf { get; set; }
         public string zc { get; set; }
         public string kfsbh { get; set; }
@@ -17,6 +18,6 @@ namespace Calculation.Models.Models
         public string mbmc { get; set; }
         public string rwmc { get; set; }
         public string xzdz2 { get; set; }
-        public string zt { get; set; }
+        public string kfxz { get; set; }
     }
 }

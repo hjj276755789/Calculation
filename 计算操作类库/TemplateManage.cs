@@ -26,6 +26,11 @@ namespace Calculation.JS
         
         public static List<string> keys { get; set; }
 
+        /// <summary>
+        /// 线程池操作锁
+        /// </summary>
+        public static object s_lock = new object();
+
         public static void add_rw(int mbid, int year, int zc)
         {
             Rw_Zxrw_ITEM rw = new Rw_Zxrw_ITEM();
@@ -35,9 +40,12 @@ namespace Calculation.JS
             rw.zt = Models.Enums.ZX_ZT.未开始;
             try
             {
-                if (rwlb == null)
-                    rwlb = new List<Rw_Zxrw_ITEM>();
-                rwlb.Add(rw);
+                lock (s_lock)
+                {
+                    if (rwlb == null)
+                        rwlb = new List<Rw_Zxrw_ITEM>();
+                    rwlb.Add(rw);
+                }
             }
             catch (Exception)
             {
@@ -63,13 +71,16 @@ namespace Calculation.JS
             {
 
             }
-           
-          
+
+
             try
             {
-                if (rwlb == null)
-                    rwlb = new List<Rw_Zxrw_ITEM>();
-                rwlb.Add(rw);
+                lock (s_lock)
+                {
+                    if (rwlb == null)
+                        rwlb = new List<Rw_Zxrw_ITEM>();
+                    rwlb.Add(rw);
+                }
             }
             catch (Exception)
             {
@@ -194,7 +205,7 @@ namespace Calculation.JS
                     if (dqrw == null|| dqrw.zt == Models.Enums.ZX_ZT.生成完毕)
                     { 
                         dqrw = rwlb.FirstOrDefault();
-                        lock (rwlb) {
+                        lock (s_lock) {
                             rwlb.Remove(dqrw);
                         }
                     }

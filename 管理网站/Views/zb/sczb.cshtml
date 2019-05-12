@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "sczb";
 }
-
+<button id="send" class="btn btn-danger" onClick="sendmsg('@this.ViewBag.mbid' + ',' + '@this.ViewBag.nf' + ',' + '@this.ViewBag.zc');">发送数据</button>
 <h2><a><i class="fa fa-spin fa-spinner"></i><span id="msg">正在连接周报服务器</span></a></h2>
 <div class="modal fade" id="errorModel">
     <div style="width: 200px;height:20px; z-index: 20000; position: absolute; text-align: center; left: 50%; top: 50%;margin-left:-100px;margin-top:-10px">
@@ -20,17 +20,25 @@
         this.count = 0;
         //this.lockReconnect = false;
         this.isheart = false;
-
+        this.isexec=true;
         this.webSocket = null;
         this.ini = function () {
             try {
                 this.webSocket = new WebSocket('ws://' + this.host + ":" + this.point);
                 this.webSocket.onopen = function connect() {
-                    $("#loadingModal").modal('hide');
-                    heartCheck.reset().start();//连接建立 启动心跳
+                    if (wb.isexec) {
+                        setTimeout(function () {
+                            $("#send").click();
+                            var p = '@this.ViewBag.mbid' + ',' + '@this.ViewBag.nf' + ',' + '@this.ViewBag.zc';
+                            console.log('@this.ViewBag.mbid' + ',' + '@this.ViewBag.nf' + ',' + '@this.ViewBag.zc');
+                            wb.webSocket.send(p)
+                            heartCheck.reset().start();//连接建立 启动心跳
+                        }, 1000);
+                    }
+                   
                 }
                 this.webSocket.onmessage = function send(msg) {
-
+                    console.log(msg.data);
                     if (msg.data != "1") {
                         if (wb.isheart)
                         {
@@ -47,7 +55,7 @@
                         else if(msg.data==0)
                         {
                             //sendmsg('@this.ViewBag.mbid' + ',' + '@this.ViewBag.nf' + ',' + '@this.ViewBag.zc');
-                            sendmsg("9");
+                            wb.webSocket.send("9");
                         }
                         else {
                             $("#msg").text("报表生成异常");
@@ -67,13 +75,12 @@
                     try {
                         if (!lockReconnect) {
                             heartCheck.reset().start();
-                            //$("#errorModel").modal('show');
                             reconnect();
                         }
                     } catch (e) {
                         this.count += 1;
                         $("#msg_error").val("与服务器连接断开。。" + this.count + "重连中");
-                        //setTimeout(function () { $("#errorModel").modal('hide'); }, 5 * 1000);
+
                         heartCheck.reset().start();
                         reconnect();
                     }
@@ -99,7 +106,7 @@
         }
     }
     var wb = new wbs('@this.ViewBag.serverpath', '@this.ViewBag.serverpoint');
-    wb.isheart = true;
+    wb.isheart = false;
     wb.ini();
 
 
