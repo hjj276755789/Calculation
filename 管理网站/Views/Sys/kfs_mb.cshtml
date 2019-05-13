@@ -1,4 +1,7 @@
-﻿
+﻿<div class="row" style="width: 90%; margin: 20px;">
+    <a class="btn btn-primary waves-effect waves-light" onclick="javascript:history.back(-1);">返回</a>
+    <input type="text" id="cxtj" class="form-control" placeholder="请输入查询条件" /><input type="button" value="查询" onclick="Search()" class="btn btn-danger" />
+</div>
 <div id="list" class="row" style="width: 90%; margin: 20px;"></div>
 
 <DIV tabindex="-1" class="modal fade" id="tjkfs" role="dialog"
@@ -23,39 +26,11 @@
         var pagenow = 1;
 
         function Search() {
-
-                pagesize = 10;
-                pagenow = 1;
-                $.ajax({
-                    url: "/sys/GET_KFSMBLB",
-                    data: { 'kfsbh': @this.ViewBag.kfsbh, 'pagesize': pagesize, 'pagenow': pagenow },
-                    type: "post",
-                    success: function (data) {
-                        if (data) {
-                            var d = [];
-                            for (var i = 0; i < data.d.length; i++) {
-                                d.push([data.d[i].mbbh, data.d[i].mbmc,data.d[i].rwcs
-                                   ]);
-                            };
-                            option.data = d;
-                            option.datacount = data.datacount;
-                            option.pagenow = data.pagenow;
-                            table.reflush(option);
-                            table.load(option);
-                        }
-                        else {
-                            alert("没有新的数据");
-                        }
-                    }
-                })
-
+            option.pagesize = 10;
+            option.pagenow = 1;
+            var data = { 'cxtj': $("#cxtj").val(), 'kfsbh': '@this.ViewBag.kfsbh', 'pagesize': option.pagesize, 'pagenow': option.pagenow };
+            dopage(data);
         }
-
-
-
-
-
-
         var table = new Table_bs($('#list'));
         function cleardata(a) {
             $(a).on("hidden.bs.modal", function () {
@@ -121,10 +96,10 @@
                 _box.find('tbody').append($(html_tbody));
                 if (option.hasPage) {
                     var html_page = "";
-                    html_page += "<ul class='pagination'><li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>上一页</a></li>";
-                    html_page += "<li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>" + option.datacount + "</a></li>";
+                    html_page += "<ul class='pagination'><li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a onclick='pre()'>上一页</a></li>";
+                    html_page += "<li tabindex='0' class='paginate_button previous disabled' id='datatable-fixed-header_previous' aria-controls='datatable-fixed-header'><a href='#'>" + option.pagenow + "/" + option.datacount + "</a></li>";
 
-                    html_page += "<li tabindex='0' class='paginate_button next' id='datatable-fixed-header_next' aria-controls='datatable-fixed-header'><a href='#'>下一页</a></li></ul>";
+                    html_page += "<li tabindex='0' class='paginate_button next' id='datatable-fixed-header_next' aria-controls='datatable-fixed-header'><a onclick='next()'>下一页</a></li></ul>";
                     _box.append((html_page));
                 }
             }
@@ -137,7 +112,6 @@
         }
 
 
-
         var option = {
             colNames: ["编号", '模板名称', '任务次数'],
             data: [
@@ -147,12 +121,17 @@
         }
 
         $(function () {
-            init1();
+            option.pagenow = pagenow;
+            option.pagesize = pagesize;
+            init();
         });
 
-
-        function init1() {
-            var data = { 'kfsbh': @this.ViewBag.kfsbh, 'pagesize': pagesize, 'pagenow': pagenow };
+        function init() {
+            var data = { 'cxtj': $("#cxtj").val(), 'kfsbh': '@this.ViewBag.kfsbh', 'pagesize': option.pagesize, 'pagenow': option.pagenow };
+            dopage(data);
+        }
+        function dopage(data)
+        {
             $.ajax({
                 url: "/sys/GET_KFSMBLB",
                 data: data,
@@ -175,18 +154,17 @@
                     }
                 }
             })
-
         }
         function pre() {
             if (option.pagenow > 1) {
                 option.pagenow -= 1;
-                init2();
+                init();
             }
         }
         function next() {
-            if (option.pagenow < (option.datacount / option.pagesize) + 1) {
+            if (option.pagenow < option.datacount) {
                 option.pagenow += 1;
-                init2();
+                init();
             }
         }
     </script>

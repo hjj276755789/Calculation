@@ -155,7 +155,7 @@
             success: function (data) {
                 var d = [];
                 for (var i = 0; i < data.d.length; i++) {
-                    d.push([data.d[i].kfsmc, data.d[i].kfslxr, data.d[i].kfslxrdh, 
+                    d.push([data.d[i].kfsmc, ini_data(data.d[i].kfslxr), ini_data(data.d[i].kfslxrdh),
                          '<a class="btn btn-link" href="/zb/zblb?kfsbh=' + data.d[i].kfsbh + '">周报管理</a>'
                     ]);
                 };
@@ -178,6 +178,14 @@
             option.pagenow += 1;
             init1();
         }
+    }
+
+    function ini_data(a)
+    {
+        if (a != null && a != undefined && a!="")
+            return a;
+        else return '<a style="color:#999">未提供</a>';
+         
     }
 </script>
 

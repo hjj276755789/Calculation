@@ -227,9 +227,9 @@ namespace 管理网站.Controllers
                 return Json(SResult.Error("新增用户失败！"));
         }
 
-        public JsonResult GET_KFSMBLB(string kfsbh,int pagesize,int pagenow)
+        public JsonResult GET_KFSMBLB(string cxtj,string kfsbh,int pagesize,int pagenow)
         {
-            var obj = _kfs.FIND_KFS_MB(kfsbh, pagesize, pagenow);
+            var obj = _kfs.FIND_KFS_MB(cxtj,kfsbh, pagesize, pagenow);
             var s = new
             {
                 pagenow = obj.PageNumber,

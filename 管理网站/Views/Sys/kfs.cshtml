@@ -34,21 +34,24 @@
             dopage(data);
         }
         function del(a) {
-            $.ajax({
-                type: "post",
-                url: "/sys/del_kfs",
-                data: { "kfsbh": a },
-                success: function (data) {
-                    if (data.IsSuccessful) {
-                        pagesize = 10;
-                        pagenow = 1;
-                        init1();
+            var r = confirm("确认删除任务");
+            if (r == true) {
+                $.ajax({
+                    type: "post",
+                    url: "/sys/del_kfs",
+                    data: { "kfsbh": a },
+                    success: function (data) {
+                        if (data.IsSuccessful) {
+                            pagesize = 10;
+                            pagenow = 1;
+                            init1();
 
-                       
-                    }
-                },
-            
-            })
+
+                        }
+                    },
+
+                })
+            }
         }
         function sub() {
             $.ajax({

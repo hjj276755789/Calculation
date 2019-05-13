@@ -73,14 +73,24 @@ namespace Calculation.Dal
             MySqlParameter[] p = { new MySqlParameter("kfsbh", kfsbh) };
             return ExecuteNonQuery(sql, p) > 0;
         }
-        public IPageList<KFSMBModels> FIND_KFS_MB(string kfsbh,int pagesize,int pagenow)
+        public IPageList<KFSMBModels> FIND_KFS_MB(string cxtj,string kfsbh,int pagesize,int pagenow)
         {
             string sql = @"select * from (
                         select a1.mbid,a1.mbmc,count(a1.mbid) rwcs from xtgl_bbmb a1 left join xtgl_bbrw a2 on a1.mbid = a2.mbid group by a1.mbid,a1.mbmc
                         ) t1, xtgl_kfs_kfsmb t2
-                        where t1.mbid = t2.mbbh and t2.kfsbh =@kfsbh";
-            MySqlParameter[] p = { new MySqlParameter("kfsbh", kfsbh) };
-            return GetPagedList<KFSMBModels>(sql, p, pagesize, pagenow);
+                        where t1.mbid = t2.mbbh and t2.kfsbh =@kfsbh ";
+            if(cxtj.IsNullOrEmpty())
+            {
+                MySqlParameter[] p = { new MySqlParameter("kfsbh", kfsbh) };
+                return GetPagedList<KFSMBModels>(sql, p, pagesize, pagenow);
+            }
+            else
+            {
+                sql += " and t1.mbmc like @mbmc ";
+                MySqlParameter[] p = { new MySqlParameter("kfsbh", kfsbh), new MySqlParameter("mbmc", '%' + cxtj + '%') };
+                return GetPagedList<KFSMBModels>(sql, p, pagesize, pagenow);
+            }
+           
 
         }
 

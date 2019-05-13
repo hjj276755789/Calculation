@@ -202,11 +202,9 @@
                         switch (data[i].zt) {
                             case 0:;
                             case 1: //{
-                            //    d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "数据筹备中",
-                            //        '<a class="btn btn-primary waves-effect waves-light" href="/data/zb_data?&rwid='+data[i].rwid+'&nf=' + data[i].nf + '&zc=' + data[i].zc + '" data-toggle="modal" data-target="#qrsj" onclick="cleardata(\'#qrsj\')">确认数据</a>',
-                            //    ]);
-                                //}
-                                //;
+                                d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "数据筹备中",
+                                    '<a class="btn btn-primary waves-effect waves-light" href="/data/zb_data?&rwid='+data[i].rwid+'&nf=' + data[i].nf + '&zc=' + data[i].zc + '" data-toggle="modal" data-target="#qrsj" onclick="cleardata(\'#qrsj\')">确认数据</a>',
+                                ]);
                             case 2: {
                                 if (xflx =='主模板') {
                                     d.push(['<input type="checkbox">', data[i].rwmc, data[i].nf, data[i].zc, "参数填报中",

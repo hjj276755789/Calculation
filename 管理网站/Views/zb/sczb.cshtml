@@ -143,23 +143,6 @@
 
     function sendmsg(a) {
         try {
-            //if (wb.webSocket != null) {
-            //    if (wb.webSocket.readyState == 1)
-            //    {
-            //        console.log("wbs准备完毕："+a);
-            //        wb.webSocket.send(a);
-            //    }
-            //    else
-            //    {
-            //        console.log("wbs状态未完成：" + a)
-            //        setTimeout(function () { console.log(a); sendmsg(a) }, 500);
-            //    }
-            //}
-            //else
-            //{
-            //    setTimeout(function () { console.log(a); sendmsg(a) }, 500);
-            //    console.log("wbs初始化失败" + a)
-            //}
             wb.webSocket.send(a);
         } catch (e) {
             console.log("失效")
