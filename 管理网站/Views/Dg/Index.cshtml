@@ -13,7 +13,7 @@
         var pagenow = 1;
 
         function Search() {
-            var tj = $("#cxtj").val();
+            tj = $("#cxtj").val();
             option.pagesize = 20;
             option.pagenow = 1;
             init();
@@ -127,7 +127,7 @@
                 success: function (data) {
                     var d = [];
                     for (var i = 0; i < data.d.length; i++) {
-                        d.push([data.d[i].nf, data.d[i].zc, data.d[i].kfsmc, data.d[i].mbmc, data.d[i].rwmc, ini_kfxz(data.d[i].kfxz, data.d[i].rwid),
+                        d.push([data.d[i].nf, data.d[i].zc, data.d[i].kfsmc, data.d[i].mbmc, ini_rwmc(data.d[i].rwmc), ini_kfxz(data.d[i].kfxz, data.d[i].rwid),
                                     ]);
                     };
                     option.data = d;
@@ -157,6 +157,12 @@
                 return '<a style="color:green;" href="/zb/export_dg?rwid='+b+'">可以下载</a>'
             }
             else return '<a style="color:gray;">未上传</a>'
+        }
+        function ini_rwmc(a) {
+            if (a !=null && a!=undefined && a!="") {
+                return '<a style="color:green;" >'+a+'</a>'
+            }
+            else return '<a style="color:gray;">任务未开始</a>'
         }
     </script>
 } 

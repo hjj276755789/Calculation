@@ -56,7 +56,7 @@ namespace Calculation.Dal
             string sql = "select * from xtgl_fw_js";
             return Modelhelper.类列表赋值<JSXX>(new JSXX(), MySqlDbhelper.GetDataSet(sql).Tables[0]);
         }
-        public List<JSXX> GET_JSLB(int yhbh)
+        public List<JSXX> GET_JSLB(string yhbh)
         {
             string sql = "select * from xtgl_fw_js t,xtgl_fw_yhjs t1 where t.jsbh =t1.jsbh and t1.yhbh=@yhbh ";
             MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh) };
@@ -66,6 +66,12 @@ namespace Calculation.Dal
         {
             string sql = "insert into xtgl_fw_js (jsmc,jsms) values(@jsmc,@jsms)";
             MySqlParameter[] p = { new MySqlParameter("jsmc", jsmc),new MySqlParameter("jsms", jsms) };
+            return ExecuteNonQuery(sql, p) > 0;
+        }
+        public bool DEL_JSXX(int jsbh)
+        {
+            string sql = "delete from xtgl_fw_js where jsbh =@jsbh and jslx <>0";
+            MySqlParameter[] p = { new MySqlParameter("jsbh", jsbh) };
             return ExecuteNonQuery(sql, p) > 0;
         }
         //获取权限列表
@@ -127,7 +133,12 @@ and a.yhbh=@yhbh";
             MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh), new MySqlParameter("jsbh", jsbh) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
-
+        public bool DEL_YHJS(int jsbh)
+        {
+            string sql = "delete from xtgl_fw_yhjs where jsbh=@jsbh";
+            MySqlParameter[] p = { new MySqlParameter("jsbh", jsbh) };
+            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
+        }
         //设置角色权限
         public bool ADD_JSQX(int jsbh, int fqxbh)
         {
@@ -143,6 +154,12 @@ and a.yhbh=@yhbh";
             MySqlParameter[] p = { new MySqlParameter("jsbh", jsbh), new MySqlParameter("fqxbh", fqxbh) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
+        public bool DEL_JSQX(int jsbh)
+        {
+            string sql = @"DELETE FROM xtgl_fw_jsqx WHERE jsbh=@jsbh ";
+            MySqlParameter[] p = { new MySqlParameter("jsbh", jsbh) };
+            return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
+        } 
 
         public QXXX GET_YHQX(string qxkzq,string qxst)
         {

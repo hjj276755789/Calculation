@@ -3,7 +3,7 @@
     ViewBag.Title = "角色管理";
 }
 <div class="row" style="width: 90%; margin: 20px;">
-    <input type="text" id="角色名称" class="form-control" /><input type="button" value="收索" onclick="search()" class="btn btn-danger" />
+    <input type="text" id="角色名称" class="form-control" /><input type="button" value="搜索" onclick="search()" class="btn btn-danger" />
     <a class="btn btn-primary waves-effect waves-light" href="/sys/add_js" data-toggle="modal" data-target="#tjjs" onclick="cleardata('#tjjs')">添加角色 </a>
 
 </div>
@@ -45,6 +45,25 @@
     function cleardata(a) {
         $(a).on("hidden.bs.modal", function () {
             $(this).removeData("bs.modal");
+        });
+    }
+    function del_jsxx(a)
+    {
+        var data = { 'jsbh': a };
+        $.ajax({
+            url: "/sys/del_jsxx",
+            data: {data},
+            type: "post",
+            success: function (data) {
+                if(data.IsSuccessful)
+                {
+                    alert('删除成功')
+                }
+                else
+                {
+                    alert(data.ErrMsg);
+                }
+            }
         });
     }
 
@@ -127,6 +146,7 @@
                 for (var i = 0; i < data.length; i++) {
                     d.push([data[i].jsbh, data[i].jsmc, data[i].jsms,
                         '<a class="on-default icon" title="授予角色权限"  data-toggle="modal" data-target="#jsqx"  href="/sys/jsqxgl?jsbh=' + data[i].jsbh + '" onclick = "cleardata(\'#jsqx\')" "><i class="fa fa-bars"></i></a>'
+                        + '<a class="on-default icon" title="删除角色"   onclick = "del_jsxx(\'' + data[i].jsbh + '\')" "><i class="fa fa-trash"></i></a>'
                     ]);
                 }
                 option.data = d;

@@ -19,7 +19,7 @@ namespace 管理网站.Controllers
         {
             if (this.CurrentUser!=null&&this.CurrentUser.IsAuthenticated)
             {
-                this.ViewBag.qxxx = _fw.GET_YHQX(this.CurrentUser.YHBH);
+                this.ViewBag.jsxx = _fw.GET_JSLB(this.CurrentUser.YHBH);
                 return View();
             }
             else

@@ -47,7 +47,7 @@ namespace 管理网站.Controllers
             return PartialView();
         }
         [IdentityCheck]
-        public PartialViewResult yhjs(int yhbh)
+        public PartialViewResult yhjs(string yhbh)
         {
             this.ViewBag.yhbh = yhbh;
             this.ViewBag.jslb = _fw.GET_JSLB();
@@ -162,7 +162,15 @@ namespace 管理网站.Controllers
                 return Json(SResult.Success);
             else return Json(SResult.Error("添加失败！"));
         }
-
+        public JsonResult DEL_JSXX(int jsbh)
+        {
+            if (_fw.DEL_JSXX(jsbh)) {
+                _fw.DEL_YHJS(jsbh);
+                _fw.DEL_JSQX(jsbh);
+                return Json(SResult.Success);
+            }
+            else return Json(SResult.Error("默认角色无法删除，或者删除失败"));
+        }
         public JsonResult Remove_YHJS(int yhbh, int jsbh)
         {
             if (_fw.DEL_YHJS(yhbh, jsbh))
