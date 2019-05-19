@@ -53,6 +53,7 @@
     <Compile Include="Models\ParamModels.cs" />
     <Compile Include="Models\RwModels.cs" />
     <Compile Include="Models\SResult.cs" />
+    <Compile Include="Models\TaskModels.cs" />
     <Compile Include="Models\ZbModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

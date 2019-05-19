@@ -3,7 +3,10 @@
 @{
     ViewBag.Title = "Index";
 }
-
+<script>
+    issjrw = 0;
+    iszbrw = 0;
+</script>
     @{
         var jsxx = this.ViewBag.jsxx as List<JSXX>;
         if (jsxx != null && jsxx.Count > 0)
@@ -15,16 +18,7 @@
                 {
                     case "1":
                         {
-                            <div class="col-lg-4">
-                                <div class="panel panel-border panel-pink">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title"></h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <p>@item.jsmc</p>
-                                    </div>
-                                </div>
-                            </div>
+                           
                         }; break;
                     case "2":
                         {
@@ -34,10 +28,16 @@
                                         <h3 class="panel-title">数据任务</h3>
                                     </div>
                                     <div class="panel-body">
-                                        <p>@item.jsmc</p>
+                                        <p id="cjba">1</p>
+                                        <p id="rgsj"></p>
+                                        <p id="xzys"></p>
+                                        <p id="tdcj"></p>
                                     </div>
                                 </div>
                             </div>
+                            <script>
+                                issjrw = 1;
+                            </script>
                         }; break;
                     case "3":
                         {
@@ -46,21 +46,75 @@
                                     <div class="panel-heading">
                                         <h3 class="panel-title">周报任务</h3>
                                     </div>
-                                    <div class="panel-body">
-                                        <p>@item.jsmc</p>
+                                    <div class="panel-body" id="zbrwlb">
+                                        
                                     </div>
                                 </div>
                             </div>
+                            <script>
+                                iszbrw = 1;
+                            </script>
                         }; break;
                 }
             }
         }
     }
 
-<script>
 
-</script>
 @section scripts{
+
 <script src="~/Scripts/Moltran/modal/classie.js"></script>
 <script src="~/Scripts/Moltran/modal/modalEffects.js"></script>
+
+<script>
+    $(function () {
+        if (issjrw == 1) {
+            $.ajax({
+                url: "/Home/GET_Z_DATA_TASK_INFO",
+                type: "post",
+                success: function (data) {
+                    if (data.xzys == 1) {
+                        $("#xzys").text("新增预售数据：任务已完成");
+                    }
+                    else {
+                        $("#xzys").text("新增预售数据：未完成");
+                    }
+                    if (data.cjba == 1) {
+                        $("#cjba").text("成交本案数据：任务已完成");
+                    }
+                    else {
+                        $("#cjba").text("成交本案数据：未完成");
+                    }
+                    if (data.rgsj == 1) {
+                        $("#rgsj").text("认购信息数据：任务已完成");
+                    }
+                    else {
+                        $("#rgsj").text("认购信息数据：未完成");
+                    }
+                    if (data.tdcj == 1) {
+                        $("#tdcj").text("土地成交数据：任务已完成");
+                    }
+                    else {
+                        $("#tdcj").text("土地成交数据：未完成");
+                    }
+                }
+            })
+        }
+        if (iszbrw == 1) {
+            $.ajax({
+                url: "/Home/GET_ZB_TASK_INFO",
+                type: "post",
+                success: function (data) {
+                    if(data)
+                    {
+                        for (var i = 0; i < data.length; i++) {
+                            $("#zbrwlb").append("<p><a href='/zb/zblb?kfsbh="+data[i].kfsbh+"'> <span> 开发商名称：" + data[i].kfsmc + "</span><span>已完成：" + data[i].ywc + "</span><span> 生成中：" + data[i].scz + "</span><span> 未启动：" + data[i].wqd + "</span></a></p>");
+                        }
+                    }
+                }
+            })
+            
+        }
+    });
+</script>
 }

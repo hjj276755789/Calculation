@@ -33,7 +33,7 @@
 
         $.ajax({
             url: "/zb/get_zbmblx",
-            data: { "pagesize": 30, "pagenow": 1, "mbmc": $('#mbmc').val() },
+            data: { "pagesize": 30, "pagenow": 1, "mbmc": $('#mbmc').val(),"kfsbh":"@this.ViewBag.kfsbh" },
             type: "post",
             success: function (data) {
                 var d = [];

@@ -49,10 +49,10 @@
     }
     function del_jsxx(a)
     {
-        var data = { 'jsbh': a };
+        var data = {'jsbh': a };
         $.ajax({
             url: "/sys/del_jsxx",
-            data: {data},
+            data: data,
             type: "post",
             success: function (data) {
                 if(data.IsSuccessful)

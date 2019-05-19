@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Calculation.Base;
 using Calculation.Models.Enums;
 using System.Data;
+using Calculation.Models.Models;
 
 namespace Calculation.Dal
 {
@@ -49,6 +50,55 @@ namespace Calculation.Dal
             MySqlParameter[] p = { new MySqlParameter("yhmc", yhmc), new MySqlParameter("yhmm", yhmm), new MySqlParameter("yhlx", yhlx.ints()) };
             return MySqlDbhelper.ExecuteNonQuery(sql, p) > 0;
         }
+
+        #region  获取任务信息
+        #region 数据任务
+
+        #endregion
+        public int GET_Z_DATA_TASK_INFO_CJBA(int nf,int zc)
+        {
+            string sql = "select count(*) from xtgl_data_zb_cjba where nf=@nf and zc=@zc";
+            MySqlParameter[] p = { new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
+            return ExecuteScalar(sql, p).ints();
+        }
+        public int GET_Z_DATA_TASK_INFO_XZYS(int nf, int zc)
+        {
+            string sql = "select count(*) from xtgl_data_zb_xzys where nf=@nf and zc=@zc";
+            MySqlParameter[] p = { new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
+            return ExecuteScalar(sql, p).ints();
+        }
+        public int GET_Z_DATA_TASK_INFO_TDCJ(int nf, int zc)
+        {
+            string sql = "select count(*) from xtgl_data_zb_tdcj where nf=@nf and zc=@zc";
+            MySqlParameter[] p = { new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
+            return ExecuteScalar(sql, p).ints();
+        }
+        public int GET_Z_DATA_TASK_INFO_RGSJ(int nf, int zc)
+        {
+            string sql = "select count(*) from xtgl_data_zb_rgsj where nf=@nf and zc=@zc";
+            MySqlParameter[] p = { new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
+            return ExecuteScalar(sql, p).ints();
+        }
+
+        #region 周报任务
+        public List<ZB_TaskModels> GET_ZB_TASK_INFO(string yhbh,int nf,int zc)
+        {
+            string sql = @"select a.kfsbh,a.kfsmc,max(case when zt ='-1' then sl else '0' end) wqd,max(case when zt ='0' then sl else '0' end ) scz,max(case when zt='1' then sl else '0' end ) ywc from (
+select kfsbh,kfsmc,zt,count(*) sl from v_yhfzmb t1 left join (
+select t1.nf,t1.zc,t2.rwmc,t2.rwid, case when t2.zt = 4 then '1' when t2.zt is null then '-1' else '0'  end zt,t2.mbid from xtgl_sjrwjhb t1 left join xtgl_bbrw t2 on t1.nf=t2.nf and t1.zc=t2.zc 
+where t1.nf=@nf and t1.zc=@zc) t2 on t1.mbbh =t2.mbid
+where yhbh =@yhbh
+group by t1.kfsbh,kfsmc,zt) a
+group by a.kfsbh,a.kfsmc";
+            MySqlParameter[] p = { new MySqlParameter("yhbh", yhbh), new MySqlParameter("nf", nf), new MySqlParameter("zc", zc) };
+            return Modelhelper.类列表赋值<ZB_TaskModels>(new ZB_TaskModels(), MySqlDbhelper.GetDataSet(sql,p).Tables[0]);
+        }
+
+        #endregion
+        #endregion
+
+
+
 
         //获取角色列表
         public List<JSXX> GET_JSLB()

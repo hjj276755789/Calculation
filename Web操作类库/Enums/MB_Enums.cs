@@ -17,11 +17,18 @@ namespace Calculation.Models.Enums
 
     public enum RW_ZT
     {
+        未完成=-1,
         起草阶段=0,
         数据筹备阶段=1,
         参数填写阶段=2,
         文档生成中=3,
         完成可下载=4
+    }
+    public enum RW_ZT_ZT
+    {
+        未启动 =-1,
+        生成中 =0,
+        已完成 =1
     }
     public enum DATA_ZT
     {

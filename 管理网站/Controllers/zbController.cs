@@ -137,9 +137,9 @@ namespace 管理网站.Controllers
         ///获取周报模板类型
         [HttpPost]
        
-        public JsonResult get_zbmblx(int pagesize, int pagenow,string mbmc)
+        public JsonResult get_zbmblx(int pagesize, int pagenow,string mbmc,string kfsbh)
         {
-            return Json(rwgl.GET_ZB_LB(this.CurrentUser.YHBH,pagesize, pagenow,mbmc));
+            return Json(rwgl.GET_ZB_LB(this.CurrentUser.YHBH,pagesize, pagenow,mbmc,kfsbh));
         }
         /// <summary>
         /// 获取后保任务列表
